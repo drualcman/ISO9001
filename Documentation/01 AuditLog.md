@@ -142,4 +142,4 @@ Después de realizar un pedido, en el componente Blazor, podemos mostrar el mens
         await ViewModel.PlaceOrderAsync();
     }
 }
-``
+```
