@@ -1,0 +1,6 @@
+@ISO9001.WebAPI_HostAddress = http://localhost:5058
+
+################### getAll AuditLogs No from and End
+
+GET {{GOGO.ISO9001.WebAPI_HostAddress}}/audit-log/empresa-2/getallauditlogs
+Accept: application/json
