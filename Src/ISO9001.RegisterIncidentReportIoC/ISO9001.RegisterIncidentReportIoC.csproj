@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ISO9001.RegisterIncidentReport.Core\ISO9001.RegisterIncidentReport.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.RegisterIncidentReport.Repositories\ISO9001.RegisterIncidentReport.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
