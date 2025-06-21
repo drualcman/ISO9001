@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.Core\ISO9001.RegisterCustomerFeedback.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.Repositories\ISO9001.RegisterCustomerFeedback.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
