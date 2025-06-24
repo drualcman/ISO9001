@@ -1,6 +1,6 @@
-﻿using ISO9001.RegisterCustomerFeedback.Repositories.Entities;
+﻿using ISO9001.CustomerFeedbacks.Repositories.Entities;
 
-namespace ISO9001.RegisterCustomerFeedback.Repositories.Interfaces
+namespace ISO9001.CustomerFeedbacks.Repositories.Interfaces
 {
     public interface IRegisterCustomerFeedbackDataContext
     {

@@ -1,27 +1,25 @@
-﻿using ISO9001.RegisterCustomerFeedback.Repositories.Entities;
-using ISO9001.RegisterCustomerFeedback.Repositories.Interfaces;
+﻿using ISO9001.CustomerFeedbacks.Repositories.Entities;
+using ISO9001.CustomerFeedbacks.Repositories.Interfaces;
 
-namespace ISO9001.Database.InMemory.DataContexts
+namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
 {
     internal class InMemoryRegisterCustomerFeedbackDataContext : IRegisterCustomerFeedbackDataContext
     {
-        private static readonly List<DataContexts.Entities.CustomerFeedback> customerFeedbackList = new List<DataContexts.Entities.CustomerFeedback>();
-        private static int currentId = 0;
-
         public Task AddAsync(CustomerFeedback customerFeedback)
         {
-            var Record = new DataContexts.Entities.CustomerFeedback
+            var Record = new Entities.CustomerFeedback
             {
-                Id = ++currentId,
+                Id = ++InMemoryCustomerFeedbackStore.CurrentId,
                 EntityId = customerFeedback.EntityId,
                 CompanyId = customerFeedback.CompanyId,
                 CustomerId = customerFeedback.CustomerId,
                 Rating = customerFeedback.Rating,
                 Comments = customerFeedback.Comments,
+                ReportedAt = customerFeedback.ReportedAt,
                 CreatedAt = DateTime.UtcNow
             };
 
-            customerFeedbackList.Add(Record);
+            InMemoryCustomerFeedbackStore.CustomerFeedbacks.Add(Record);
             return Task.CompletedTask;
         }
 
