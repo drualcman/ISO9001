@@ -1,9 +1,9 @@
-﻿using ISO9001.Entities.Dtos;
+﻿using ISO9001.CustomerFeedbacks.Repositories.Entities;
+using ISO9001.CustomerFeedbacks.Repositories.Interfaces;
+using ISO9001.Entities.Dtos;
 using ISO9001.RegisterCustomerFeedback.BusinessObjects.Interfaces;
-using ISO9001.RegisterCustomerFeedback.Repositories.Entities;
-using ISO9001.RegisterCustomerFeedback.Repositories.Interfaces;
 
-namespace ISO9001.RegisterCustomerFeedback.Repositories
+namespace ISO9001.CustomerFeedbacks.Repositories
 {
     internal class RegisterCustomerFeedbackRepository(
         IRegisterCustomerFeedbackDataContext dataContext) : IRegisterCustomerFeedbackRepository
@@ -16,7 +16,8 @@ namespace ISO9001.RegisterCustomerFeedback.Repositories
                 CompanyId = customerFeedbackDto.CompanyId,
                 CustomerId = customerFeedbackDto.CustomerId,
                 Rating = customerFeedbackDto.Rating,
-                Comments = customerFeedbackDto.Comments
+                Comments = customerFeedbackDto.Comments,
+                ReportedAt = customerFeedbackDto.ReportedAt
             };
 
             await dataContext.AddAsync(NewCustomerFeedback);

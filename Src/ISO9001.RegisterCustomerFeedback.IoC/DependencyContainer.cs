@@ -1,5 +1,4 @@
 ﻿using ISO9001.RegisterCustomerFeedback.Core;
-using ISO9001.RegisterCustomerFeedback.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ISO9001.RegisterCustomerFeedback.IoC
@@ -10,7 +9,6 @@ namespace ISO9001.RegisterCustomerFeedback.IoC
             this IServiceCollection services)
         {
             services.AddRegisterCustomerFeedbackCoreServices();
-            services.AddRegisterCustomerFeedbackRepositoryService();
             return services;
         }
     }

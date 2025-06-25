@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.BusinessObjects\ISO9001.RegisterCustomerFeedback.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByRating.BusinessObjects\ISO9001.GetCustomerFeedbackByRating.BusinessObjects.csproj" />
   </ItemGroup>
 
 </Project>
