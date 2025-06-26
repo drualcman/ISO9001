@@ -1,9 +1,9 @@
 ﻿using ISO9001.Entities.Dtos;
+using ISO9001.NonConformities.Repositories.Entities;
+using ISO9001.NonConformities.Repositories.Interfaces;
 using ISO9001.RegisterNonConformity.BusinessObjects.Interfaces;
-using ISO9001.RegisterNonConformityRepositories.Entities;
-using ISO9001.RegisterNonConformityRepositories.Interfaces;
 
-namespace ISO9001.RegisterNonConformityRepositories
+namespace ISO9001.NonConformities.Repositories
 {
     internal class RegisterNonConformityRepository(
         IRegisterNonConformityDataContext dataContext) : IRegisterNonConformityRepository
@@ -17,7 +17,7 @@ namespace ISO9001.RegisterNonConformityRepositories
                 EntityId = nonConformityDto.EntityId,
                 AffectedProcess = nonConformityDto.AffectedProcess,
                 Status = nonConformityDto.Status,
-                nonConformityDetails = new List<NonConformityDetail>()
+                NonConformityDetails = new List<NonConformityDetail>()
             };
 
             NonConformityDetail NewNonConformityDetail = new NonConformityDetail
@@ -29,7 +29,7 @@ namespace ISO9001.RegisterNonConformityRepositories
                 Status = nonConformityDto.Status
             };
 
-            NewNonConformityMaster.nonConformityDetails.Add(NewNonConformityDetail);
+            NewNonConformityMaster.NonConformityDetails.Add(NewNonConformityDetail);
 
             await dataContext.AddAsync(NewNonConformityMaster);
         }

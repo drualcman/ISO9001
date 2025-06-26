@@ -3,8 +3,9 @@ using ISO9001.CustomerFeedbacks.Repositories.Interfaces;
 using ISO9001.Database.InMemory.DataContexts;
 using ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts;
 using ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext;
+using ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
+using ISO9001.NonConformities.Repositories.Interfaces;
 using ISO9001.RegisterIncidentReport.Repositories.Interfaces;
-using ISO9001.RegisterNonConformityRepositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ISO9001.Database.InMemory
@@ -22,9 +23,13 @@ namespace ISO9001.Database.InMemory
             services.AddScoped<IGetAllCustomerFeedbackDataContext, InMemoryGetAllCustomerFeedbackDataContext>();
             services.AddScoped<IGetCustomerFeedbackByEntityIdDataContext, InMemoryGetCustomerFeedbackByEntityIdDataContext>();
             services.AddScoped<IGetCustomerFeedbackByCustomerIdDataContext, InMemoryGetCustomerFeedbackByCustomerIdDataContext>();
-            services.AddScoped<IGetCustomerFeedbackByRatingDataContext , InMemoryGetCustomerFeedbackByRatingDataContext>();
+            services.AddScoped<IGetCustomerFeedbackByRatingDataContext, InMemoryGetCustomerFeedbackByRatingDataContext>();
 
             services.AddScoped<IRegisterIncidentReportDataContext, InMemoryRegisterIncidentReportDataContext>();
+            services.AddScoped<IGetAllNonConformitiesDataContext, InMemoryGetAllNonConformitiesDataContext>();
+            services.AddScoped<IGetNonConformityByAffectedProcessDataContext, InMemoryGetNonConformityByAffectedProcessDataContext>();
+            services.AddScoped<IGetNonConformityByEntityIdDataContext, InMemoryGetNonConformityByEntityIdDataContext>();
+            services.AddScoped<IGetNonConformityByStatusDataContext, InMemoryGetNonConformityByStatusDataContext>();
 
             services.AddScoped<IRegisterNonConformityDataContext, InMemoryRegisterNonConformityDataContext>();
 

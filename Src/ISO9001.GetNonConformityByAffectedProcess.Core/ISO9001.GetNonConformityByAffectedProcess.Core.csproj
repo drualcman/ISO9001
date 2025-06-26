@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ISO9001.RegisterNonConformity.Core\ISO9001.RegisterNonConformity.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.GetNonConformityByAffectedProcess.BusinessObjects\ISO9001.GetNonConformityByAffectedProcess.BusinessObjects.csproj" />
   </ItemGroup>
 
 </Project>

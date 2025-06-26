@@ -1,4 +1,4 @@
-﻿namespace ISO9001.RegisterNonConformityRepositories.Entities
+﻿namespace ISO9001.NonConformities.Repositories.Entities
 {
     public class NonConformityDetail
     {

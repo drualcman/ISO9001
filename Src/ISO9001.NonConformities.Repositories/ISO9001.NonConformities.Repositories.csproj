@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ISO9001.GetAllNonConformities.BusinessObjects\ISO9001.GetAllNonConformities.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.GetNonConformityByAffectedProcess.BusinessObjects\ISO9001.GetNonConformityByAffectedProcess.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.GetNonConformityByEntityId.BusinessObjects\ISO9001.GetNonConformityByEntityId.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.BusinessObjects\ISO9001.GetNonConformityByStatus.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.RegisterNonConformity.BusinessObjects\ISO9001.RegisterNonConformity.BusinessObjects.csproj" />
+  </ItemGroup>
+
+</Project>

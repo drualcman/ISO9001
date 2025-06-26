@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ISO9001.RegisterNonConformity.Core\ISO9001.RegisterNonConformity.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.GetAllNonConformities.Core\ISO9001.GetAllNonConformities.Core.csproj" />
   </ItemGroup>
 
 </Project>
