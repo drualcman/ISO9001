@@ -1,6 +1,6 @@
-﻿namespace ISO9001.Database.InMemory.DataContexts.Entities
+﻿namespace ISO9001.NonConformities.Repositories.Entities
 {
-    public class NonConformityDetail
+    public class NonConformityDetailReadModel
     {
         public int Id { get; set; }
         public DateTime ReportedAt { get; set; }
@@ -10,6 +10,5 @@
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public int NonConformityId { get; set; }
-
     }
 }
