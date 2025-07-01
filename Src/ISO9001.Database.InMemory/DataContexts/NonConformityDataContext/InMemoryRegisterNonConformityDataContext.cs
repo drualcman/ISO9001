@@ -1,4 +1,5 @@
 ﻿using ISO9001.Database.InMemory.DataContexts.Entities;
+using ISO9001.NonConformities.Repositories.Entities;
 using ISO9001.NonConformities.Repositories.Interfaces;
 
 
@@ -6,12 +7,24 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
     internal class InMemoryRegisterNonConformityDataContext : IRegisterNonConformityDataContext
     {
+        public IQueryable<NonConformityReadModel> NonConformities =>
+            InMemoryNonConformityStore.NonConformities
+            .Select(NonConformity => new NonConformityReadModel
+            {
+                Id = NonConformity.Id,
+                ReportedAt = NonConformity.ReportedAt,
+                EntityId = NonConformity.EntityId,
+                CompanyId = NonConformity.CompanyId,
+                AffectedProcess = NonConformity.AffectedProcess,
+                Status = NonConformity.Status,
+                CreatedAt = NonConformity.CreatedAt
+            }).AsQueryable();
 
         public Task AddAsync(NonConformities.Repositories.Entities.NonConformity nonConformityMaster)
         {
-            var NonConformityRecord = new NonConformity
+            var NonConformityRecord = new DataContexts.Entities.NonConformity
             {
-                Id = ++InMemoryNonConformityStore.CurrentId,
+                Id = ++InMemoryNonConformityStore.NonConformityCurrentId,
                 ReportedAt = nonConformityMaster.ReportedAt,
                 EntityId = nonConformityMaster.EntityId,
                 CompanyId = nonConformityMaster.CompanyId,
@@ -20,9 +33,9 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
                 CreatedAt = DateTime.UtcNow
             };
 
-            var NonConformityDetailRecord = new NonConformityDetail
+            var NonConformityDetailRecord = new DataContexts.Entities.NonConformityDetail
             {
-                Id = InMemoryNonConformityStore.CurrentId,
+                Id = ++InMemoryNonConformityStore.NonConformityDetailsCurrentId,
                 NonConformityId = NonConformityRecord.Id,
                 ReportedAt = nonConformityMaster.NonConformityDetails[0].ReportedAt,
                 ReportedBy = nonConformityMaster.NonConformityDetails[0].ReportedBy,

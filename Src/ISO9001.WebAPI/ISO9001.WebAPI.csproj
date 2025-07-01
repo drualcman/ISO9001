@@ -45,6 +45,8 @@
     <ProjectReference Include="..\ISO9001.RegisterIncidentReport.Rest\ISO9001.RegisterIncidentReport.Rest.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterIncidentReportIoC\ISO9001.RegisterIncidentReportIoC.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterNonConformity.Rest\ISO9001.RegisterNonConformity.Rest.csproj" />
+    <ProjectReference Include="..\ISO9001.RegisterNonConformityDetail.IoC\ISO9001.RegisterNonConformityDetail.IoC.csproj" />
+    <ProjectReference Include="..\ISO9001.RegisterNonConformityDetail.Rest\ISO9001.RegisterNonConformityDetail.Rest.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterNonConformityIoC\ISO9001.RegisterNonConformityIoC.csproj" />
   </ItemGroup>
 

@@ -2,6 +2,6 @@
 {
     public static class GetNonConformityByEntityIdEndpoint
     {
-        public const string GetNonConformityById = nameof(GetNonConformityById);
+        public const string GetNonConformityByEntityId = nameof(GetNonConformityByEntityId);
     }
 }

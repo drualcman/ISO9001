@@ -15,6 +15,7 @@
     <ProjectReference Include="..\ISO9001.GetNonConformityByEntityId.BusinessObjects\ISO9001.GetNonConformityByEntityId.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.BusinessObjects\ISO9001.GetNonConformityByStatus.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterNonConformity.BusinessObjects\ISO9001.RegisterNonConformity.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.RegisterNonConformityDetail.BusinessObjects\ISO9001.RegisterNonConformityDetail.BusinessObjects.csproj" />
   </ItemGroup>
 
 </Project>

@@ -16,6 +16,7 @@ using ISO9001.NonConformities.Repositories;
 using ISO9001.RegisterAuditLog.IoC;
 using ISO9001.RegisterCustomerFeedback.IoC;
 using ISO9001.RegisterIncidentReportIoC;
+using ISO9001.RegisterNonConformityDetail.IoC;
 using ISO9001.RegisterNonConformityIoC;
 
 namespace ISO9001.WebAPI
@@ -40,6 +41,7 @@ namespace ISO9001.WebAPI
             builder.Services.AddRegisterIncidentReportServices();
 
             builder.Services.AddRegisterNonConformityServices();
+            builder.Services.AddRegisterNonConformityDetailServices();
             builder.Services.AddGetAllNonConformitiesServices();
             builder.Services.AddGetNonConformityByAffectedProcessServices();
             builder.Services.AddGetNonConformityByEntityIdServices();
