@@ -7,6 +7,20 @@ builder.Services.AddOpenApi();
 
 builder.AddISO9001Services();
 
+builder.Services.AddWebApiDocumentator(options =>
+{
+    options.ApiName = "GOGO.ISO9001";
+    options.Version = "v1";
+    options.Description = "Implementación de ISO 9001";
+    options.DocsBaseUrl = "docs/api";
+    options.ShopOpenApiLink = true;
+#if DEBUG
+    options.EnableTesting = true;
+#else
+    options.EnableTesting = false;
+#endif
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(config =>
@@ -21,11 +35,11 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
+if(app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseWebApiDocumentator();
 }
+app.UseWebApiDocumentator();
 
 app.UseHttpsRedirection();
 app.UserAuditLogEndpoints();

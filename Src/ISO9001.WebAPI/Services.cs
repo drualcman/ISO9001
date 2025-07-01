@@ -50,13 +50,6 @@ namespace ISO9001.WebAPI
 
             builder.Services.AddDatabaseInMemory();
 
-            builder.Services.AddWebApiDocumentator(options =>
-            {
-                options.ApiName = "GOGO.ISO9001";
-                options.Version = "v1";
-                options.Description = "Implementación de ISO 9001";
-                options.DocsBaseUrl = "docs/api";
-            });
 
             return builder;
         }

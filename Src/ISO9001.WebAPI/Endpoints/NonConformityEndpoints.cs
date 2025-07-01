@@ -1,4 +1,5 @@
 ﻿using ISO9001.Entities.Dtos;
+using ISO9001.Entities.Requests;
 using ISO9001.GetAllNonConformities.BusinessObjects;
 using ISO9001.GetAllNonConformities.Rest;
 using ISO9001.GetNonConformityByAffectedProcess.BusinessObjects;
@@ -29,56 +30,68 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapPost(RegisterNonConformityDetailEndpoint.RegisterNonConformityDetail.CreateEndpoint(EntryPoint),
-                async (NonConformityDto nonConformity, IRegisterNonConformityDetailInputPort inputPort) =>
+            builder.MapPost("{companyId}/" + RegisterNonConformityDetailEndpoint.RegisterNonConformityDetail.CreateEndpoint(EntryPoint) + "{id}/detail",
+                async (
+                    string companyId,
+                    string id,
+                    NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetailInputPort inputPort) =>
                 {
-                    await inputPort.HandleAsync(nonConformity);
+                    NonConformityDto data = new NonConformityDto
+                    {
+                        CompanyId = companyId,
+                        EntityId = id,
+                        Description = nonConformity.Description,
+                        ReportedAt = nonConformity.ReportedAt,
+                        ReportedBy = nonConformity.ReportedBy,
+                        Status = nonConformity.Status
+                    };
+                    await inputPort.HandleAsync(data);
                     return TypedResults.Created();
                 });
 
-            builder.MapGet(("{id}/" + GetAllNonConformitiesEndpoint.GetAllNonConformities).CreateEndpoint(EntryPoint), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetAllNonConformitiesEndpoint.GetAllNonConformities).CreateEndpoint(EntryPoint), async (
+                string companyId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetAllNonConformitiesInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, from, end);
+                var result = await inputPort.HandleAsync(companyId, from, end);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetNonConformityByAffectedProcessEndpoint.GetNonConformityByAffectedProcess + "/{affectedProcess}").CreateEndpoint(EntryPoint), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetNonConformityByAffectedProcessEndpoint.GetNonConformityByAffectedProcess + "/{affectedProcess}").CreateEndpoint(EntryPoint), async (
+                string companyId,
                 string affectedProcess,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetNonConformityByAffectedProcessInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, affectedProcess, from, end);
+                var result = await inputPort.HandleAsync(companyId, affectedProcess, from, end);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetNonConformityByEntityIdEndpoint.GetNonConformityByEntityId + "/{entityId}").CreateEndpoint(EntryPoint), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetNonConformityByEntityIdEndpoint.GetNonConformityByEntityId + "/{entityId}").CreateEndpoint(EntryPoint), async (
+                string companyId,
                 string entityId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetNonConformityByEntityIdInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, entityId);
+                var result = await inputPort.HandleAsync(companyId, entityId);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetNonConformityByStatusEndpoint.GetNonConformityByStatus + "/{status}").CreateEndpoint(EntryPoint), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetNonConformityByStatusEndpoint.GetNonConformityByStatus + "/{status}").CreateEndpoint(EntryPoint), async (
+                string companyId,
                 string status,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetNonConformityByStatusInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, status, from, end);
+                var result = await inputPort.HandleAsync(companyId, status, from, end);
                 return TypedResults.Ok(result);
 
             });
