@@ -3,6 +3,7 @@ using ISO9001.GetNonConformityByAffectedProcess.BusinessObjects;
 using ISO9001.GetNonConformityByEntityId.BusinessObjects;
 using ISO9001.GetNonConformityByStatus.BusinessObjects;
 using ISO9001.RegisterNonConformity.BusinessObjects.Interfaces;
+using ISO9001.RegisterNonConformityDetail.BusinessObjects.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ISO9001.NonConformities.Repositories
@@ -12,6 +13,7 @@ namespace ISO9001.NonConformities.Repositories
         public static IServiceCollection AddNonConformityRepositoryServices(this IServiceCollection services)
         {
             services.AddScoped<IRegisterNonConformityRepository, RegisterNonConformityRepository>();
+            services.AddScoped<IRegisterNonConformityDetailRepository, RegisterNonConformityDetailRepository>();
             services.AddScoped<IGetAllNonConformitiesRepository, GetAllNonConformitiesRepository>();
             services.AddScoped<IGetNonConformityByAffectedProcessRepository, GetNonConformityByAffectedProcessRepository>();
             services.AddScoped<IGetNonConformityByEntityIdRepository, GetNonConformityByEntityIdRepository>();
