@@ -6,7 +6,8 @@ namespace ISO9001.NonConformities.Repositories.Interfaces
     {
         IQueryable<NonConformityReadModel> NonConformities { get; }
 
-        Task AddAsync(NonConformityDetail nonConformityDetail, string companyId, string entityId);
+        Task AddAsync(NonConformityDetail nonConformityDetail, Guid id);
+        Task UpdateNonConformityAsync(NonConformityReadModel nonConformity);
         Task SaveChangesAsync();
 
     }

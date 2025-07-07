@@ -6,7 +6,6 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
     {
         public static List<NonConformity> NonConformities { get; } = new();
         public static List<NonConformityDetail> NonConformityDetails { get; } = new();
-        public static int NonConformityCurrentId { get; set; }
         public static int NonConformityDetailsCurrentId { get; set; }
 
     }

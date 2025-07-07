@@ -15,6 +15,7 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
                 EntityId = NonConformity.EntityId,
                 CompanyId = NonConformity.CompanyId,
                 AffectedProcess = NonConformity.AffectedProcess,
+                Cause = NonConformity.Cause,
                 Status = NonConformity.Status,
                 CreatedAt = NonConformity.CreatedAt
             }).AsQueryable();
@@ -27,7 +28,6 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
                 ReportedAt = NonConformityDetail.ReportedAt,
                 ReportedBy = NonConformityDetail.ReportedBy,
                 Description = NonConformityDetail.Description,
-                Cause = NonConformityDetail.Cause,
                 Status = NonConformityDetail.Status,
                 CreatedAt = NonConformityDetail.CreatedAt,
                 NonConformityId = NonConformityDetail.NonConformityId

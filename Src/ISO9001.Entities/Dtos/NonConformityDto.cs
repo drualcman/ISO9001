@@ -1,15 +1,16 @@
 ﻿namespace ISO9001.Entities.Dtos
 {
-    public class NonConformityDto
+    public class NonConformityDto(string entityId, string companyId, DateTime reportedAt,
+        string reportedBy, string description, string affectedProcess, string cause, string status)
     {
-        public string EntityId { get; set; }
-        public string CompanyId { get; set; }
-        public DateTime ReportedAt { get; set; }
-        public string ReportedBy { get; set; }
-        public string Description { get; set; }
-        public string AffectedProcess { get; set; }
-        public string Cause { get; set; }
-        public string Status { get; set; }
+        public string EntityId => entityId;
+        public string CompanyId => companyId;
+        public DateTime ReportedAt => reportedAt;
+        public string ReportedBy => reportedBy;
+        public string Description => description;
+        public string AffectedProcess => affectedProcess;
+        public string Cause => cause;
+        public string Status => status;
     }
 
 

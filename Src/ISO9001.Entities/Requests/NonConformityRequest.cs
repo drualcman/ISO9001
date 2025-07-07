@@ -1,6 +1,6 @@
 ﻿namespace ISO9001.Entities.Requests
 {
-    public class NonConformityCreateModel
+    public class NonConformityRequest
     {
         public string EntityId { get; set; }
         public string CompanyId { get; set; }

@@ -7,28 +7,36 @@ namespace ISO9001.NonConformities.Repositories
     internal class GetNonConformityByEntityIdRepository
         (IGetNonConformityByEntityIdDataContext dataContext) : IGetNonConformityByEntityIdRepository
     {
-        public async Task<IEnumerable<NonConformityResponse>> GetNonConformityByEntityIdAsync(string id, string entityId)
+        public async Task<IEnumerable<NonConformityResponse>> GetNonConformityByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
         {
             var Query = dataContext.NonConformities
-                .Where(NonConformity =>
-                    NonConformity.CompanyId == id &&
-                    NonConformity.EntityId == entityId);
-
+                .Join(dataContext.NonConformityDetails,
+                    NonConformity => NonConformity.Id,
+                    NonConformityDetail => NonConformityDetail.NonConformityId,
+                    (NonConformity, NonConformityDetails) => new { NonConformity, NonConformityDetails })
+                .Where(NonConformityResult =>
+                    NonConformityResult.NonConformity.CompanyId == id &&
+                    NonConformityResult.NonConformity.Id.ToString() == entityId)
+                .GroupBy(NonConformity => NonConformity.NonConformity);
 
             return await dataContext.ToListAsync(
                 Query.Select(NonConformity => new NonConformityResponse(
-                    NonConformity.EntityId,
-                    NonConformity.ReportedAt,
-                    NonConformity.AffectedProcess,
-                    NonConformity.Status,
-                    dataContext.NonConformityDetails
-                    .Where(NonConformityDetails => NonConformityDetails.NonConformityId == NonConformity.Id)
-                    .Select(NonConformityDetails => new NonConformityDetailResponse(
-                        NonConformityDetails.ReportedAt,
-                        NonConformityDetails.ReportedBy,
-                        NonConformityDetails.Description,
-                        NonConformityDetails.Cause,
-                        NonConformityDetails.Status)).ToList())));
+                    NonConformity.Key.ReportedAt,
+                    NonConformity.Key.AffectedProcess,
+                    NonConformity.Key.Status,
+                    NonConformity.Key.Cause,
+                    dataContext.NonConformityDetails.
+                        Where(Detail =>
+                        Detail.NonConformityId == NonConformity.Key.Id &&
+                        Detail.ReportedAt >= from &&
+                        Detail.ReportedAt <= end)
+                        .Select(Detail => new NonConformityDetailResponse(
+                            Detail.ReportedAt,
+                            Detail.ReportedBy,
+                            Detail.Description,
+                            Detail.Status)
+                        )
+                        .OrderBy(Detail => Detail.ReportedAt).ToList())));
         }
     }
 }
