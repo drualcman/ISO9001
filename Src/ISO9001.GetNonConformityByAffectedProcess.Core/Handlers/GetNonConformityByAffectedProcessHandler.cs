@@ -6,7 +6,7 @@ namespace ISO9001.GetNonConformityByAffectedProcess.Core.Handlers
     internal class GetNonConformityByAffectedProcessHandler
         (IGetNonConformityByAffectedProcessRepository repository): IGetNonConformityByAffectedProcessInputPort
     {
-        public async Task<IEnumerable<NonConformityResponse>> HandleAsync(string id, string affectedProcess, DateTime? from, DateTime? end)
+        public async Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, string affectedProcess, DateTime? from, DateTime? end)
         {
             DateTime UtcFrom = from != null ? from.Value.Date
                 : DateTime.UtcNow.Date.AddDays(-30);

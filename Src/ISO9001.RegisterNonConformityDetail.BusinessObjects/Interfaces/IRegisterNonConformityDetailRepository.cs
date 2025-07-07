@@ -4,8 +4,9 @@ namespace ISO9001.RegisterNonConformityDetail.BusinessObjects.Interfaces
 {
     public interface IRegisterNonConformityDetailRepository
     {
-        Task RegisterNonConformityDetailAsync(NonConformityDto nonConformityDto);
+        Task RegisterNonConformityDetailAsync(NonConformityCreateDetailDto nonConformityDetail);
         Task SaveChangesAsync();
-        Task<bool> NonConformityExistsAsync(string companyId, string entityId);
+        Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status);
+        Task<bool> NonConformityExistsByGuidAsync(Guid entityId);
     }
 }

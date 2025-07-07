@@ -4,6 +4,6 @@ namespace ISO9001.GetAllNonConformities.BusinessObjects
 {
     public interface IGetAllNonConformitiesInputPort
     {
-        Task<IEnumerable<NonConformityResponse>> HandleAsync(string id, DateTime? from, DateTime? end);
+        Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, DateTime? from, DateTime? end);
     }
 }

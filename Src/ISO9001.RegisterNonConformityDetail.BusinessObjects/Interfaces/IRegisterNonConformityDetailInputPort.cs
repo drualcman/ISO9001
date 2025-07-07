@@ -4,6 +4,6 @@ namespace ISO9001.RegisterNonConformityDetail.BusinessObjects.Interfaces
 {
     public interface IRegisterNonConformityDetailInputPort
     {
-        Task HandleAsync(NonConformityDto nonConformityDto);
+        Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail);
     }
 }

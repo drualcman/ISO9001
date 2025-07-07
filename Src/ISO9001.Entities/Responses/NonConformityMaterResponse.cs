@@ -1,11 +1,12 @@
 ﻿namespace ISO9001.Entities.Responses;
-public class NonConformityMaterResponse
+public class NonConformityMaterResponse(Guid id, string entityId, DateTime reportedAt,
+    string affectedProcess, string cause, string status, int detailsCount)
 {
-    public Guid Id { get; set; }
-    public string EntityId { get; set; }
-    public DateTime ReportedAt { get; set; }
-    public string AffectedProcess { get; set; }
-    public string Cause { get; set; }
-    public string Status { get; set; }
-    public int DetailsCount { get; set; }
+    public Guid Id => id;
+    public string EntityId => entityId;
+    public DateTime ReportedAt => reportedAt;
+    public string AffectedProcess => affectedProcess;
+    public string Cause => cause;
+    public string Status => status;
+    public int DetailsCount => detailsCount;
 }

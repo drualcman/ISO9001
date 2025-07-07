@@ -16,6 +16,7 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
                 EntityId = NonConformity.EntityId,
                 CompanyId = NonConformity.CompanyId,
                 AffectedProcess = NonConformity.AffectedProcess,
+                Cause = NonConformity.Cause,
                 Status = NonConformity.Status,
                 CreatedAt = NonConformity.CreatedAt
             }).AsQueryable();
@@ -24,11 +25,12 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
         {
             var NonConformityRecord = new DataContexts.Entities.NonConformity
             {
-                Id = ++InMemoryNonConformityStore.NonConformityCurrentId,
+                Id = Guid.NewGuid(),
                 ReportedAt = nonConformityMaster.ReportedAt,
                 EntityId = nonConformityMaster.EntityId,
                 CompanyId = nonConformityMaster.CompanyId,
                 AffectedProcess = nonConformityMaster.AffectedProcess,
+                Cause = nonConformityMaster.Cause,
                 Status = nonConformityMaster.Status,
                 CreatedAt = DateTime.UtcNow
             };
@@ -40,11 +42,9 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
                 ReportedAt = nonConformityMaster.NonConformityDetails[0].ReportedAt,
                 ReportedBy = nonConformityMaster.NonConformityDetails[0].ReportedBy,
                 Description = nonConformityMaster.NonConformityDetails[0].Description,
-                Cause = nonConformityMaster.NonConformityDetails[0].Cause,
                 Status = nonConformityMaster.NonConformityDetails[0].Status,
                 CreatedAt = DateTime.UtcNow
             };
-
 
             InMemoryNonConformityStore.NonConformities.Add(NonConformityRecord);
             InMemoryNonConformityStore.NonConformityDetails.Add(NonConformityDetailRecord);

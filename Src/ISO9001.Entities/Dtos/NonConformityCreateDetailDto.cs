@@ -1,10 +1,11 @@
 ﻿namespace ISO9001.Entities.Dtos;
-public class NonConformityCreateDetailDto
+public class NonConformityCreateDetailDto(Guid entityId, string companyId, DateTime reportedAt,
+    string reportedBy, string description, string status)
 {
-    public Guid EntityId { get; set; }
-    public string CompanyId { get; set; }
-    public DateTime ReportedAt { get; set; }
-    public string ReportedBy { get; set; }
-    public string Description { get; set; }
-    public string Status { get; set; }
+    public Guid EntityId => entityId;
+    public string CompanyId => companyId;
+    public DateTime ReportedAt => reportedAt;
+    public string ReportedBy => reportedBy;
+    public string Description => description;
+    public string Status => status;
 }

@@ -16,6 +16,7 @@ namespace ISO9001.NonConformities.Repositories
                 CompanyId = nonConformityDto.CompanyId,
                 EntityId = nonConformityDto.EntityId,
                 AffectedProcess = nonConformityDto.AffectedProcess,
+                Cause = nonConformityDto.Cause,
                 Status = nonConformityDto.Status,
                 NonConformityDetails = new List<NonConformityDetail>()
             };
@@ -25,7 +26,6 @@ namespace ISO9001.NonConformities.Repositories
                 ReportedAt = nonConformityDto.ReportedAt,
                 ReportedBy = nonConformityDto.ReportedBy,
                 Description = nonConformityDto.Description,
-                Cause = nonConformityDto.Cause,
                 Status = nonConformityDto.Status
             };
 

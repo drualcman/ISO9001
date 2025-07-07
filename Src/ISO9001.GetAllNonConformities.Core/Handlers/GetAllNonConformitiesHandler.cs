@@ -5,7 +5,7 @@ namespace ISO9001.GetAllNonConformities.Core.Handlers
 {
     internal class GetAllNonConformitiesHandler(IGetAllNonConformitiesRepository repository): IGetAllNonConformitiesInputPort
     {
-        public async Task<IEnumerable<NonConformityResponse>> HandleAsync(string id, DateTime? from, DateTime? end)
+        public async Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, DateTime? from, DateTime? end)
         {
             DateTime UtcFrom = from != null ? from.Value.Date
                 : DateTime.UtcNow.Date.AddDays(-30);

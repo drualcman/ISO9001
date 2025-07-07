@@ -7,29 +7,26 @@ namespace ISO9001.NonConformities.Repositories
     internal class GetNonConformityByStatusRepository
         (IGetNonConformityByStatusDataContext dataContext) : IGetNonConformityByStatusRepository
     {
-        public async Task<IEnumerable<NonConformityResponse>> GetNonConformityByStatusAsync(string id, string status, DateTime? from, DateTime? end)
+        public async Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByStatusAsync(string id, string status, DateTime? from, DateTime? end)
         {
             var Query = dataContext.NonConformities
                 .Where(NonConformity =>
                     NonConformity.CompanyId == id &&
                     NonConformity.Status == status &&
                     NonConformity.ReportedAt >= from &&
-                    NonConformity.ReportedAt <= end);
+                    NonConformity.ReportedAt <= end)
+                .OrderBy(NonConformity => NonConformity.ReportedAt);
 
             return await dataContext.ToListAsync(
-                Query.Select(NonConformity => new NonConformityResponse(
+                Query.Select(NonConformity => new NonConformityMaterResponse(
+                    NonConformity.Id,
                     NonConformity.EntityId,
                     NonConformity.ReportedAt,
                     NonConformity.AffectedProcess,
+                    NonConformity.Cause,
                     NonConformity.Status,
-                    dataContext.NonConformityDetails
-                    .Where(NonConformityDetails => NonConformityDetails.NonConformityId == NonConformity.Id)
-                    .Select(NonConformityDetails => new NonConformityDetailResponse(
-                        NonConformityDetails.ReportedAt,
-                        NonConformityDetails.ReportedBy,
-                        NonConformityDetails.Description,
-                        NonConformityDetails.Cause,
-                        NonConformityDetails.Status)).ToList())));
+                    dataContext.NonConformityDetails.Count(NonConformityDetail => NonConformityDetail.NonConformityId == NonConformity.Id)
+                    )));
         }
     }
 }
