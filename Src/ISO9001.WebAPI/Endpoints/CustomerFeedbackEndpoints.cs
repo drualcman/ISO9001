@@ -1,4 +1,5 @@
 ﻿using ISO9001.Entities.Dtos;
+using ISO9001.Entities.Requests;
 using ISO9001.GetAllCustomerFeedback.BusinessObjects.Interfaces;
 using ISO9001.GetAllCustomerFeedback.Rest;
 using ISO9001.GetCustomerFeedbackByCustomerId.BusinessObjects.Interfaces;
@@ -20,9 +21,16 @@ namespace ISO9001.WebAPI.Endpoints
             this IEndpointRouteBuilder builder)
         {
             builder.MapPost(RegisterCustomerFeedbackEndpoint.RegisterCustomerFeedback.CreateEndpoint(EntryPoint),
-                async (CustomerFeedbackDto customerFeedback, IRegisterCustomerFeedbackInputPort inputport) =>
+                async (CustomerFeedbackRequest customerFeedback, IRegisterCustomerFeedbackInputPort inputport) =>
                 {
-                    await inputport.HandleAsync(customerFeedback);
+                    await inputport.HandleAsync(new CustomerFeedbackDto(
+                        customerFeedback.EntityId,
+                        customerFeedback.CompanyId,
+                        customerFeedback.CustomerId,
+                        customerFeedback.Rating,
+                        customerFeedback.Comments,
+                        customerFeedback.ReportedAt
+                        ));
                     return TypedResults.Created();
                 });
 

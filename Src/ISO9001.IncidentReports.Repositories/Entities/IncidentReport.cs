@@ -1,4 +1,4 @@
-﻿namespace ISO9001.RegisterIncidentReport.Repositories.Entities
+﻿namespace ISO9001.IncidentReports.Repositories.Entities
 {
     public class IncidentReport
     {
