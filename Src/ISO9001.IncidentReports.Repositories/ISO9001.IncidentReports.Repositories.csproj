@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ISO9001.GetAllIncidentReports.BusinessObjects\ISO9001.GetAllIncidentReports.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterIncidentReport.BusinessObjects\ISO9001.RegisterIncidentReport.BusinessObjects.csproj" />
   </ItemGroup>
 

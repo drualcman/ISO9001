@@ -1,6 +1,6 @@
-﻿using ISO9001.RegisterIncidentReport.Repositories.Entities;
+﻿using ISO9001.IncidentReports.Repositories.Entities;
 
-namespace ISO9001.RegisterIncidentReport.Repositories.Interfaces
+namespace ISO9001.IncidentReports.Repositories.Interfaces
 {
     public interface IRegisterIncidentReportDataContext
     {

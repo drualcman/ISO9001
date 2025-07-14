@@ -1,4 +1,5 @@
 ﻿using ISO9001.Entities.Dtos;
+using ISO9001.Entities.Requests;
 using ISO9001.GetAllAuditLogs.BusinessObjects;
 using ISO9001.GetAllAuditLogs.Rest;
 using ISO9001.GetAuditLogsByAction.BusinessObjects.Interfaces;
@@ -18,9 +19,17 @@ namespace ISO9001.WebAPI.Endpoints
         public static IEndpointRouteBuilder UserAuditLogEndpoints(this IEndpointRouteBuilder builder)
         {
             builder.MapPost(RegisterAuditLogEndpoint.RegisterAuditLog.CreateEndpoint(EntryPoint),
-                async (AuditLogDto auditLog, IRegisterAuditLogInputPort inputPort) =>
+                async (AuditLogRequest auditLog, IRegisterAuditLogInputPort inputPort) =>
                 {
-                    await inputPort.HandleAsync(auditLog);
+                    await inputPort.HandleAsync(new AuditLogDto(
+                        auditLog.EntityId,
+                        auditLog.CompanyId,
+                        auditLog.Action,
+                        auditLog.PerformedBy,
+                        auditLog.Timestamp,
+                        auditLog.Details,
+                        auditLog.Data)
+                        );
                     return TypedResults.Created();
                 });
 

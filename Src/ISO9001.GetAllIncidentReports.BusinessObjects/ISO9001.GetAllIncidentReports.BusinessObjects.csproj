@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ISO9001.RegisterIncidentReport.Core\ISO9001.RegisterIncidentReport.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.Entities\ISO9001.Entities.csproj" />
   </ItemGroup>
 
 </Project>

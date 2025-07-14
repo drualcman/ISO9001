@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ISO9001.RegisterIncidentReport.Core\ISO9001.RegisterIncidentReport.Core.csproj" />
-  </ItemGroup>
-
 </Project>
