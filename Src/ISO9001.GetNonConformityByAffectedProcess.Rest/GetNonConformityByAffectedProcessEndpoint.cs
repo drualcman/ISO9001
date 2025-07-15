@@ -2,6 +2,6 @@
 {
     public static class GetNonConformityByAffectedProcessEndpoint
     {
-        public const string GetNonConformityByAffectedProcess = nameof(GetNonConformityByAffectedProcess);
+        public const string ByAffectedProcess = nameof(ByAffectedProcess);
     }
 }

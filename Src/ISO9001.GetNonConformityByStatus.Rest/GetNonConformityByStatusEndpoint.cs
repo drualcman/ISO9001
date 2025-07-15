@@ -2,6 +2,6 @@
 {
     public static class GetNonConformityByStatusEndpoint
     {
-        public const string GetNonConformityByStatus = nameof(GetNonConformityByStatus);
+        public const string ByStatus = nameof(ByStatus);
     }
 }

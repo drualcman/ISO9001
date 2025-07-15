@@ -1,24 +1,20 @@
 ﻿using ISO9001.Entities.Dtos;
 using ISO9001.Entities.Requests;
 using ISO9001.GetAllAuditLogs.BusinessObjects;
-using ISO9001.GetAllAuditLogs.Rest;
 using ISO9001.GetAuditLogsByAction.BusinessObjects.Interfaces;
 using ISO9001.GetAuditLogsByAction.Rest;
 using ISO9001.GetAuditLogsByEntityId.Rest;
 using ISO9001.GetAuditLogsByEntityIdBusinessObjects.Interfaces;
 using ISO9001.RegisterAuditLog.BusinessObjects.Interfaces;
-using ISO9001.RegisterAuditLog.Rest;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ISO9001.WebAPI.Endpoints
 {
     public static class AuditLogEndpoints
     {
-        const string EntryPoint = "audit-log/";
-
         public static IEndpointRouteBuilder UserAuditLogEndpoints(this IEndpointRouteBuilder builder)
         {
-            builder.MapPost(RegisterAuditLogEndpoint.RegisterAuditLog.CreateEndpoint(EntryPoint),
+            builder.MapPost("".CreateEndpoint(nameof(AuditLogEndpoints)),
                 async (AuditLogRequest auditLog, IRegisterAuditLogInputPort inputPort) =>
                 {
                     await inputPort.HandleAsync(new AuditLogDto(
@@ -33,7 +29,7 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet(("{id}/" + GetAllAuditLogsEndpoint.GetAllAuditLogs).CreateEndpoint(EntryPoint), async (
+            builder.MapGet("{id}/".CreateEndpoint(nameof(AuditLogEndpoints)), async (
                 string id,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
@@ -44,7 +40,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{id}/" + GetAuditLogsByEntityIdEndpoint.GetAuditLogsByEntityId + "/{entityId}").CreateEndpoint(EntryPoint), async (
+            builder.MapGet(("{id}/" + GetAuditLogsByEntityIdEndpoint.ByEntity + "/{entityId}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
                 string id,
                 string entityId,
                 [FromQuery] DateTime? from,
@@ -56,7 +52,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{id}/" + GetAuditLogsByActionEndpoint.GetAuditLogsByAction + "/{action}").CreateEndpoint(EntryPoint), async (
+            builder.MapGet(("{id}/" + GetAuditLogsByActionEndpoint.ByAction + "/{action}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
                 string id,
                 string action,
                 [FromQuery] DateTime? from,

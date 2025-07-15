@@ -2,6 +2,6 @@
 {
     public static class GetAuditLogsByActionEndpoint
     {
-        public const string GetAuditLogsByAction = nameof(GetAuditLogsByAction);
+        public const string ByAction = nameof(ByAction);
     }
 }

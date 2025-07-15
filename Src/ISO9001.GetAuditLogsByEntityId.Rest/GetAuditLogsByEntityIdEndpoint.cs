@@ -2,6 +2,6 @@
 {
     public static class GetAuditLogsByEntityIdEndpoint
     {
-        public const string GetAuditLogsByEntityId = nameof(GetAuditLogsByEntityId);
+        public const string ByEntity = nameof(ByEntity);
     }
 }

@@ -2,6 +2,6 @@
 {
     public static class GetAllCustomerFeedbackEndpoint
     {
-        public const string GetAllCustomerFeedback = nameof(GetAllCustomerFeedbackEndpoint);
+        public const string GetAllCustomerFeedback = nameof(GetAllCustomerFeedback);
     }
 }

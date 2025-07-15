@@ -2,6 +2,6 @@
 {
     public static class GetAllIncidentReportsEndpoint
     {
-        public const string GetAllIncidentReports = nameof(GetAllIncidentReportsEndpoint);
+        public const string GetAllIncidentReports = nameof(GetAllIncidentReports);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using ISO9001.Entities.Dtos;
 using ISO9001.Entities.Requests;
 using ISO9001.GetAllCustomerFeedback.BusinessObjects.Interfaces;
-using ISO9001.GetAllCustomerFeedback.Rest;
 using ISO9001.GetCustomerFeedbackByCustomerId.BusinessObjects.Interfaces;
 using ISO9001.GetCustomerFeedbackByCustomerId.Rest;
 using ISO9001.GetCustomerFeedbackByEntityId.BusinessObjects.Interfaces;
@@ -9,18 +8,16 @@ using ISO9001.GetCustomerFeedbackByEntityId.Rest;
 using ISO9001.GetCustomerFeedbackByRating.BusinessObjects.Interfaces;
 using ISO9001.GetCustomerFeedbackByRating.Rest;
 using ISO9001.RegisterCustomerFeedback.BusinessObjects.Interfaces;
-using ISO9001.RegisterCustomerFeedback.Rest;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ISO9001.WebAPI.Endpoints
 {
     public static class CustomerFeedbackEndpoints
     {
-        const string EntryPoint = "customer-feedback/";
         public static IEndpointRouteBuilder UserCustomerFeedbackEndpoints(
             this IEndpointRouteBuilder builder)
         {
-            builder.MapPost(RegisterCustomerFeedbackEndpoint.RegisterCustomerFeedback.CreateEndpoint(EntryPoint),
+            builder.MapPost("".CreateEndpoint(nameof(CustomerFeedbackEndpoints)),
                 async (CustomerFeedbackRequest customerFeedback, IRegisterCustomerFeedbackInputPort inputport) =>
                 {
                     await inputport.HandleAsync(new CustomerFeedbackDto(
@@ -34,7 +31,7 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet(("{id}/" + GetAllCustomerFeedbackEndpoint.GetAllCustomerFeedback).CreateEndpoint(EntryPoint), async (
+            builder.MapGet("{id}/".CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
                 string id,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
@@ -45,7 +42,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{id}/" + GetCustomerFeedbackByEntityIdEndpoint.GetCustomerFeedbackByEntityId + "/{entityId}").CreateEndpoint(EntryPoint), async (
+            builder.MapGet(("{id}/" + GetCustomerFeedbackByEntityIdEndpoint.ByEntity + "/{entityId}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
                 string id,
                 string entityId,
                 IGetCustomerFeedbackByEntityIdInputPort inputPort) =>
@@ -55,7 +52,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{id}/" + GetCustomerFeedbackByCustomerIdEndpoint.GetCustomerFeedbackByCustomerId + "/{customerId}").CreateEndpoint(EntryPoint), async (
+            builder.MapGet(("{id}/" + GetCustomerFeedbackByCustomerIdEndpoint.ByCustomer + "/{customerId}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
                 string id,
                 string customerId,
                 [FromQuery] DateTime? from,
@@ -67,7 +64,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{id}/" + GetCustomerFeedbackByRatingEndpoint.GetCustomerFeedbackByRating + "/{rating}").CreateEndpoint(EntryPoint), async (
+            builder.MapGet(("{id}/" + GetCustomerFeedbackByRatingEndpoint.ByRating + "/{rating}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
                 string id,
                 int rating,
                 [FromQuery] DateTime? from,
