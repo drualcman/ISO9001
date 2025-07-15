@@ -3,6 +3,5 @@
     public static class RegisterNonConformityDetailEndpoint
     {
         public const string Detail = nameof(Detail);
-        public const string Register = nameof(Register);
     }
 }

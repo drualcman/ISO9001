@@ -40,7 +40,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{id}/" + GetAuditLogsByEntityIdEndpoint.ByEntity + "/{entityId}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
+            builder.MapGet(("{id}/" + GetAuditLogsByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
                 string id,
                 string entityId,
                 [FromQuery] DateTime? from,
@@ -52,7 +52,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{id}/" + GetAuditLogsByActionEndpoint.ByAction + "/{action}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
+            builder.MapGet(("{id}/" + GetAuditLogsByActionEndpoint.Action + "/{action}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
                 string id,
                 string action,
                 [FromQuery] DateTime? from,

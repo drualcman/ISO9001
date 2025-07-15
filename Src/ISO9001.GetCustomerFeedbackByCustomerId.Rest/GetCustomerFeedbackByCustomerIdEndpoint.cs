@@ -2,6 +2,6 @@
 {
     public static class GetCustomerFeedbackByCustomerIdEndpoint
     {
-        public const string ByCustomer = nameof(ByCustomer);
+        public const string Customer = nameof(Customer);
     }
 }
