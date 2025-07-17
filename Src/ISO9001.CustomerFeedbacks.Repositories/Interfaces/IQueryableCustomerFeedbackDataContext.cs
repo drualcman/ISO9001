@@ -2,7 +2,7 @@
 
 namespace ISO9001.CustomerFeedbacks.Repositories.Interfaces
 {
-    public interface IGetAllCustomerFeedbackDataContext
+    public interface IQueryableCustomerFeedbackDataContext
     {
         IQueryable<CustomerFeedbackReadModel> CustomerFeedbacks { get; }
         Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(

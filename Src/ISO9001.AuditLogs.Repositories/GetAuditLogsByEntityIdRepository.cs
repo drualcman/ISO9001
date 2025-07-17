@@ -6,7 +6,7 @@ using ISO9001.GetAuditLogsByEntityIdBusinessObjects.Interfaces;
 namespace ISO9001.AuditLogs.Repositories
 {
     internal class GetAuditLogsByEntityIdRepository(
-        IGetAuditLogsByEntityIdDataContext dataContext) : IGetAuditLogsByEntityIdRepository
+        IQueryableAuditLogDataContext dataContext) : IGetAuditLogsByEntityIdRepository
     {
         public async Task<IEnumerable<AuditLogResponse>> GetAuditLogsByEntityIdAsync(string id, string entityId,
             DateTime? from, DateTime? end)

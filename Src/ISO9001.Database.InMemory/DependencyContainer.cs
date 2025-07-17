@@ -15,16 +15,11 @@ namespace ISO9001.Database.InMemory
     {
         public static IServiceCollection AddDatabaseInMemory(this IServiceCollection services)
         {
-            services.AddScoped<IRegisterAuditLogDataContext, InMemoryRegisterAuditLogDataContext>();
-            services.AddScoped<IGetAuditLogsByActionDataContext, InMemoryGetAuditLogsByActionDataContext>();
-            services.AddScoped<IGetAllAuditLogsDataContext, InMemoryGetAllAuditLogsDataContext>();
-            services.AddScoped<IGetAuditLogsByEntityIdDataContext, InMemoryGetAuditLogsByEntityIdDataContext>();
+            services.AddScoped<IWritableAuditLogDataContext, InMemoryWritableAuditLogDataContext>();
+            services.AddScoped<IQueryableAuditLogDataContext, InMemoryQueryableAuditLogDataContext>();
 
-            services.AddScoped<IRegisterCustomerFeedbackDataContext, InMemoryRegisterCustomerFeedbackDataContext>();
-            services.AddScoped<IGetAllCustomerFeedbackDataContext, InMemoryGetAllCustomerFeedbackDataContext>();
-            services.AddScoped<IGetCustomerFeedbackByEntityIdDataContext, InMemoryGetCustomerFeedbackByEntityIdDataContext>();
-            services.AddScoped<IGetCustomerFeedbackByCustomerIdDataContext, InMemoryGetCustomerFeedbackByCustomerIdDataContext>();
-            services.AddScoped<IGetCustomerFeedbackByRatingDataContext, InMemoryGetCustomerFeedbackByRatingDataContext>();
+            services.AddScoped<IWritableCustomerFeedbackDataContext, InMemoryWritableCustomerFeedbackDataContext>();
+            services.AddScoped<IQueryableCustomerFeedbackDataContext, InMemoryQueryableCustomerFeedbackDataContext>();
 
             services.AddScoped<IRegisterIncidentReportDataContext, InMemoryRegisterIncidentReportDataContext>();
             services.AddScoped<IGetAllIncidentReportsDataContext, InMemoryGetAllIncidentReportsDataContext>();

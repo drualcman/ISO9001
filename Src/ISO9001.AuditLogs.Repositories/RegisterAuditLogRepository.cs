@@ -6,7 +6,7 @@ using ISO9001.RegisterAuditLog.BusinessObjects.Interfaces;
 namespace ISO9001.AuditLogs.Repositories
 {
     internal class RegisterAuditLogRepository(
-        IRegisterAuditLogDataContext dataContext) : IRegisterAuditLogRepository
+        IWritableAuditLogDataContext dataContext) : IRegisterAuditLogRepository
     {
         public async Task RegisterAuditLogAsync(AuditLogDto auditLogDto)
         {

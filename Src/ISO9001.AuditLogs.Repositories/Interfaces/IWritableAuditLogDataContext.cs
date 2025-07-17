@@ -2,9 +2,10 @@
 
 namespace ISO9001.AuditLogs.Repositories.Interfaces
 {
-    public interface IRegisterAuditLogDataContext
+    public interface IWritableAuditLogDataContext
     {
         Task AddAsync(AuditLog auditLog);
         Task SaveChangesAsync();
     }
 }
+

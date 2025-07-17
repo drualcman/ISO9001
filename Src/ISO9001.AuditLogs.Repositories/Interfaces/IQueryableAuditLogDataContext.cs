@@ -2,10 +2,11 @@
 
 namespace ISO9001.AuditLogs.Repositories.Interfaces
 {
-    public interface IGetAuditLogsByActionDataContext
+    public interface IQueryableAuditLogDataContext
     {
         IQueryable<AuditLogReadModel> AuditLogs { get; }
         Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(
             IQueryable<ReturnType> queryable);
     }
 }
+

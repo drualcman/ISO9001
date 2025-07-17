@@ -5,7 +5,7 @@ using ISO9001.GetAllCustomerFeedback.BusinessObjects.Interfaces;
 
 namespace ISO9001.CustomerFeedbacks.Repositories
 {
-    internal class GetAllCustomerFeedbackRepository(IGetAllCustomerFeedbackDataContext dataContext): IGetAllCustomerFeedbackRepository
+    internal class GetAllCustomerFeedbackRepository(IQueryableCustomerFeedbackDataContext dataContext): IGetAllCustomerFeedbackRepository
     {
         public async Task<IEnumerable<CustomerFeedbackResponse>> GetAllCustomerFeedbacksAsync(
             string id, DateTime? from, DateTime? end)

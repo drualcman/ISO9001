@@ -6,7 +6,7 @@ using ISO9001.GetAuditLogsByAction.BusinessObjects.Interfaces;
 namespace ISO9001.AuditLogs.Repositories
 {
     internal class GetAuditLogsByActionRepository(
-        IGetAuditLogsByActionDataContext dataContext) : IGetAuditLogsByActionRepository
+        IQueryableAuditLogDataContext dataContext) : IGetAuditLogsByActionRepository
     {
         public async Task<IEnumerable<AuditLogResponse>> GetAuditLogsByActionAsync(string id, string action,
             DateTime? from, DateTime? end)

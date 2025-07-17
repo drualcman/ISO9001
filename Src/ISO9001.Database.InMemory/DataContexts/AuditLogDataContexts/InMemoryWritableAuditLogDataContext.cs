@@ -3,7 +3,7 @@ using ISO9001.AuditLogs.Repositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
 {
-    internal class InMemoryRegisterAuditLogDataContext : IRegisterAuditLogDataContext
+    internal class InMemoryWritableAuditLogDataContext: IWritableAuditLogDataContext
     {
         public Task AddAsync(AuditLog auditLog)
         {
