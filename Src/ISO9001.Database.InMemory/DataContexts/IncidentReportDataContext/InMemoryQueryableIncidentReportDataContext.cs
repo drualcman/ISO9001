@@ -3,7 +3,7 @@ using ISO9001.IncidentReports.Repositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
 {
-    internal class InMemoryGetAllIncidentReportsDataContext : IGetAllIncidentReportsDataContext
+    internal class InMemoryQueryableIncidentReportDataContext: IQueryableIncidentReportDataContext
     {
         public IQueryable<IncidentReportReadModel> IncidentReports =>
             InMemoryIncidentReportStore.IncidentReports
@@ -25,3 +25,4 @@ namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
             => await Task.FromResult(queryable.ToList());
     }
 }
+

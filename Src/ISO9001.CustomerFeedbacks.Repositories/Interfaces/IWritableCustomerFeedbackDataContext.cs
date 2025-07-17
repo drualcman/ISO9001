@@ -2,10 +2,9 @@
 
 namespace ISO9001.CustomerFeedbacks.Repositories.Interfaces
 {
-    public interface IRegisterCustomerFeedbackDataContext
+    public interface IWritableCustomerFeedbackDataContext
     {
         Task AddAsync(CustomerFeedback customerFeedback);
         Task SaveChangesAsync();
-
     }
 }

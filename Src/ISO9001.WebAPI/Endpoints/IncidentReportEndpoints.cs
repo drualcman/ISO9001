@@ -27,13 +27,13 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet("{id}/".CreateEndpoint(nameof(IncidentReportEndpoints)), async (
-                string id,
+            builder.MapGet("{companyId}/".CreateEndpoint(nameof(IncidentReportEndpoints)), async (
+                string companyId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetAllIncidentReportsInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, from, end);
+                var result = await inputPort.HandleAsync(companyId, from, end);
                 return TypedResults.Ok(result);
 
             });

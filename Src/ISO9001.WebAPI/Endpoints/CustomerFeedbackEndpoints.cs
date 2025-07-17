@@ -31,47 +31,47 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet("{id}/".CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
-                string id,
+            builder.MapGet("{companyId}/".CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
+                string companyId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetAllCustomerFeedbackInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, from, end);
+                var result = await inputPort.HandleAsync(companyId, from, end);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetCustomerFeedbackByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetCustomerFeedbackByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
+                string companyId,
                 string entityId,
                 IGetCustomerFeedbackByEntityIdInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, entityId);
+                var result = await inputPort.HandleAsync(companyId, entityId);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetCustomerFeedbackByCustomerIdEndpoint.Customer + "/{customerId}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetCustomerFeedbackByCustomerIdEndpoint.Customer + "/{customerId}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
+                string companyId,
                 string customerId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetCustomerFeedbackByCustomerIdInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, customerId, from, end);
+                var result = await inputPort.HandleAsync(companyId, customerId, from, end);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetCustomerFeedbackByRatingEndpoint.Rating + "/{rating}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetCustomerFeedbackByRatingEndpoint.Rating + "/{rating}").CreateEndpoint(nameof(CustomerFeedbackEndpoints)), async (
+                string companyId,
                 int rating,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetCustomerFeedbackByRatingInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, rating, from, end);
+                var result = await inputPort.HandleAsync(companyId, rating, from, end);
                 return TypedResults.Ok(result);
 
             });

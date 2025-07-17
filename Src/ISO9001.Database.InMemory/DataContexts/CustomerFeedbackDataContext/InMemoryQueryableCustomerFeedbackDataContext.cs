@@ -3,7 +3,7 @@ using ISO9001.CustomerFeedbacks.Repositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
 {
-    internal class InMemoryGetCustomerFeedbackByEntityIdDataContext : IGetCustomerFeedbackByEntityIdDataContext
+    internal class InMemoryQueryableCustomerFeedbackDataContext : IQueryableCustomerFeedbackDataContext
     {
         public IQueryable<CustomerFeedbackReadModel> CustomerFeedbacks =>
             InMemoryCustomerFeedbackStore.CustomerFeedbacks
@@ -23,3 +23,4 @@ namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
             => await Task.FromResult(queryable.ToList());
     }
 }
+

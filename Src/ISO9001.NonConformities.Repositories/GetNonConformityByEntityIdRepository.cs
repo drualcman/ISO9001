@@ -4,13 +4,13 @@ using ISO9001.NonConformities.Repositories.Interfaces;
 
 namespace ISO9001.NonConformities.Repositories
 {
-    internal class GetNonConformityByEntityIdRepository
-        (IGetNonConformityByEntityIdDataContext dataContext) : IGetNonConformityByEntityIdRepository
+    internal class GetNonConformityByEntityIdRepository(
+        IQueryableNonConformityDataContext nonConformityDataContext) : IGetNonConformityByEntityIdRepository
     {
         public async Task<IEnumerable<NonConformityResponse>> GetNonConformityByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
         {
-            var Query = dataContext.NonConformities
-                .Join(dataContext.NonConformityDetails,
+            var Query = nonConformityDataContext.NonConformities
+                .Join(nonConformityDataContext.NonConformityDetails,
                     NonConformity => NonConformity.Id,
                     NonConformityDetail => NonConformityDetail.NonConformityId,
                     (NonConformity, NonConformityDetails) => new { NonConformity, NonConformityDetails })
@@ -19,13 +19,13 @@ namespace ISO9001.NonConformities.Repositories
                     NonConformityResult.NonConformity.Id.ToString() == entityId)
                 .GroupBy(NonConformity => NonConformity.NonConformity);
 
-            return await dataContext.ToListAsync(
+            return await nonConformityDataContext.ToListAsync(
                 Query.Select(NonConformity => new NonConformityResponse(
                     NonConformity.Key.ReportedAt,
                     NonConformity.Key.AffectedProcess,
                     NonConformity.Key.Status,
                     NonConformity.Key.Cause,
-                    dataContext.NonConformityDetails.
+                    nonConformityDataContext.NonConformityDetails.
                         Where(Detail =>
                         Detail.NonConformityId == NonConformity.Key.Id &&
                         Detail.ReportedAt >= from &&

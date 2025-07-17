@@ -6,7 +6,7 @@ using ISO9001.RegisterIncidentReport.BusinessObjects.Interfaces;
 namespace ISO9001.IncidentReports.Repositories
 {
     internal class RegisterIncidentReportRepository(
-        IRegisterIncidentReportDataContext dataContext) : IRegisterIncidentReportRepository
+        IWritableIncidentReportDataContext dataContext) : IRegisterIncidentReportRepository
     {
         public async Task RegisterIncidentReportAsync(IncidentReportDto incidentReportDto)
         {

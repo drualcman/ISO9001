@@ -6,7 +6,7 @@ using ISO9001.RegisterCustomerFeedback.BusinessObjects.Interfaces;
 namespace ISO9001.CustomerFeedbacks.Repositories
 {
     internal class RegisterCustomerFeedbackRepository(
-        IRegisterCustomerFeedbackDataContext dataContext) : IRegisterCustomerFeedbackRepository
+        IWritableCustomerFeedbackDataContext dataContext) : IRegisterCustomerFeedbackRepository
     {
         public async Task RegisterCustomerFeedbackAsync(CustomerFeedbackDto customerFeedbackDto)
         {

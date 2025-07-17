@@ -3,7 +3,7 @@ using ISO9001.AuditLogs.Repositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
 {
-    internal class InMemoryGetAuditLogsByActionDataContext : IGetAuditLogsByActionDataContext
+    internal class InMemoryQueryableAuditLogDataContext: IQueryableAuditLogDataContext
     {
         public IQueryable<AuditLogReadModel> AuditLogs =>
             InMemoryAuditLogStore.AuditLogs
@@ -23,3 +23,4 @@ namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
             => await Task.FromResult(queryable.ToList());
     }
 }
+

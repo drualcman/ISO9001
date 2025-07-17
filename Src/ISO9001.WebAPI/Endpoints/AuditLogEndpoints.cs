@@ -29,37 +29,37 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet("{id}/".CreateEndpoint(nameof(AuditLogEndpoints)), async (
-                string id,
+            builder.MapGet("{companyId}/".CreateEndpoint(nameof(AuditLogEndpoints)), async (
+                string companyId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetAllAuditLogsInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, from, end);
+                var result = await inputPort.HandleAsync(companyId, from, end);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetAuditLogsByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetAuditLogsByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
+                string companyId,
                 string entityId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetAuditLogsByEntityIdInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, entityId, from, end);
+                var result = await inputPort.HandleAsync(companyId, entityId, from, end);
                 return TypedResults.Ok(result);
 
             });
 
-            builder.MapGet(("{id}/" + GetAuditLogsByActionEndpoint.Action + "/{action}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
-                string id,
+            builder.MapGet(("{companyId}/" + GetAuditLogsByActionEndpoint.Action + "/{action}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
+                string companyId,
                 string action,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
                 IGetAuditLogsByActionInputPort inputPort) =>
             {
-                var result = await inputPort.HandleAsync(id, action, from, end);
+                var result = await inputPort.HandleAsync(companyId, action, from, end);
                 return TypedResults.Ok(result);
 
             });

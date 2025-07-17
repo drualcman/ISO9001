@@ -4,13 +4,12 @@ using ISO9001.NonConformities.Repositories.Interfaces;
 
 namespace ISO9001.NonConformities.Repositories
 {
-    internal class GetNonConformityByAffectedProcessRepository(
-        IGetNonConformityByAffectedProcessDataContext dataContext) : IGetNonConformityByAffectedProcessRepository
+    internal class GetNonConformityByAffectedProcessRepository(IQueryableNonConformityDataContext nonConformityDataContext) : IGetNonConformityByAffectedProcessRepository
     {
         public async Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByAffectedProcesssAsync(string id, string affectedProcess, 
             DateTime? from, DateTime? end)
         {
-            var Query = dataContext.NonConformities
+            var Query = nonConformityDataContext.NonConformities
                 .Where(NonConformity =>
                     NonConformity.CompanyId == id &&
                     NonConformity.AffectedProcess == affectedProcess &&
@@ -19,7 +18,7 @@ namespace ISO9001.NonConformities.Repositories
                 .OrderBy(NonConformity => NonConformity.ReportedAt);
 
 
-            return await dataContext.ToListAsync(
+            return await nonConformityDataContext.ToListAsync(
                 Query.Select(NonConformity => new NonConformityMaterResponse(
                     NonConformity.Id,
                     NonConformity.EntityId,
@@ -27,7 +26,7 @@ namespace ISO9001.NonConformities.Repositories
                     NonConformity.AffectedProcess,
                     NonConformity.Cause,
                     NonConformity.Status,
-                    dataContext.NonConformityDetails.Count(NonConformityDetail => NonConformityDetail.NonConformityId == NonConformity.Id)
+                    nonConformityDataContext.NonConformityDetails.Count(NonConformityDetail => NonConformityDetail.NonConformityId == NonConformity.Id)
                     )));
         }
     }

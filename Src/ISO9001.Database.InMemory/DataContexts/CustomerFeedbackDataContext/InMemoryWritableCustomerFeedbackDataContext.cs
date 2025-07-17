@@ -3,7 +3,7 @@ using ISO9001.CustomerFeedbacks.Repositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
 {
-    internal class InMemoryRegisterCustomerFeedbackDataContext : IRegisterCustomerFeedbackDataContext
+    internal class InMemoryWritableCustomerFeedbackDataContext : IWritableCustomerFeedbackDataContext
     {
         public Task AddAsync(CustomerFeedback customerFeedback)
         {

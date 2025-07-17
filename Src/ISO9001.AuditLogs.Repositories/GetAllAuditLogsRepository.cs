@@ -5,7 +5,7 @@ using ISO9001.GetAllAuditLogs.BusinessObjects;
 
 namespace ISO9001.AuditLogs.Repositories
 {
-    internal class GetAllAuditLogsRepository(IGetAllAuditLogsDataContext dataContext) : IGetAllAuditLogsRepository
+    internal class GetAllAuditLogsRepository(IQueryableAuditLogDataContext dataContext) : IGetAllAuditLogsRepository
     {
         public async Task<IEnumerable<AuditLogResponse>> GetAllAuditLogsOrderedByIdAscendingAsync(
             string id, DateTime? from, DateTime? end)

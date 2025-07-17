@@ -1,25 +1,22 @@
 ﻿using ISO9001.Entities.Responses;
 using ISO9001.GetAllNonConformities.BusinessObjects;
-using ISO9001.NonConformities.Repositories.Entities;
 using ISO9001.NonConformities.Repositories.Interfaces;
-using System.Linq;
 
 namespace ISO9001.NonConformities.Repositories
 {
-    internal class GetAllNonConformitiesRepository
-        (IGetAllNonConformitiesDataContext dataContext) : IGetAllNonConformitiesRepository
+    internal class GetAllNonConformitiesRepository(
+        IQueryableNonConformityDataContext nonConformityDataContext) : IGetAllNonConformitiesRepository
     {
         public async Task<IEnumerable<NonConformityMaterResponse>> GetAllNonConformitiesAsync(string id, DateTime? from, DateTime? end)
         {
-            var Query = dataContext.NonConformities
+            var Query = nonConformityDataContext.NonConformities
                 .Where(NonConformity =>
                     NonConformity.CompanyId == id &&
                     NonConformity.ReportedAt >= from &&
                     NonConformity.ReportedAt <= end)
                 .OrderBy(NonConformity => NonConformity.ReportedAt);
 
-
-            return await dataContext.ToListAsync(
+            return await nonConformityDataContext.ToListAsync(
                 Query.Select(NonConformity => new NonConformityMaterResponse(
                     NonConformity.Id,
                     NonConformity.EntityId,
@@ -27,10 +24,9 @@ namespace ISO9001.NonConformities.Repositories
                     NonConformity.AffectedProcess,
                     NonConformity.Cause,
                     NonConformity.Status,
-                    dataContext.NonConformityDetails.Count(NonConformityDetail => 
+                    nonConformityDataContext.NonConformityDetails.Count(NonConformityDetail =>
                     NonConformityDetail.NonConformityId == NonConformity.Id)
                     )));
-
         }
     }
 }
