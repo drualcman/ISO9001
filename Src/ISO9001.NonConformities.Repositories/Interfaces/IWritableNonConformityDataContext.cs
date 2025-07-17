@@ -2,13 +2,12 @@
 
 namespace ISO9001.NonConformities.Repositories.Interfaces
 {
-    public interface IRegisterNonCormityDetailDataContext
+    public interface IWritableNonConformityDataContext
     {
-        IQueryable<NonConformityReadModel> NonConformities { get; }
-
-        Task AddAsync(NonConformityDetail nonConformityDetail, Guid id);
+        Task AddNonConformityAsync(NonConformity nonConformityMaster);
+        Task AddNonConformityDetailAsync(NonConformityDetail nonConformityDetail, Guid id);
         Task UpdateNonConformityAsync(NonConformityReadModel nonConformity);
         Task SaveChangesAsync();
-
     }
 }
+

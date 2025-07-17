@@ -1,12 +1,10 @@
-﻿using ISO9001.IncidentReports.Repositories.Entities;
-using ISO9001.IncidentReports.Repositories.Interfaces;
+﻿using ISO9001.IncidentReports.Repositories.Interfaces;
+using ISO9001.IncidentReports.Repositories.Entities;
 
 namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
 {
-    internal class InMemoryRegisterIncidentReportDataContext : IRegisterIncidentReportDataContext
+    internal class InMemoryWritableIncidentReportDataContext: IWritableIncidentReportDataContext
     {
-
-
         public Task AddAsync(IncidentReport incidentReport)
         {
             var Record = new DataContexts.Entities.IncidentReport
@@ -33,3 +31,4 @@ namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
         }
     }
 }
+

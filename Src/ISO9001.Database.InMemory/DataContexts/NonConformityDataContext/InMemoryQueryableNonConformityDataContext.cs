@@ -3,7 +3,7 @@ using ISO9001.NonConformities.Repositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
-    internal class InMemoryGetNonConformityByEntityIdDataContext : IGetNonConformityByEntityIdDataContext
+    internal class InMemoryQueryableNonConformityDataContext : IQueryableNonConformityDataContext
     {
         public IQueryable<NonConformityReadModel> NonConformities =>
             InMemoryNonConformityStore.NonConformities
@@ -20,17 +20,17 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
             }).AsQueryable();
 
         public IQueryable<NonConformityDetailReadModel> NonConformityDetails =>
-            InMemoryNonConformityStore.NonConformityDetails
-            .Select(NonConformityDetail => new NonConformityDetailReadModel
-            {
-                Id = NonConformityDetail.Id,
-                ReportedAt = NonConformityDetail.ReportedAt,
-                ReportedBy = NonConformityDetail.ReportedBy,
-                Description = NonConformityDetail.Description,
-                Status = NonConformityDetail.Status,
-                CreatedAt = NonConformityDetail.CreatedAt,
-                NonConformityId = NonConformityDetail.NonConformityId
-            }).AsQueryable();
+        InMemoryNonConformityStore.NonConformityDetails
+        .Select(NonConformityDetail => new NonConformityDetailReadModel
+        {
+            Id = NonConformityDetail.Id,
+            ReportedAt = NonConformityDetail.ReportedAt,
+            ReportedBy = NonConformityDetail.ReportedBy,
+            Description = NonConformityDetail.Description,
+            Status = NonConformityDetail.Status,
+            CreatedAt = NonConformityDetail.CreatedAt,
+            NonConformityId = NonConformityDetail.NonConformityId
+        }).AsQueryable();
 
         public async Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(IQueryable<ReturnType> queryable)
             => await Task.FromResult(queryable.ToList());

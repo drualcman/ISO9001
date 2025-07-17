@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ISO9001.IncidentReports.Repositories
 {
-    internal class GetAllIncidentReportsRepository(IGetAllIncidentReportsDataContext dataContext): IGetAllIncidentReportsRepository
+    internal class GetAllIncidentReportsRepository(IQueryableIncidentReportDataContext dataContext): IGetAllIncidentReportsRepository
     {
         public async Task<IEnumerable<IncidentReportResponse>> GetAllIncidentReportsAsync(string id, DateTime? from, DateTime? end)
         {

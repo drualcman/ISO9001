@@ -6,12 +6,13 @@ using ISO9001.RegisterNonConformity.BusinessObjects.Interfaces;
 namespace ISO9001.NonConformities.Repositories
 {
     internal class RegisterNonConformityRepository(
-        IRegisterNonConformityDataContext dataContext) : IRegisterNonConformityRepository
+        IWritableNonConformityDataContext writableNonConformityDataContext) : IRegisterNonConformityRepository
     {
         async Task IRegisterNonConformityRepository.RegisterNonConformityAsync(NonConformityDto nonConformityDto)
         {
             NonConformity NewNonConformityMaster = new NonConformity
             {
+                Id = Guid.NewGuid(),
                 ReportedAt = nonConformityDto.ReportedAt,
                 CompanyId = nonConformityDto.CompanyId,
                 EntityId = nonConformityDto.EntityId,
@@ -30,11 +31,14 @@ namespace ISO9001.NonConformities.Repositories
             };
 
             NewNonConformityMaster.NonConformityDetails.Add(NewNonConformityDetail);
-
-            await dataContext.AddAsync(NewNonConformityMaster);
+            await writableNonConformityDataContext.AddNonConformityAsync(NewNonConformityMaster);
+            await writableNonConformityDataContext.AddNonConformityDetailAsync(NewNonConformityDetail, NewNonConformityMaster.Id);
         }
 
-        Task IRegisterNonConformityRepository.SaveChangesAsync() => dataContext.SaveChangesAsync();
+        async Task IRegisterNonConformityRepository.SaveChangesAsync()
+        {
+            await writableNonConformityDataContext.SaveChangesAsync();
+        }
 
     }
 }

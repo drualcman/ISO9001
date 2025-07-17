@@ -6,12 +6,13 @@ using ISO9001.RegisterNonConformityDetail.BusinessObjects.Interfaces;
 namespace ISO9001.NonConformities.Repositories
 {
     internal class RegisterNonConformityDetailRepository(
-        IRegisterNonCormityDetailDataContext dataContext): IRegisterNonConformityDetailRepository
+        IQueryableNonConformityDataContext queryNonConformityDataContext,
+        IWritableNonConformityDataContext writableNonConformityDataContext): IRegisterNonConformityDetailRepository
     {
 
         public Task<bool> NonConformityExistsByGuidAsync(Guid entityId)
         {
-            NonConformityReadModel NonConformityMaster = dataContext.NonConformities
+            NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
                 .FirstOrDefault(nonConformity =>
                     nonConformity.Id == entityId);
 
@@ -30,20 +31,21 @@ namespace ISO9001.NonConformities.Repositories
                 ReportedAt = nonConformityDetail.ReportedAt
             };
 
-            await dataContext.AddAsync(NewDetail, nonConformityDetail.EntityId);
+            await writableNonConformityDataContext.AddNonConformityDetailAsync(NewDetail, nonConformityDetail.EntityId);
         }
-
-        public Task SaveChangesAsync() => dataContext.SaveChangesAsync();
+ 
 
         public Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status)
         {
-            NonConformityReadModel NonConformityMaster = dataContext.NonConformities
+            NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
                 .FirstOrDefault(nonConformity =>
                     nonConformity.Id == entityId);
 
             NonConformityMaster.Status = status;
-            dataContext.UpdateNonConformityAsync(NonConformityMaster);
+            writableNonConformityDataContext.UpdateNonConformityAsync(NonConformityMaster);
             return Task.CompletedTask;
         }
+
+        public Task SaveChangesAsync() => writableNonConformityDataContext.SaveChangesAsync();
     }
 }
