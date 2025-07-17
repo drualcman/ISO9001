@@ -14,12 +14,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ISO9001.WebAPI.Endpoints
 {
-    public static class RegisterNonConformityEndpoints
+    public static class NonConformityEndpoints
     {
         public static IEndpointRouteBuilder UserNonConformityEndpoints(
             this IEndpointRouteBuilder builder)
         {
-            builder.MapPost("".CreateEndpoint(nameof(RegisterNonConformityEndpoints)),
+            builder.MapPost("".CreateEndpoint(nameof(NonConformityEndpoints)),
                 async (NonConformityRequest nonConformity, IRegisterNonConformityInputPort inputPort) =>
                 {
 
@@ -36,7 +36,7 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapPost(("{companyId}/" + RegisterNonConformityDetailEndpoint.Detail).CreateEndpoint(nameof(RegisterNonConformityEndpoints)),
+            builder.MapPost(("{companyId}/" + RegisterNonConformityDetailEndpoint.Detail).CreateEndpoint(nameof(NonConformityEndpoints)),
                 async (
                     string companyId,
                     NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetailInputPort inputPort) =>
@@ -52,7 +52,7 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet("{companyId}/".CreateEndpoint(nameof(RegisterNonConformityEndpoints)), async (
+            builder.MapGet("{companyId}/".CreateEndpoint(nameof(NonConformityEndpoints)), async (
                 string companyId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,
@@ -62,7 +62,7 @@ namespace ISO9001.WebAPI.Endpoints
                 return TypedResults.Ok(result);
             });
 
-            builder.MapGet(("{companyId}/" + GetNonConformityByAffectedProcessEndpoint.AffectedProcess + "/{affectedProcess}").CreateEndpoint(nameof(RegisterNonConformityEndpoints)), async (
+            builder.MapGet(("{companyId}/" + GetNonConformityByAffectedProcessEndpoint.AffectedProcess + "/{affectedProcess}").CreateEndpoint(nameof(NonConformityEndpoints)), async (
                 string companyId,
                 string affectedProcess,
                 [FromQuery] DateTime? from,
@@ -74,7 +74,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{companyId}/" + GetNonConformityByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(RegisterNonConformityEndpoints)), async (
+            builder.MapGet(("{companyId}/" + GetNonConformityByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(NonConformityEndpoints)), async (
                 string companyId,
                 string entityId,
                 [FromQuery] DateTime? from,
@@ -86,7 +86,7 @@ namespace ISO9001.WebAPI.Endpoints
 
             });
 
-            builder.MapGet(("{companyId}/" + GetNonConformityByStatusEndpoint.Status + "/{status}").CreateEndpoint(nameof(RegisterNonConformityEndpoints)), async (
+            builder.MapGet(("{companyId}/" + GetNonConformityByStatusEndpoint.Status + "/{status}").CreateEndpoint(nameof(NonConformityEndpoints)), async (
                 string companyId,
                 string status,
                 [FromQuery] DateTime? from,
