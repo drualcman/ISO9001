@@ -1,4 +1,4 @@
-﻿namespace ISO9001.GetCustomerFeedbackByRating.Rest
+﻿namespace ISO9001.GetCustomerFeedbackByRating.Rest.Endpoints
 {
     public static class GetCustomerFeedbackByRatingEndpoint
     {

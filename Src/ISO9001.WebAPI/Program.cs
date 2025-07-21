@@ -1,7 +1,12 @@
 using ISO9001.GetAllAuditLogs.Rest.Mappings;
+using ISO9001.GetAllCustomerFeedback.Rest.Mappings;
 using ISO9001.GetAuditLogsByAction.Rest.Mappings;
 using ISO9001.GetAuditLogsByEntityId.Rest.Mappings;
+using ISO9001.GetCustomerFeedbackByCustomerId.Rest.Mappings;
+using ISO9001.GetCustomerFeedbackByEntityId.Rest.Mappings;
+using ISO9001.GetCustomerFeedbackByRating.Rest.Mappings;
 using ISO9001.RegisterAuditLog.Rest.Mappings;
+using ISO9001.RegisterCustomerFeedback.Rest.Mappings;
 using ISO9001.WebAPI;
 using ISO9001.WebAPI.Endpoints;
 
@@ -44,13 +49,19 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseWebApiDocumentator();
+
 app.UseGetAllAuditLogsEndpoint();
 app.UseGetAuditLogByActionEndpoint();
 app.UseGetAuditLogsByEntityIdEndpoint();
 app.UseRegisterAuditLogEndpoint();
 
+app.UseGetCustomerFeedbackByRatingEndpoint();
+app.UseGetAllCustomerFeedbackEndpoints();
+app.UseGetCustomerFeedbackByCustomerIdEndpoint();
+app.UseGetCustomerFeedbackByEntityIdEndpoint();
+app.UseRegisterCustomerFeedbackEndpoint();
+
 app.UseHttpsRedirection();
-app.UserCustomerFeedbackEndpoints();
 app.UserIncidentReportEndpoints();
 app.UserNonConformityEndpoints();
 app.UseCors();
