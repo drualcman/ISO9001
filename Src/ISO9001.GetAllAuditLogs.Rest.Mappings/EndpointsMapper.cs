@@ -1,5 +1,4 @@
 ﻿using ISO9001.GetAllAuditLogs.BusinessObjects;
-using ISO9001.GetAllAuditLogs.Rest.Endpoints;
 using ISO9001.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +12,7 @@ namespace ISO9001.GetAllAuditLogs.Rest.Mappings
         public static IEndpointRouteBuilder UseGetAllAuditLogsEndpoint(
             this IEndpointRouteBuilder builder)
         {
-            builder.MapGet("{companyId}/".CreateEndpoint(nameof(GetAllAuditLogsEndpoint)), async (
+            builder.MapGet("{companyId}/".CreateEndpoint("AuditLogEndpoints"), async (
                 string companyId,
                 [FromQuery] DateTime? from,
                 [FromQuery] DateTime? end,

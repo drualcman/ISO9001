@@ -1,4 +1,7 @@
 using ISO9001.GetAllAuditLogs.Rest.Mappings;
+using ISO9001.GetAuditLogsByAction.Rest.Mappings;
+using ISO9001.GetAuditLogsByEntityId.Rest.Mappings;
+using ISO9001.RegisterAuditLog.Rest.Mappings;
 using ISO9001.WebAPI;
 using ISO9001.WebAPI.Endpoints;
 
@@ -36,14 +39,17 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-if(app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 app.UseWebApiDocumentator();
+app.UseGetAllAuditLogsEndpoint();
+app.UseGetAuditLogByActionEndpoint();
+app.UseGetAuditLogsByEntityIdEndpoint();
+app.UseRegisterAuditLogEndpoint();
 
 app.UseHttpsRedirection();
-app.UserAuditLogEndpoints();
 app.UserCustomerFeedbackEndpoints();
 app.UserIncidentReportEndpoints();
 app.UserNonConformityEndpoints();
