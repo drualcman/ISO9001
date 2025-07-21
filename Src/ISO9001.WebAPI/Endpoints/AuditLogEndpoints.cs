@@ -29,16 +29,7 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet("{companyId}/".CreateEndpoint(nameof(AuditLogEndpoints)), async (
-                string companyId,
-                [FromQuery] DateTime? from,
-                [FromQuery] DateTime? end,
-                IGetAllAuditLogsInputPort inputPort) =>
-            {
-                var result = await inputPort.HandleAsync(companyId, from, end);
-                return TypedResults.Ok(result);
 
-            });
 
             builder.MapGet(("{companyId}/" + GetAuditLogsByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint(nameof(AuditLogEndpoints)), async (
                 string companyId,

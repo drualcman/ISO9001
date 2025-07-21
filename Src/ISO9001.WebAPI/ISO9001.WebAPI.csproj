@@ -16,7 +16,7 @@
     <ProjectReference Include="..\ISO9001.CustomerFeedbacks.Repositories\ISO9001.CustomerFeedbacks.Repositories.csproj" />
     <ProjectReference Include="..\ISO9001.Database.InMemory\ISO9001.Database.InMemory.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllAuditLogs.IoC\ISO9001.GetAllAuditLogs.IoC.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAllAuditLogs.Rest\ISO9001.GetAllAuditLogs.Rest.csproj" />
+    <ProjectReference Include="..\ISO9001.GetAllAuditLogs.Rest.Mappings\ISO9001.GetAllAuditLogs.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllCustomerFeedback.IoC\ISO9001.GetAllCustomerFeedback.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllCustomerFeedback.Rest\ISO9001.GetAllCustomerFeedback.Rest.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllIncidentReports.IoC\ISO9001.GetAllIncidentReports.IoC.csproj" />

@@ -1,4 +1,4 @@
-﻿namespace ISO9001.GetAllAuditLogs.Rest
+﻿namespace ISO9001.GetAllAuditLogs.Rest.Endpoints
 {
     public static class GetAllAuditLogsEndpoint
     {

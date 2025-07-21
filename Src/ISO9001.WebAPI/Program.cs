@@ -1,3 +1,4 @@
+using ISO9001.GetAllAuditLogs.Rest.Mappings;
 using ISO9001.WebAPI;
 using ISO9001.WebAPI.Endpoints;
 
