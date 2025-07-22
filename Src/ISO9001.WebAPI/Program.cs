@@ -1,5 +1,21 @@
+using ISO9001.GetAllAuditLogs.Rest.Mappings;
+using ISO9001.GetAllCustomerFeedback.Rest.Mappings;
+using ISO9001.GetAllIncidentReports.Rest.Mappings;
+using ISO9001.GetAllNonConformities.Rest.Mappings;
+using ISO9001.GetAuditLogsByAction.Rest.Mappings;
+using ISO9001.GetAuditLogsByEntityId.Rest.Mappings;
+using ISO9001.GetCustomerFeedbackByCustomerId.Rest.Mappings;
+using ISO9001.GetCustomerFeedbackByEntityId.Rest.Mappings;
+using ISO9001.GetCustomerFeedbackByRating.Rest.Mappings;
+using ISO9001.GetNonConformityByAffectedProcess.Rest.Mappings;
+using ISO9001.GetNonConformityByEntityId.Rest.Mappings;
+using ISO9001.GetNonConformityByStatus.Rest.Mappings;
+using ISO9001.RegisterAuditLog.Rest.Mappings;
+using ISO9001.RegisterCustomerFeedback.Rest.Mappings;
+using ISO9001.RegisterIncidentReport.Rest.Mappings;
+using ISO9001.RegisterNonConformity.Rest.Mappings;
+using ISO9001.RegisterNonConformityDetail.Rest.Mappings;
 using ISO9001.WebAPI;
-using ISO9001.WebAPI.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,17 +51,34 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-if(app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 app.UseWebApiDocumentator();
 
+app.UseGetAllAuditLogsEndpoint();
+app.UseGetAuditLogByActionEndpoint();
+app.UseGetAuditLogsByEntityIdEndpoint();
+app.UseRegisterAuditLogEndpoint();
+
+app.UseGetCustomerFeedbackByRatingEndpoint();
+app.UseGetAllCustomerFeedbackEndpoints();
+app.UseGetCustomerFeedbackByCustomerIdEndpoint();
+app.UseGetCustomerFeedbackByEntityIdEndpoint();
+app.UseRegisterCustomerFeedbackEndpoint();
+
+app.UseGetAllIncidentReportsEndpoint();
+app.UseRegisterIncidentReportEndpoint();
+
+app.UseGetAllNonConformitiesEndpoint();
+app.UseGetNonConformityByAffectedProcessEndpoint();
+app.UseGetNonConformityByEntityIdEndpoint();
+app.UseGetNonConformityByStatusEndpoint();
+app.UseRegisterNonConformityEndpoint();
+app.UseRegisterNonConformityDetailEndpoint();
+
 app.UseHttpsRedirection();
-app.UserAuditLogEndpoints();
-app.UserCustomerFeedbackEndpoints();
-app.UserIncidentReportEndpoints();
-app.UserNonConformityEndpoints();
 app.UseCors();
 
 app.Run();
