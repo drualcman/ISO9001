@@ -2,7 +2,6 @@
 using ISO9001.Entities.Requests;
 using ISO9001.Helpers;
 using ISO9001.RegisterNonConformityDetail.BusinessObjects.Interfaces;
-using ISO9001.RegisterNonConformityDetail.Rest.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;

@@ -1,5 +1,4 @@
 ﻿using ISO9001.GetCustomerFeedbackByRating.BusinessObjects.Interfaces;
-using ISO9001.GetCustomerFeedbackByRating.Rest.Endpoints;
 using ISO9001.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISO9001.GetNonConformityByEntityId.BusinessObjects\ISO9001.GetNonConformityByEntityId.BusinessObjects.csproj" />
-    <ProjectReference Include="..\ISO9001.GetNonConformityByEntityId.Rest.Endpoints\ISO9001.GetNonConformityByEntityId.Rest.Endpoints.csproj" />
     <ProjectReference Include="..\ISO9001.Helpers\ISO9001.Helpers.csproj" />
   </ItemGroup>
 

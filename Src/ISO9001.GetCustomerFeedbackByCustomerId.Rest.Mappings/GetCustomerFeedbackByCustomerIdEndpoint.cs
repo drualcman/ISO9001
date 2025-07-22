@@ -1,4 +1,4 @@
-﻿namespace ISO9001.GetCustomerFeedbackByCustomerId.Rest.Endpoints
+﻿namespace ISO9001.GetCustomerFeedbackByCustomerId.Rest.Mappings
 {
     public static class GetCustomerFeedbackByCustomerIdEndpoint
     {

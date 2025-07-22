@@ -1,5 +1,4 @@
 ﻿using ISO9001.GetNonConformityByAffectedProcess.BusinessObjects;
-using ISO9001.GetNonConformityByAffectedProcess.Rest.Endpoints;
 using ISO9001.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

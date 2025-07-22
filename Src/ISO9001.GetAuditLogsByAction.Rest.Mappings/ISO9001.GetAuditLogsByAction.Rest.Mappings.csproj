@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISO9001.GetAuditLogsByAction.BusinessObjects\ISO9001.GetAuditLogsByAction.BusinessObjects.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAuditLogsByAction.Rest.Endpoints\ISO9001.GetAuditLogsByAction.Rest.Endpoints.csproj" />
     <ProjectReference Include="..\ISO9001.Helpers\ISO9001.Helpers.csproj" />
   </ItemGroup>
 

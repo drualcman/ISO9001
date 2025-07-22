@@ -1,5 +1,4 @@
-﻿using ISO9001.GetAuditLogsByEntityId.Rest.Endpoints;
-using ISO9001.GetAuditLogsByEntityIdBusinessObjects.Interfaces;
+﻿using ISO9001.GetAuditLogsByEntityIdBusinessObjects.Interfaces;
 using ISO9001.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

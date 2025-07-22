@@ -13,7 +13,6 @@
     <ProjectReference Include="..\ISO9001.Entities\ISO9001.Entities.csproj" />
     <ProjectReference Include="..\ISO9001.Helpers\ISO9001.Helpers.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.BusinessObjects\ISO9001.RegisterCustomerFeedback.BusinessObjects.csproj" />
-    <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.Rest.Endpoints\ISO9001.RegisterCustomerFeedback.Rest.Endpoints.csproj" />
   </ItemGroup>
 
 </Project>

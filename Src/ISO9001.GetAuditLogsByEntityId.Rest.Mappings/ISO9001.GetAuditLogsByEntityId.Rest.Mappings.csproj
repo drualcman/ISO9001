@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ISO9001.GetAuditLogsByEntityId.Rest.Endpoints\ISO9001.GetAuditLogsByEntityId.Rest.Endpoints.csproj" />
     <ProjectReference Include="..\ISO9001.GetAuditLogsByEntityIdBusinessObjects\ISO9001.GetAuditLogsByEntityIdBusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.Helpers\ISO9001.Helpers.csproj" />
   </ItemGroup>

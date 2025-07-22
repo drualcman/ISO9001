@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByRating.BusinessObjects\ISO9001.GetCustomerFeedbackByRating.BusinessObjects.csproj" />
-    <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByRating.Rest.Endpoints\ISO9001.GetCustomerFeedbackByRating.Rest.Endpoints.csproj" />
     <ProjectReference Include="..\ISO9001.Helpers\ISO9001.Helpers.csproj" />
   </ItemGroup>
 
