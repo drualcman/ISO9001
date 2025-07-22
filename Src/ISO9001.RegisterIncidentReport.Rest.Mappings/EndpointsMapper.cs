@@ -1,17 +1,19 @@
 ﻿using ISO9001.Entities.Dtos;
 using ISO9001.Entities.Requests;
-using ISO9001.GetAllIncidentReports.BusinessObjects.Interfaces;
+using ISO9001.Helpers;
 using ISO9001.RegisterIncidentReport.BusinessObjects.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
-namespace ISO9001.WebAPI.Endpoints
+namespace ISO9001.RegisterIncidentReport.Rest.Mappings
 {
-    public static class IncidentReportEndpoints
+    public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UserIncidentReportEndpoints(
+        public static IEndpointRouteBuilder UseRegisterIncidentReportEndpoint(
             this IEndpointRouteBuilder builder)
         {
-            builder.MapPost("".CreateEndpoint(nameof(IncidentReportEndpoints)),
+            builder.MapPost("".CreateEndpoint("IncidentReportEndpoints"),
                 async (IncidentReportRequest incidentReport, IRegisterIncidentReportInputPort inputport) =>
                 {
                     await inputport.HandleAsync(new IncidentReportDto(
@@ -27,18 +29,8 @@ namespace ISO9001.WebAPI.Endpoints
                     return TypedResults.Created();
                 });
 
-            builder.MapGet("{companyId}/".CreateEndpoint(nameof(IncidentReportEndpoints)), async (
-                string companyId,
-                [FromQuery] DateTime? from,
-                [FromQuery] DateTime? end,
-                IGetAllIncidentReportsInputPort inputPort) =>
-            {
-                var result = await inputPort.HandleAsync(companyId, from, end);
-                return TypedResults.Ok(result);
-
-            });
-
             return builder;
         }
     }
+
 }

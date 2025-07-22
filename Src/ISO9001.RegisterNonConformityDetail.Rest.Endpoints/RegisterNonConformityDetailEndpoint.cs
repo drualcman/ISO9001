@@ -1,4 +1,4 @@
-﻿namespace ISO9001.RegisterNonConformityDetail.Rest
+﻿namespace ISO9001.RegisterNonConformityDetail.Rest.Endpoints
 {
     public static class RegisterNonConformityDetailEndpoint
     {

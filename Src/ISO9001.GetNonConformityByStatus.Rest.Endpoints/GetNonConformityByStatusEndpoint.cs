@@ -1,4 +1,4 @@
-﻿namespace ISO9001.GetNonConformityByStatus.Rest
+﻿namespace ISO9001.GetNonConformityByStatus.Rest.Endpoints
 {
     public static class GetNonConformityByStatusEndpoint
     {

@@ -1,4 +1,4 @@
-﻿namespace ISO9001.GetNonConformityByAffectedProcess.Rest
+﻿namespace ISO9001.GetNonConformityByAffectedProcess.Rest.Endpoints
 {
     public static class GetNonConformityByAffectedProcessEndpoint
     {
