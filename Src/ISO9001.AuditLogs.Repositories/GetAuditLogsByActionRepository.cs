@@ -17,16 +17,16 @@ namespace ISO9001.AuditLogs.Repositories
                                 AuditLog.Timestamp >= from &&
                                 AuditLog.Timestamp <= end);
 
+            var AuditLogs = await dataContext.ToListAsync(Query);
 
-            return await dataContext.ToListAsync(
-                Query.Select(AuditLog => new AuditLogResponse(
-                    AuditLog.LogId,
-                    AuditLog.EntityId,
-                    AuditLog.Action,
-                    AuditLog.PerformedBy,
-                    AuditLog.Timestamp,
-                    AuditLog.CreatedAt,
-                    AuditLog.Details)));
+            return AuditLogs.Select(AuditLog => new AuditLogResponse(
+                AuditLog.LogId,
+                AuditLog.EntityId,
+                AuditLog.Action,
+                AuditLog.PerformedBy,
+                AuditLog.Timestamp,
+                AuditLog.CreatedAt,
+                AuditLog.Details));
         }
     }
 }

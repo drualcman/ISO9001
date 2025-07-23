@@ -19,8 +19,9 @@ namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
                     Details = AuditLog.Details
                 }).AsQueryable();
 
-        public async Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(IQueryable<ReturnType> queryable)
+        public async Task<IEnumerable<AuditLogReadModel>> ToListAsync(IQueryable<AuditLogReadModel> queryable)
             => await Task.FromResult(queryable.ToList());
+
     }
 }
 
