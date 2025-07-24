@@ -19,8 +19,10 @@ namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
                 CreatedAt = CustomerFeedback.ReportedAt
             }).AsQueryable();
 
-        public async Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(IQueryable<ReturnType> queryable)
+
+        public async Task<IEnumerable<CustomerFeedbackReadModel>> ToListAsync(IQueryable<CustomerFeedbackReadModel> queryable)
             => await Task.FromResult(queryable.ToList());
+
     }
 }
 
