@@ -1,224 +1,439 @@
-# Nuevos Casos ISO 9001 que podemos implementar después
-Ya tenemos cubiertos:
-
-- Trazabilidad de pedidos (PlaceOrder + AuditLog)
-- Trazabilidad de pagos (RegisterPayment + AuditLog)
-
-## Nuevo caso de uso: ReportIncident (gestión de incidencias)
+# Entidad: IncidentReport
 Permite cumplir con el requisito de gestión de no conformidades y acciones correctivas.
+La entidad IncidentReport almacenará los reportes de incidencias.
 
-### Entidad: IncidentReport
+CompanyId: Identificador de la empresa propietaria del reporte de incidencia.
+
+EntityId: Identificador de la entidad afectada.
+
+ReportedAt: La fecha y hora del reporte.
+
+UserId: El usuario que ha realizado la acción (ID del cliente o del administrador).
+
+Description: Descripción del reporte de incidencia.
+
+AffectedProcess: Proceso involucrado (Order, Payment, etc).
+
+Severity: Nivel de importancia (Low, Medium, High).
+
+Data: Datos en formato JSON relacionados al reporte.
+
 ```csharp
 public class IncidentReport
 {
-    public int Id { get; set; }
+    public string CompanyId { get; set; }
+    public string EntityId { get; set; }
     public DateTime ReportedAt { get; set; }
-    public int UserId { get; set; }
-    public string Description { get; set; }
-    public string AffectedProcess { get; set; } // "Order", "Payment", etc.
-    public string Severity { get; set; } // "Low", "Medium", "High"
-}
-```
-### InputPort / OutputPort / Interactor
-```csharp
-public interface IReportIncidentInputPort
-{
-    Task HandleAsync(ReportIncidentRequest request);
-}
-
-public interface IReportIncidentOutputPort
-{
-    Task HandleAsync(ReportIncidentResponse response);
-    Task Invalid(string reason);
-}
-
-public class ReportIncidentRequest
-{
-    public int UserId { get; set; }
+    public string UserId { get; set; }
     public string Description { get; set; }
     public string AffectedProcess { get; set; }
     public string Severity { get; set; }
-}
-
-public class ReportIncidentResponse
-{
-    public int IncidentId { get; set; }
-}
-```
-### Interactor
-```csharp
-public class ReportIncidentInteractor : IReportIncidentInputPort
-{
-    private readonly IReportIncidentOutputPort outputPort;
-    private readonly IIncidentRepository incidentRepository;
-
-    public ReportIncidentInteractor(
-        IReportIncidentOutputPort outputPort,
-        IIncidentRepository incidentRepository)
-    {
-        this.outputPort = outputPort;
-        this.incidentRepository = incidentRepository;
-    }
-
-    public async Task HandleAsync(ReportIncidentRequest request)
-    {
-        IncidentReport incident = new IncidentReport
-        {
-            UserId = request.UserId,
-            Description = request.Description,
-            AffectedProcess = request.AffectedProcess,
-            Severity = request.Severity,
-            ReportedAt = DateTime.UtcNow
-        };
-
-        await incidentRepository.SaveAsync(incident);
-
-        ReportIncidentResponse response = new ReportIncidentResponse
-        {
-            IncidentId = incident.Id
-        };
-
-        await outputPort.HandleAsync(response);
-    }
+    public string Data { get; set; }
 }
 ```
 
-### ViewModel: ReportIncidentVM
-```csharp
-public class ReportIncidentVM
-{
-    private readonly IReportIncidentInputPort inputPort;
-    private readonly IReportIncidentOutputPort outputPort;
+## DataContext: Interfaces
 
+En esta sección se definirán las interfaces que se utilizarán en los repositorios de los diferentes casos de usos de la entidad IncidentReport. Siguiendo el patrón CQRS, se separaron las operaciones de lectura y escritura en dos interfaces diferentes.
+
+### IWritableIncidentReportDataContext
+
+La interfaz IWritableIncidentReportDataContext se encarga exclusivamente de agregar y guardar los registros
+
+```csharp
+public interface IWritableIncidentReportDataContext
+{
+    Task AddAsync(IncidentReport incidentReport);
+    Task SaveChangesAsync();
+}
+```
+
+### IQueryableIncidentReportDataContext
+
+La interfaz IQueryableIncidentReportDataContext está dedicada a las operaciones de lectura, con un IQueryable que expone los reportes de incidencia y un método para obtener los resultados.
+
+```csharp
+public interface IQueryableIncidentReportDataContext
+{
+    IQueryable<IncidentReportReadModel> IncidentReports { get; }
+    Task<IEnumerable<IncidentReportReadModel>> ToListAsync(
+        IQueryable<IncidentReportReadModel> queryable);
+}
+```
+
+## Implementación de los DataContext
+Puedes implementar ambos contextos de datos utilizando un sistema de base de datos o almacenamiento de archivos. A continuación se presenta un ejemplo simple de una implementación en memoria para la persistencia de datos.
+
+### InMemoryIncidentReportStore
+
+```csharp
+internal static class InMemoryIncidentReportStore
+{
+    public static List<IncidentReport> IncidentReports { get; } = new();
+    public static int IncidentReportCurrentId { get; set; }
+}
+```
+
+
+### InMemoryWritableIncidentReportDataContext
+
+```csharp
+internal class InMemoryWritableIncidentReportDataContext: IWritableIncidentReportDataContext
+{
+    public Task AddAsync(IncidentReport incidentReport)
+    {
+        var Record = new DataContexts.Entities.IncidentReport
+        {
+            Id = +InMemoryIncidentReportStore.IncidentReportCurrentId,
+            CompanyId = incidentReport.CompanyId,
+            EntityId = incidentReport.EntityId,
+            ReportedAt = incidentReport.ReportedAt,
+            CreatedAt = DateTime.UtcNow,
+            UserId = incidentReport.UserId,
+            Description = incidentReport.Description,
+            AffectedProcess = incidentReport.AffectedProcess,
+            Severity = incidentReport.Severity,
+            Data = incidentReport.Data
+        };
+
+        InMemoryIncidentReportStore.IncidentReports.Add(Record);
+        return Task.CompletedTask;
+    }
+
+    public Task SaveChangesAsync()
+    {
+        return Task.CompletedTask;
+    }
+}
+```
+
+### InMemoryQueryableIncidentReportDataContext
+
+```csharp
+internal class GetAllIncidentReportsRepository(IQueryableIncidentReportDataContext dataContext) : IGetAllIncidentReportsRepository
+{
+    public async Task<IEnumerable<IncidentReportResponse>> GetAllIncidentReportsAsync(string id, DateTime? from, DateTime? end)
+    {
+        var Query = dataContext.IncidentReports
+            .Where(IncidentReport =>
+                IncidentReport.CompanyId == id &&
+                IncidentReport.ReportedAt >= from &&
+                IncidentReport.ReportedAt <= end)
+            .OrderBy(IncidentReport => IncidentReport.ReportedAt);
+
+        var IncidentReports = await dataContext.ToListAsync(Query);
+
+        return IncidentReports.Select(
+            IncidentReport => new IncidentReportResponse(
+                IncidentReport.EntityId,
+                IncidentReport.ReportedAt,
+                IncidentReport.UserId,
+                IncidentReport.Description,
+                IncidentReport.AffectedProcess,
+                IncidentReport.Severity,
+                IncidentReport.Data
+                ));
+
+
+    }
+}
+```
+# Caso de uso: RegisterIncidentReport
+El caso de uso RegisterIncidentReport es responsable de registrar reportes de incidencia en el sistema.
+
+## Parametros de Entrada.
+- IncidentReportRequest (obligatorio).
+
+## Endpoint REST
+Este endpoint permite registrar reportes de incidencia desde un cliente HTTP.
+
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder UseRegisterIncidentReportEndpoint(
+        this IEndpointRouteBuilder builder)
+    {
+        builder.MapPost("".CreateEndpoint("IncidentReportEndpoints"),
+            async (IncidentReportRequest incidentReport, IRegisterIncidentReportInputPort inputport) =>
+            {
+                await inputport.HandleAsync(new IncidentReportDto(
+                    incidentReport.CompanyId,
+                    incidentReport.EntityId,
+                    incidentReport.ReportedAt,
+                    incidentReport.UserId,
+                    incidentReport.Description,
+                    incidentReport.AffectedProcess,
+                    incidentReport.Severity,
+                    incidentReport.Data)
+                    );
+                return TypedResults.Created();
+            });
+
+        return builder;
+    }
+}
+```
+### DTO y Request
+
+```csharp
+public class IncidentReportDto(string companyId, string entityId, DateTime reportedAt,
+    string userId, string description, string affectedProcess, string severity, string data)
+{
+    public string CompanyId => companyId;
+    public string EntityId => entityId;
+    public DateTime ReportedAt => reportedAt;
+    public string UserId => userId;
+    public string Description => description;
+    public string AffectedProcess => affectedProcess;
+    public string Severity => severity;
+    public string Data => data;
+}
+```
+
+```csharp
+public class IncidentReportRequest
+{
+    public string CompanyId { get; set; }
+    public string EntityId { get; set; }
+    public DateTime ReportedAt { get; set; }
+    public string UserId { get; set; }
     public string Description { get; set; }
-    public string AffectedProcess { get; set; } = "Order";
-    public string Severity { get; set; } = "Medium";
-    public string? Message { get; private set; }
+    public string AffectedProcess { get; set; }
+    public string Severity { get; set; }
+    public string Data { get; set; }
+}
+```
+## Repositorio: IRegisterIncidentReportRepository
 
-    public ReportIncidentVM(
-        IReportIncidentInputPort inputPort,
-        IReportIncidentOutputPort outputPort)
+```csharp
+public interface IRegisterIncidentReportRepository
+{
+    Task RegisterIncidentReportAsync(IncidentReportDto incidentReport);
+    Task SaveChangesAsync();
+}
+```
+
+### Implementación del Repositorio.
+
+```csharp
+internal class RegisterIncidentReportRepository(
+    IWritableIncidentReportDataContext dataContext) : IRegisterIncidentReportRepository
+{
+    public async Task RegisterIncidentReportAsync(IncidentReportDto incidentReportDto)
     {
-        this.inputPort = inputPort;
-        this.outputPort = outputPort;
-    }
-
-    public async Task SubmitAsync(int userId)
-    {
-        Message = null;
-
-        ReportIncidentRequest request = new ReportIncidentRequest
+        var NewIncidentReport = new IncidentReport
         {
-            UserId = userId,
-            Description = Description,
-            AffectedProcess = AffectedProcess,
-            Severity = Severity
+            CompanyId = incidentReportDto.CompanyId,
+            EntityId = incidentReportDto.EntityId,
+            ReportedAt = incidentReportDto.ReportedAt,
+            UserId = incidentReportDto.UserId,
+            Description = incidentReportDto.Description,
+            AffectedProcess = incidentReportDto.AffectedProcess,
+            Severity = incidentReportDto.Severity,
+            Data = incidentReportDto.Data
         };
 
-        await inputPort.HandleAsync(request);
+        await dataContext.AddAsync(NewIncidentReport);
     }
 
-    public void ShowResult(string result)
-    {
-        Message = result;
-    }
+    public Task SaveChangesAsync() => dataContext.SaveChangesAsync();
 }
 ```
-### Presenter: ReportIncidentPresenter
+
+## Caso de uso: IRegisterIncidentReportInputPort
+
 ```csharp
-public class ReportIncidentPresenter : IReportIncidentOutputPort
+public interface IRegisterIncidentReportInputPort
 {
-    private readonly ReportIncidentVM viewModel;
+    Task HandleAsync(IncidentReportDto incidentReportDto);
+}
+```
 
-    public ReportIncidentPresenter(ReportIncidentVM viewModel)
-    {
-        this.viewModel = viewModel;
-    }
+### Implementación del Caso de uso.
 
-    public Task HandleAsync(ReportIncidentResponse response)
+```csharp
+internal class RegisterIncidentReportHandler(IRegisterIncidentReportRepository
+    repository) : IRegisterIncidentReportInputPort
+{
+    public async Task HandleAsync(IncidentReportDto incidentReportDto)
     {
-        viewModel.ShowResult($"Incident #{response.IncidentId} reported successfully.");
-        return Task.CompletedTask;
-    }
-
-    public Task Invalid(string reason)
-    {
-        viewModel.ShowResult($"Failed to report incident: {reason}");
-        return Task.CompletedTask;
+        await repository.RegisterIncidentReportAsync(incidentReportDto);
+        await repository.SaveChangesAsync();
     }
 }
 ```
-### Componente Razor: ReportIncident.razor
+
+# Integración en Blazor WebAssembly (UI)
+
+Después de realizar un pedido, en el componente Blazor, podemos mostrar el mensaje de éxito, y si se ha guardado el log correctamente.
+
 ```razor
-@page "/report-incident"
-@inject ReportIncidentVM ViewModel
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
 
-<h3 class="title is-4">Report an Incident</h3>
+<h3>Place Order</h3>
 
-<div class="field">
-    <label class="label">Description</label>
-    <div class="control">
-        <textarea class="textarea" @bind="ViewModel.Description"></textarea>
-    </div>
-</div>
+<!-- Formulario de pedido aquí -->
 
-<div class="field">
-    <label class="label">Affected Process</label>
-    <div class="control">
-        <div class="select">
-            <select @bind="ViewModel.AffectedProcess">
-                <option>Order</option>
-                <option>Payment</option>
-                <option>Shipping</option>
-            </select>
-        </div>
-    </div>
-</div>
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
 
-<div class="field">
-    <label class="label">Severity</label>
-    <div class="control">
-        <div class="select">
-            <select @bind="ViewModel.Severity">
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-            </select>
-        </div>
-    </div>
-</div>
-
-<div class="field">
-    <div class="control">
-        <button class="button is-danger" @onclick="SubmitIncident">Submit</button>
-    </div>
-</div>
-
-@if (!string.IsNullOrWhiteSpace(ViewModel.Message))
+@if (ViewModel.Result != null)
 {
-    <div class="notification is-info mt-4">
-        @ViewModel.Message
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
     </div>
 }
 
 @code {
-    private async Task SubmitIncident()
+    private async Task PlaceOrder()
     {
-        await ViewModel.SubmitAsync(userId: 123); // Simulated user ID
+        await ViewModel.PlaceOrderAsync();
     }
 }
 ```
-### DI Registration (por si lo necesitas)
+
+# Caso de uso: GetAllIncidentReports
+El caso de uso GetAllIncidentReports es responsable de obtener todos los reportes de incidencia del sistema para una compañía específica dentro de un rango de fechas.
+
+## Parametros de entrada.
+- companyId (obligatorio): Identificador de la empresa cuyos registros se desean consultar.
+- from (opcional): Fecha de inicio del rango. Si no se especifica, se toma como valor predeterminado 30 días antes del día actual.
+- end (opcional): Fecha de fin del rango. Si no se especifica, se toma como valor predeterminado el final del día actual.
+
+
+## Endpoint REST
+Este endpoint permite obtener los reportes de incidencia desde un cliente HTTP.
+
 ```csharp
-builder.Services.AddScoped<ReportIncidentVM>(sp =>
+public static class EndpointsMapper
 {
-    ReportIncidentVM vm = new ReportIncidentVM(
-        sp.GetRequiredService<IReportIncidentInputPort>(),
-        new ReportIncidentPresenter(null!)
-    );
-    ReportIncidentPresenter presenter = new ReportIncidentPresenter(vm);
-    typeof(ReportIncidentPresenter).GetField("viewModel", BindingFlags.NonPublic | BindingFlags.Instance)
-        ?.SetValue(presenter, vm);
-    return vm;
-});
+    public static IEndpointRouteBuilder UseGetAllIncidentReportsEndpoint(
+        this IEndpointRouteBuilder builder)
+    {
+        builder.MapGet("{companyId}/".CreateEndpoint("IncidentReportEndpoints"), async (
+            string companyId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGetAllIncidentReportsInputPort inputPort) =>
+        {
+            var result = await inputPort.HandleAsync(companyId, from, end);
+            return TypedResults.Ok(result);
+
+        });
+
+        return builder;
+    }
+}
+```
+### Reponse: IncidentReportResponse
+
+```csharp
+public class IncidentReportResponse(string entityId, DateTime reportedAt, string userId,
+    string description, string affectedProcess, string severity, string data)
+{
+    public string EntityId => entityId;
+    public DateTime ReportedAt => reportedAt;
+    public string UserId => userId;
+    public string Description => description;
+    public string AffectedProcess => affectedProcess;
+    public string Severity => severity;
+    public string Data => data;
+}
+```
+
+
+## Repositorio: IGetAllIncidentReportsRepository
+
+```csharp
+public interface IGetAllIncidentReportsRepository
+{
+    Task<IEnumerable<IncidentReportResponse>> GetAllIncidentReportsAsync(string id, DateTime? from, DateTime? end);
+}
+```
+
+### Implementación del Repositorio.
+```csharp
+internal class GetAllIncidentReportsRepository(IQueryableIncidentReportDataContext dataContext): IGetAllIncidentReportsRepository
+{
+    public async Task<IEnumerable<IncidentReportResponse>> GetAllIncidentReportsAsync(string id, DateTime? from, DateTime? end)
+    {
+        var Query = dataContext.IncidentReports
+            .Where(IncidentReport =>
+                IncidentReport.CompanyId == id &&
+                IncidentReport.ReportedAt >= from &&
+                IncidentReport.ReportedAt <= end)
+            .OrderBy(IncidentReport => IncidentReport.ReportedAt);
+
+        return await dataContext.ToListAsync(
+            Query.Select(IncidentReport => new IncidentReportResponse(
+                IncidentReport.EntityId,
+                IncidentReport.ReportedAt,
+                IncidentReport.UserId,
+                IncidentReport.Description,
+                IncidentReport.AffectedProcess,
+                IncidentReport.Severity,
+                IncidentReport.Data
+                )));
+
+    }
+}
+```
+
+## Caso de uso: IGetAllIncidentReportsInputPort
+
+```csharp
+public interface IGetAllIncidentReportsInputPort
+{
+    Task<IEnumerable<IncidentReportResponse>> HandleAsync(string id, DateTime? from, DateTime? end);
+}
+```
+
+### Implementación del Caso de uso.
+
+```csharp
+internal class GetAllIncidentReportsHandler(IGetAllIncidentReportsRepository
+    repository): IGetAllIncidentReportsInputPort
+{
+    public async Task<IEnumerable<IncidentReportResponse>> HandleAsync(string id, DateTime? from, DateTime? end)
+    {
+        DateTime UtcFrom = from != null ? from.Value.Date
+            : DateTime.UtcNow.Date.AddDays(-30);
+
+        DateTime UtcEnd = end != null ? end.Value.Date.AddDays(1).AddTicks(-1)
+            : DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
+
+        return await repository.GetAllIncidentReportsAsync(id, UtcFrom, UtcEnd);
+    }
+}
+```
+
+# Integración en Blazor WebAssembly (UI)
+
+Después de realizar un pedido, en el componente Blazor, podemos mostrar el mensaje de éxito, y si se ha guardado el log correctamente.
+
+```razor
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
+
+<h3>Place Order</h3>
+
+<!-- Formulario de pedido aquí -->
+
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
+
+@if (ViewModel.Result != null)
+{
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
+    </div>
+}
+
+@code {
+    private async Task PlaceOrder()
+    {
+        await ViewModel.PlaceOrderAsync();
+    }
+}
 ```
