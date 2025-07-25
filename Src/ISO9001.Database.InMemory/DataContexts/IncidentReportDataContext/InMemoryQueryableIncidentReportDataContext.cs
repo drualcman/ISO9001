@@ -21,8 +21,9 @@ namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
                 Data = IncidentReport.Data
             }).AsQueryable();
 
-        public async Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(IQueryable<ReturnType> queryable)
+        public async Task<IEnumerable<IncidentReportReadModel>> ToListAsync(IQueryable<IncidentReportReadModel> queryable)
             => await Task.FromResult(queryable.ToList());
+
     }
 }
 

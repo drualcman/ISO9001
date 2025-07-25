@@ -1,16 +1,10 @@
 ﻿using ISO9001.Entities.Responses;
 using ISO9001.GetAllIncidentReports.BusinessObjects.Interfaces;
 using ISO9001.IncidentReports.Repositories.Interfaces;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ISO9001.IncidentReports.Repositories
 {
-    internal class GetAllIncidentReportsRepository(IQueryableIncidentReportDataContext dataContext): IGetAllIncidentReportsRepository
+    internal class GetAllIncidentReportsRepository(IQueryableIncidentReportDataContext dataContext) : IGetAllIncidentReportsRepository
     {
         public async Task<IEnumerable<IncidentReportResponse>> GetAllIncidentReportsAsync(string id, DateTime? from, DateTime? end)
         {
@@ -21,8 +15,10 @@ namespace ISO9001.IncidentReports.Repositories
                     IncidentReport.ReportedAt <= end)
                 .OrderBy(IncidentReport => IncidentReport.ReportedAt);
 
-            return await dataContext.ToListAsync(
-                Query.Select(IncidentReport => new IncidentReportResponse(
+            var IncidentReports = await dataContext.ToListAsync(Query);
+
+            return IncidentReports.Select(
+                IncidentReport => new IncidentReportResponse(
                     IncidentReport.EntityId,
                     IncidentReport.ReportedAt,
                     IncidentReport.UserId,
@@ -30,7 +26,8 @@ namespace ISO9001.IncidentReports.Repositories
                     IncidentReport.AffectedProcess,
                     IncidentReport.Severity,
                     IncidentReport.Data
-                    )));
+                    ));
+
 
         }
     }
