@@ -14,12 +14,14 @@ namespace ISO9001.CustomerFeedbacks.Repositories
                 dataContext.CustomerFeedbacks.Where(CustomerFeedback => CustomerFeedback.CompanyId == id &&
                 CustomerFeedback.EntityId == entityId);
 
-            return await dataContext.ToListAsync(
-                Query.Select(CustomerFeedback => new CustomerFeedbackResponse(
-                    CustomerFeedback.EntityId,
-                    CustomerFeedback.CustomerId,
-                    CustomerFeedback.Rating,
-                    CustomerFeedback.ReportedAt)));
+            var CustomerFeedbacks = await dataContext.ToListAsync(Query);
+
+            return CustomerFeedbacks.Select(CustomerFeedback =>
+            new CustomerFeedbackResponse(
+                CustomerFeedback.EntityId,
+                CustomerFeedback.CustomerId,
+                CustomerFeedback.Rating,
+                CustomerFeedback.ReportedAt));
         }
     }
 }

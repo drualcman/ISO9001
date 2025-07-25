@@ -2,6 +2,7 @@
 using ISO9001.CustomerFeedbacks.Repositories.Interfaces;
 using ISO9001.Entities.Responses;
 using ISO9001.GetAllCustomerFeedback.BusinessObjects.Interfaces;
+using System.Linq;
 
 namespace ISO9001.CustomerFeedbacks.Repositories
 {
@@ -15,12 +16,14 @@ namespace ISO9001.CustomerFeedbacks.Repositories
                     CustomerFeedback.ReportedAt >= from &&
                     CustomerFeedback.ReportedAt <= end);
 
-            return await dataContext.ToListAsync(
-                Query.Select(CustomerFeedback => new CustomerFeedbackResponse(
-                    CustomerFeedback.EntityId,
-                    CustomerFeedback.CustomerId,
-                    CustomerFeedback.Rating,
-                    CustomerFeedback.ReportedAt)));
+            var CustomerFeedbacks = await dataContext.ToListAsync(Query);
+
+            return CustomerFeedbacks.Select(CustomerFeedback =>
+            new CustomerFeedbackResponse(
+                CustomerFeedback.EntityId,
+                CustomerFeedback.CustomerId,
+                CustomerFeedback.Rating,
+                CustomerFeedback.ReportedAt));
         }
     }
 }
