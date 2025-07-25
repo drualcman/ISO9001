@@ -295,7 +295,7 @@ El caso de uso GetAllCustomerFeedbacks es responsable de obtener todos los regis
 
 
 ## Endpoint REST
-Este endpoint permite obtener los logs desde un cliente HTTP.
+Este endpoint permite obtener los registros de satisfacción desde un cliente HTTP.
 
 ```csharp
 public static class EndpointsMapper
