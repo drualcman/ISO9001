@@ -32,7 +32,10 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
             NonConformityId = NonConformityDetail.NonConformityId
         }).AsQueryable();
 
-        public async Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(IQueryable<ReturnType> queryable)
+        public async Task<IEnumerable<NonConformityReadModel>> ToListAsync(IQueryable<NonConformityReadModel> queryable)
+            => await Task.FromResult(queryable.ToList());
+
+        public async Task<IEnumerable<NonConformityDetailReadModel>> ToListAsync(IQueryable<NonConformityDetailReadModel> queryable)
             => await Task.FromResult(queryable.ToList());
     }
 }
