@@ -1,362 +1,1152 @@
-# Módulo siguiente: Gestión de No Conformidades (Non-Conformity Management)
-### Objetivo ISO 9001
+# Entidad: NonConformity
 Permitir que, ante errores detectados (ya sea en pedidos, productos enviados, pagos, reclamos, etc.), se registre, evalúe y trate cada caso para prevenir su repetición.
+La entidad NonConformity está divida en dos, NonConformity y NonConformityDetail. La entidad NonConformity debe incluir:
 
-## Entidad NonConformity
+Id: Identificador único generado por el sistema.
+
+EntityId: Identificador de la entidad afectada.
+
+CompanyId: Identificador de la empresa propietaria del evento.
+
+AffectedProcess: Proceso afectado.
+
+Cause: Causa raíz o explicación inicial del problema detectado.
+
+Status: Estado general del caso de no conformidad.
+
+ReportedAt: Fecha y hora en la que se registró la no conformidad.
+
+NonConformityDetails: Detalles o seguimientos realizados sobre esta no conformidad.
+
 ```csharp
 public class NonConformity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; }  
+    public string EntityId { get; set; }
+    public string CompanyId { get; set; }
+    public string AffectedProcess { get; set; }
+    public string Cause { get; set; }
+    public string Status { get; set; }
     public DateTime ReportedAt { get; set; }
-    public string ReportedBy { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string AffectedProcess { get; set; } = string.Empty;
-    public string Cause { get; set; } = string.Empty;
-    public string Correction { get; set; } = string.Empty;
-    public string CorrectiveAction { get; set; } = string.Empty;
-    public string Status { get; set; } = "Open";  // Open, Closed
-    public DateTime? ResolvedAt { get; set; }  // Fecha de resolución
-    public string ResolutionDetails { get; set; } = string.Empty;  // Detalles de la resolución
-    public string ResolvedBy { get; set; } = string.Empty;  // Quién resolvió
+    public List<NonConformityDetail> NonConformityDetails { get; set; }
+
 }
 ```
-## Casos de uso principales
-- RegisterNonConformity
-- ResolveNonConformity
-- ListNonConformities
 
-## Request / Response DTOs
+## Entidad: NonConformityDetail
+Representa un seguimiento, comentario o acción tomada en relación a un caso de no conformidad. Puede haber varios por cada NonConformity. 
+La entidad NonConformityDetaill debe incluir:
+
+ReportedBy: Usuario que reportó o documentó este detalle.
+
+Description: Descripción del detalle, acción tomada o comentario.
+
+Status: Descripción del detalle, acción tomada o comentario.
+
+ReportedAt: Fecha y hora en la que se agregó este detalle.
+
 ```csharp
-public class RegisterNonConformityRequest
+public class NonConformityDetail
 {
-    public string ReportedBy { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string AffectedProcess { get; set; } = string.Empty;
-    public string Cause { get; set; } = string.Empty;
-    public string Correction { get; set; } = string.Empty;
-    public string CorrectiveAction { get; set; } = string.Empty;
-}
-
-public class RegisterNonConformityResponse
-{
-    public Guid Id { get; set; }
+    public string ReportedBy { get; set; }
+    public string Description { get; set; }
+    public string Status { get; set; }
     public DateTime ReportedAt { get; set; }
 }
 ```
-## InputPort / OutputPort
+
+
+## DataContext: Interfaces
+
+En esta sección se definirán las interfaces que se utilizarán en los repositorios de los diferentes casos de usos de la entidad Nonconformity. Siguiendo el patrón CQRS, se separaron las operaciones de lectura y escritura en dos interfaces diferentes.
+
+### IWritableNonConformityDataContext
+
+La interfaz IWritableNonConformityDataContext se encarga exclusivamente de agregar registros de NonConformity, NonConformityDetail, actualizar el registro de NonConformity y guardar cambios.
+
 ```csharp
-public interface IRegisterNonConformityInputPort
+public interface IWritableNonConformityDataContext
 {
-    Task HandleAsync(RegisterNonConformityRequest request);
-}
-
-public interface IRegisterNonConformityOutputPort
-{
-    Task HandleAsync(RegisterNonConformityResponse response);
-}
-```
-
-## Interactor
-```csharp
-public class RegisterNonConformityInteractor : IRegisterNonConformityInputPort
-{
-    private readonly INonConformityRepository repository;
-    private readonly IRegisterNonConformityOutputPort outputPort;
-
-    public RegisterNonConformityInteractor(
-        INonConformityRepository repository,
-        IRegisterNonConformityOutputPort outputPort)
-    {
-        this.repository = repository;
-        this.outputPort = outputPort;
-    }
-
-    public async Task HandleAsync(RegisterNonConformityRequest request)
-    {
-        NonConformity nonConformity = new NonConformity
-        {
-            Id = Guid.NewGuid(),
-            ReportedAt = DateTime.UtcNow,
-            ReportedBy = request.ReportedBy,
-            Description = request.Description,
-            AffectedProcess = request.AffectedProcess,
-            Cause = request.Cause,
-            Correction = request.Correction,
-            CorrectiveAction = request.CorrectiveAction,
-            Status = "Open"
-        };
-
-        await repository.SaveAsync(nonConformity);
-
-        RegisterNonConformityResponse response = new RegisterNonConformityResponse
-        {
-            Id = nonConformity.Id,
-            ReportedAt = nonConformity.ReportedAt
-        };
-
-        await outputPort.HandleAsync(response);
-    }
+    Task AddNonConformityAsync(NonConformity nonConformityMaster);
+    Task AddNonConformityDetailAsync(NonConformityDetail nonConformityDetail, Guid id);
+    Task UpdateNonConformityAsync(NonConformityReadModel nonConformity);
+    Task SaveChangesAsync();
 }
 ```
 
-## Presenter: RegisterNonConformityPresenter
-El presenter es el que conecta el interactor con el ViewModel. En este caso, el presenter recibirá la respuesta del interactor y actualizará el ViewModel.
+### IQueryableNonConformityDataContext
+
+La interfaz IQueryableNonConformityDataContext está dedicada a las operaciones de lectura, con un IQueryable que expone los registros no conformidad y sus detalles respectivamente. Además
+de un método por cada entidad para obtener los resultados.
 
 ```csharp
-public class RegisterNonConformityPresenter : IRegisterNonConformityOutputPort
+public interface IQueryableNonConformityDataContext
 {
-    private readonly RegisterNonConformityViewModel viewModel;
+    IQueryable<NonConformityReadModel> NonConformities { get; }
 
-    public RegisterNonConformityPresenter(RegisterNonConformityViewModel viewModel)
+    IQueryable<NonConformityDetailReadModel> NonConformityDetails { get; }
+
+    Task<IEnumerable<NonConformityReadModel>> ToListAsync(
+        IQueryable<NonConformityReadModel> queryable);
+
+    Task<IEnumerable<NonConformityDetailReadModel>> ToListAsync(
+        IQueryable<NonConformityDetailReadModel> queryable);
+}
+```
+
+## Implementación de los DataContext
+Puedes implementar ambos contextos de datos utilizando un sistema de base de datos o almacenamiento de archivos. A continuación se presenta un ejemplo simple de una implementación en memoria para la persistencia de datos.
+
+### InMemoryNonConformityStore
+
+```csharp
+internal static class InMemoryNonConformityStore
+{
+    public static List<NonConformity> NonConformities { get; } = new();
+    public static List<NonConformityDetail> NonConformityDetails { get; } = new();
+    public static int NonConformityDetailsCurrentId { get; set; }
+
+}
+```
+
+### InMemoryWritableNonConformityDataContext
+
+```csharp
+internal class InMemoryWritableNonConformityDataContext : IWritableNonConformityDataContext
+{
+    public Task AddNonConformityAsync(NonConformity nonConformityMaster)
     {
-        this.viewModel = viewModel;
+        var NonConformityRecord = new DataContexts.Entities.NonConformity
+        {
+            Id = nonConformityMaster.Id,
+            ReportedAt = nonConformityMaster.ReportedAt,
+            EntityId = nonConformityMaster.EntityId,
+            CompanyId = nonConformityMaster.CompanyId,
+            AffectedProcess = nonConformityMaster.AffectedProcess,
+            Cause = nonConformityMaster.Cause,
+            Status = nonConformityMaster.Status,
+            CreatedAt = DateTime.UtcNow
+        };
+        InMemoryNonConformityStore.NonConformities.Add(NonConformityRecord);
+        return Task.CompletedTask;
     }
 
-    public Task HandleAsync(RegisterNonConformityResponse response)
+    public Task AddNonConformityDetailAsync(NonConformityDetail nonConformityDetail, Guid id)
     {
-        viewModel.NonConformityId = response.Id;
-        viewModel.ReportedAt = response.ReportedAt;
-        viewModel.Status = "Non-conformity registered successfully";
+        var NonConformity = InMemoryNonConformityStore.NonConformities
+            .FirstOrDefault(nonConformity =>
+            nonConformity.Id == id);
+
+        var NonConformityDetailRecord = new DataContexts.Entities.NonConformityDetail
+        {
+            Id = ++InMemoryNonConformityStore.NonConformityDetailsCurrentId,
+            NonConformityId = NonConformity.Id,
+            ReportedAt = nonConformityDetail.ReportedAt,
+            ReportedBy = nonConformityDetail.ReportedBy,
+            Description = nonConformityDetail.Description,
+            Status = nonConformityDetail.Status,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        InMemoryNonConformityStore.NonConformityDetails.Add(NonConformityDetailRecord);
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateNonConformityAsync(NonConformityReadModel nonConformityUpdated)
+    {
+        var NonConformitRecord = InMemoryNonConformityStore.NonConformities
+            .FirstOrDefault(NonConformity => NonConformity.Id == nonConformityUpdated.Id);
+
+        NonConformitRecord.EntityId = nonConformityUpdated.EntityId;
+        NonConformitRecord.CompanyId = nonConformityUpdated.CompanyId;
+        NonConformitRecord.AffectedProcess = nonConformityUpdated.AffectedProcess;
+        NonConformitRecord.Cause = nonConformityUpdated.Cause;
+        NonConformitRecord.Status = nonConformityUpdated.Status;
+
+        return Task.CompletedTask;
+    }
+
+
+    public Task SaveChangesAsync()
+    {
         return Task.CompletedTask;
     }
 }
 ```
 
-## ViewModel: RegisterNonConformityViewModel
-El viewmodel se usa para representar los datos que se mostrarán en la interfaz de usuario, y debe implementarse para que Blazor lo pueda enlazar (con INotifyPropertyChanged).
+### InMemoryQueryableNonConformityDataContext
 
 ```csharp
-public class RegisterNonConformityViewModel : INotifyPropertyChanged
+internal class InMemoryQueryableNonConformityDataContext : IQueryableNonConformityDataContext
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private string reportedBy = string.Empty;
-    private string description = string.Empty;
-    private string affectedProcess = string.Empty;
-    private string cause = string.Empty;
-    private string correction = string.Empty;
-    private string correctiveAction = string.Empty;
-    private string status = string.Empty;
-    private Guid nonConformityId;
-    private DateTime reportedAt;
-
-    public string ReportedBy
-    {
-        get => reportedBy;
-        set
+    public IQueryable<NonConformityReadModel> NonConformities =>
+        InMemoryNonConformityStore.NonConformities
+        .Select(NonConformity => new NonConformityReadModel
         {
-            if (reportedBy != value)
-            {
-                reportedBy = value;
-                NotifyPropertyChanged(nameof(ReportedBy));
-            }
-        }
-    }
+            Id = NonConformity.Id,
+            ReportedAt = NonConformity.ReportedAt,
+            EntityId = NonConformity.EntityId,
+            CompanyId = NonConformity.CompanyId,
+            AffectedProcess = NonConformity.AffectedProcess,
+            Cause = NonConformity.Cause,
+            Status = NonConformity.Status,
+            CreatedAt = NonConformity.CreatedAt
+        }).AsQueryable();
 
-    public string Description
+    public IQueryable<NonConformityDetailReadModel> NonConformityDetails =>
+    InMemoryNonConformityStore.NonConformityDetails
+    .Select(NonConformityDetail => new NonConformityDetailReadModel
     {
-        get => description;
-        set
-        {
-            if (description != value)
-            {
-                description = value;
-                NotifyPropertyChanged(nameof(Description));
-            }
-        }
-    }
+        Id = NonConformityDetail.Id,
+        ReportedAt = NonConformityDetail.ReportedAt,
+        ReportedBy = NonConformityDetail.ReportedBy,
+        Description = NonConformityDetail.Description,
+        Status = NonConformityDetail.Status,
+        CreatedAt = NonConformityDetail.CreatedAt,
+        NonConformityId = NonConformityDetail.NonConformityId
+    }).AsQueryable();
 
-    public string AffectedProcess
-    {
-        get => affectedProcess;
-        set
-        {
-            if (affectedProcess != value)
-            {
-                affectedProcess = value;
-                NotifyPropertyChanged(nameof(AffectedProcess));
-            }
-        }
-    }
+    public async Task<IEnumerable<NonConformityReadModel>> ToListAsync(IQueryable<NonConformityReadModel> queryable)
+        => await Task.FromResult(queryable.ToList());
 
-    public string Cause
-    {
-        get => cause;
-        set
-        {
-            if (cause != value)
-            {
-                cause = value;
-                NotifyPropertyChanged(nameof(Cause));
-            }
-        }
-    }
-
-    public string Correction
-    {
-        get => correction;
-        set
-        {
-            if (correction != value)
-            {
-                correction = value;
-                NotifyPropertyChanged(nameof(Correction));
-            }
-        }
-    }
-
-    public string CorrectiveAction
-    {
-        get => correctiveAction;
-        set
-        {
-            if (correctiveAction != value)
-            {
-                correctiveAction = value;
-                NotifyPropertyChanged(nameof(CorrectiveAction));
-            }
-        }
-    }
-
-    public string Status
-    {
-        get => status;
-        set
-        {
-            if (status != value)
-            {
-                status = value;
-                NotifyPropertyChanged(nameof(Status));
-            }
-        }
-    }
-
-    public Guid NonConformityId
-    {
-        get => nonConformityId;
-        set
-        {
-            if (nonConformityId != value)
-            {
-                nonConformityId = value;
-                NotifyPropertyChanged(nameof(NonConformityId));
-            }
-        }
-    }
-
-    public DateTime ReportedAt
-    {
-        get => reportedAt;
-        set
-        {
-            if (reportedAt != value)
-            {
-                reportedAt = value;
-                NotifyPropertyChanged(nameof(ReportedAt));
-            }
-        }
-    }
-
-    private void NotifyPropertyChanged(string propertyName) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    public async Task<IEnumerable<NonConformityDetailReadModel>> ToListAsync(IQueryable<NonConformityDetailReadModel> queryable)
+        => await Task.FromResult(queryable.ToList());
 }
 ```
 
-## Componente Blazor: RegisterNonConformity.razor
-Ahora, vamos a crear un formulario en Blazor que permita registrar una no conformidad. Usaremos Bulma CSS para el diseño del formulario.
+# Caso de uso: RegisterNonConformity
+El caso de uso RegisterNonConformity es responsable de registrar la entidad NonConformity junto a un detalle inicial en el sistema.
 
-```razor
-@page "/register-nonconformity"
-@inject IRegisterNonConformityInputPort RegisterNonConformityInputPort
-@inject NavigationManager Navigation
+## Parametros de Entrada.
+- NonConformityRequest (obligatorio).
 
-@code {
-    private RegisterNonConformityViewModel viewModel = new RegisterNonConformityViewModel();
-    private RegisterNonConformityPresenter? presenter;
+## Endpoint REST
+Este endpoint permite registrar la entidad NonConformity junto a su primer detallle desde un cliente HTTP.
 
-    protected override async Task OnInitializedAsync()
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder UseRegisterNonConformityEndpoint(
+        this IEndpointRouteBuilder builder)
     {
-        presenter = new RegisterNonConformityPresenter(viewModel);
-    }
-
-    private async Task HandleSubmit()
-    {
-        RegisterNonConformityRequest request = new RegisterNonConformityRequest
+        builder.MapPost("".CreateEndpoint("NonConformityEndpoints"),
+        async (NonConformityRequest nonConformity, IRegisterNonConformityInputPort inputPort) =>
         {
-            ReportedBy = viewModel.ReportedBy,
-            Description = viewModel.Description,
-            AffectedProcess = viewModel.AffectedProcess,
-            Cause = viewModel.Cause,
-            Correction = viewModel.Correction,
-            CorrectiveAction = viewModel.CorrectiveAction
+
+            await inputPort.HandleAsync(new NonConformityDto(
+                nonConformity.EntityId,
+                nonConformity.CompanyId,
+                nonConformity.ReportedAt,
+                nonConformity.ReportedBy,
+                nonConformity.Description,
+                nonConformity.AffectedProcess,
+                nonConformity.Cause,
+                nonConformity.Status
+                ));
+            return TypedResults.Created();
+        });
+
+        return builder;
+    }
+}
+```
+### DTO y Request
+
+```csharp
+public class NonConformityDto(string entityId, string companyId, DateTime reportedAt,
+    string reportedBy, string description, string affectedProcess, string cause, string status)
+{
+    public string EntityId => entityId;
+    public string CompanyId => companyId;
+    public DateTime ReportedAt => reportedAt;
+    public string ReportedBy => reportedBy;
+    public string Description => description;
+    public string AffectedProcess => affectedProcess;
+    public string Cause => cause;
+    public string Status => status;
+}
+```
+
+```csharp
+public class NonConformityRequest
+{
+    public string EntityId { get; set; }
+    public string CompanyId { get; set; }
+    public DateTime ReportedAt { get; set; }
+    public string ReportedBy { get; set; }
+    public string Description { get; set; }
+    public string AffectedProcess { get; set; }
+    public string Cause { get; set; }
+    public string Status { get; set; }
+}
+```
+## Repositorio: IRegisterNonConformityRepository
+
+```csharp
+public interface IRegisterNonConformityRepository
+{
+    Task RegisterNonConformityAsync(NonConformityDto nonConformityDto);
+    Task SaveChangesAsync();
+}
+```
+
+### Implementación del Repositorio.
+Al agregar un nuevo NonConformity, es creado junto a su primer detalle.
+```csharp
+internal class RegisterNonConformityRepository(
+    IWritableNonConformityDataContext writableNonConformityDataContext) : IRegisterNonConformityRepository
+{
+    async Task IRegisterNonConformityRepository.RegisterNonConformityAsync(NonConformityDto nonConformityDto)
+    {
+        NonConformity NewNonConformityMaster = new NonConformity
+        {
+            Id = Guid.NewGuid(),
+            ReportedAt = nonConformityDto.ReportedAt,
+            CompanyId = nonConformityDto.CompanyId,
+            EntityId = nonConformityDto.EntityId,
+            AffectedProcess = nonConformityDto.AffectedProcess,
+            Cause = nonConformityDto.Cause,
+            Status = nonConformityDto.Status,
+            NonConformityDetails = new List<NonConformityDetail>()
         };
 
-        await RegisterNonConformityInputPort.HandleAsync(request);
-        Navigation.NavigateTo("/nonconformity-confirmation");
+        NonConformityDetail NewNonConformityDetail = new NonConformityDetail
+        {
+            ReportedAt = nonConformityDto.ReportedAt,
+            ReportedBy = nonConformityDto.ReportedBy,
+            Description = nonConformityDto.Description,
+            Status = nonConformityDto.Status
+        };
+
+        NewNonConformityMaster.NonConformityDetails.Add(NewNonConformityDetail);
+        await writableNonConformityDataContext.AddNonConformityAsync(NewNonConformityMaster);
+        await writableNonConformityDataContext.AddNonConformityDetailAsync(NewNonConformityDetail, NewNonConformityMaster.Id);
     }
-}
 
-<div class="container">
-    <h3 class="title is-4">Register a Non-Conformity</h3>
-
-    <div class="box">
-        <div class="field">
-            <label class="label">Reported By</label>
-            <div class="control">
-                <input class="input" type="text" @bind="viewModel.ReportedBy" placeholder="Your name" />
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Description</label>
-            <div class="control">
-                <textarea class="textarea" @bind="viewModel.Description" placeholder="Description of the non-conformity"></textarea>
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Affected Process</label>
-            <div class="control">
-                <input class="input" type="text" @bind="viewModel.AffectedProcess" placeholder="Process affected" />
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Cause</label>
-            <div class="control">
-                <input class="input" type="text" @bind="viewModel.Cause" placeholder="Root cause of the issue" />
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Correction</label>
-            <div class="control">
-                <input class="input" type="text" @bind="viewModel.Correction" placeholder="Immediate correction applied" />
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">Corrective Action</label>
-            <div class="control">
-                <input class="input" type="text" @bind="viewModel.CorrectiveAction" placeholder="Action to prevent recurrence" />
-            </div>
-        </div>
-
-        <button class="button is-primary" @onclick="HandleSubmit">Submit</button>
-    </div>
-
-    @if (!string.IsNullOrEmpty(viewModel.Status))
+    async Task IRegisterNonConformityRepository.SaveChangesAsync()
     {
-        <div class="notification is-success">
-            @viewModel.Status
-        </div>
+        await writableNonConformityDataContext.SaveChangesAsync();
     }
-</div>
+
+}
 ```
 
-### Resumiendo:
-- Entidad NonConformity: Define la estructura de los datos.
-- Caso de Uso RegisterNonConformity: La lógica de registro.
-- Presenter RegisterNonConformityPresenter: Actualiza el ViewModel con el estado tras el registro.
-- ViewModel RegisterNonConformityViewModel: Maneja los datos de la UI y las notificaciones.
-- Componente Blazor RegisterNonConformity.razor: Interfaz de usuario con formulario para registrar no conformidades.
+## Caso de uso: IRegisterNonConformityInputPort
+
+```csharp
+public interface IRegisterNonConformityInputPort
+{
+    Task HandleAsync(NonConformityDto nonConformityDto);
+}
+```
+
+### Implementación del Caso de uso.
+```csharp
+internal class RegisterNonConformityHandler
+    (IRegisterNonConformityRepository repository) : IRegisterNonConformityInputPort
+{
+    public async Task HandleAsync(NonConformityDto nonConformityDto)
+    {
+        await repository.RegisterNonConformityAsync(nonConformityDto);
+        await repository.SaveChangesAsync();
+    }
+}
+```
+
+# Integración en Blazor WebAssembly (UI)
+```razor
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
+
+<h3>Place Order</h3>
+
+<!-- Formulario de pedido aquí -->
+
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
+
+@if (ViewModel.Result != null)
+{
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
+    </div>
+}
+
+@code {
+    private async Task PlaceOrder()
+    {
+        await ViewModel.PlaceOrderAsync();
+    }
+}
+```
+# Caso de uso: RegisterNonConformityDetail
+El caso de uso RegisterNonConformityDetail es responsable de registrar la entidad NonConformityDetail en el sistema
+
+## Parametros de Entrada.
+- NonConformityCreateDetailRequest (obligatorio).
+
+## Endpoint REST
+Este endpoint permite registrar la entidad NonConformityDetail desde un cliente HTTP.
+
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder UseRegisterNonConformityDetailEndpoint(
+        this IEndpointRouteBuilder builder)
+    {
+        builder.MapPost(("{companyId}/" + RegisterNonConformityDetailEndpoint.Detail).CreateEndpoint("NonConformityEndpoints"),
+            async (
+                string companyId,
+                NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetailInputPort inputPort) =>
+            {
+                NonConformityCreateDetailDto data = new NonConformityCreateDetailDto(
+                    Guid.Parse(nonConformity.NonConformityId),
+                    companyId,
+                    nonConformity.ReportedAt,
+                    nonConformity.ReportedBy,
+                    nonConformity.Description,
+                    nonConformity.Status);
+                await inputPort.HandleAsync(data);
+                return TypedResults.Created();
+            });
+
+        return builder;
+    }
+}
+```
+### DTO y Request
+
+```csharp
+public class NonConformityCreateDetailDto(Guid entityId, string companyId, DateTime reportedAt,
+    string reportedBy, string description, string status)
+{
+    public Guid EntityId => entityId;
+    public string CompanyId => companyId;
+    public DateTime ReportedAt => reportedAt;
+    public string ReportedBy => reportedBy;
+    public string Description => description;
+    public string Status => status;
+}
+```
+
+```csharp
+public class NonConformityCreateDetailRequest
+{
+    public DateTime ReportedAt { get; set; }
+    public string NonConformityId { get; set; }
+    public string ReportedBy { get; set; }
+    public string Description { get; set; }
+    public string Status { get; set; }
+}
+```
+## Repositorio: IRegisterNonConformityDetailRepository
+
+```csharp
+public interface IRegisterNonConformityDetailRepository
+{
+    Task RegisterNonConformityDetailAsync(NonConformityCreateDetailDto nonConformityDetail);
+    Task SaveChangesAsync();
+    Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status);
+    Task<bool> NonConformityExistsByGuidAsync(Guid entityId);
+}
+```
+
+### Implementación del Repositorio.
+```csharp
+internal class RegisterNonConformityDetailRepository(
+    IQueryableNonConformityDataContext queryNonConformityDataContext,
+    IWritableNonConformityDataContext writableNonConformityDataContext): IRegisterNonConformityDetailRepository
+{
+
+    public Task<bool> NonConformityExistsByGuidAsync(Guid entityId)
+    {
+        NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
+            .FirstOrDefault(nonConformity =>
+                nonConformity.Id == entityId);
+
+        bool Exists = NonConformityMaster != null;
+        return Task.FromResult(Exists);
+    }
+
+    public async Task RegisterNonConformityDetailAsync(NonConformityCreateDetailDto nonConformityDetail)
+    {
+
+        NonConformityDetail NewDetail = new NonConformityDetail
+        {
+            ReportedBy = nonConformityDetail.ReportedBy,
+            Description = nonConformityDetail.Description,
+            Status = nonConformityDetail.Status,
+            ReportedAt = nonConformityDetail.ReportedAt
+        };
+
+        await writableNonConformityDataContext.AddNonConformityDetailAsync(NewDetail, nonConformityDetail.EntityId);
+    }
+
+
+    public Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status)
+    {
+        NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
+            .FirstOrDefault(nonConformity =>
+                nonConformity.Id == entityId);
+
+        NonConformityMaster.Status = status;
+        writableNonConformityDataContext.UpdateNonConformityAsync(NonConformityMaster);
+        return Task.CompletedTask;
+    }
+
+    public Task SaveChangesAsync() => writableNonConformityDataContext.SaveChangesAsync();
+}
+```
+
+## Caso de uso: IRegisterNonConformityDetailInputPort
+
+```csharp
+public interface IRegisterNonConformityDetailInputPort
+{
+    Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail);
+}
+```
+
+### Implementación del Caso de uso.
+Dentro del caso de uso, primero se válida si existe un NonConformity con el Id ingresada. En caso de que no exista se lanzará 
+una exepción, de lo contrario, se registrará el detalle en el sistema, se actualizará el estado del NonConformity maestro con el status del detalle ingresado y finalmente se guardán los cambios en el sistema.
+
+```csharp
+internal class RegisterNonConformityDetailHandler
+    (IRegisterNonConformityDetailRepository repository) : IRegisterNonConformityDetailInputPort
+{
+    public async Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail)
+    {
+        bool NonConformityExists = await repository.NonConformityExistsByGuidAsync(nonConformityDetail.EntityId);
+        if (!NonConformityExists)
+        {
+            throw new InvalidOperationException("NonConformity doesn't exist");
+        }
+        else
+        {
+            await repository.RegisterNonConformityDetailAsync(nonConformityDetail);
+            await repository.UpdateStatusNonConformityMasterAsync(nonConformityDetail.EntityId, nonConformityDetail.Status);
+            await repository.SaveChangesAsync();
+        }
+
+    }
+}
+```
+# Integración en Blazor WebAssembly (UI)
+```razor
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
+
+<h3>Place Order</h3>
+
+<!-- Formulario de pedido aquí -->
+
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
+
+@if (ViewModel.Result != null)
+{
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
+    </div>
+}
+
+@code {
+    private async Task PlaceOrder()
+    {
+        await ViewModel.PlaceOrderAsync();
+    }
+}
+```
+# Caso de uso: GetAllNonConformities
+El caso de uso GetAllNonConformities es responsable de obtener todos los registros no conformidad del sistema para una compañía específica dentro de un rango de fechas.
+
+## Parametros de entrada.
+- companyId (obligatorio): Identificador de la empresa cuyos registros se desean consultar.
+- from (opcional): Fecha de inicio del rango. Si no se especifica, se toma como valor predeterminado 30 días antes del día actual.
+- end (opcional): Fecha de fin del rango. Si no se especifica, se toma como valor predeterminado el final del día actual.
+
+
+## Endpoint REST
+Este endpoint permite obtener los registros de no conformidad desde un cliente HTTP.
+
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder UseGetAllNonConformitiesEndpoint(
+        this IEndpointRouteBuilder builder)
+    {
+        builder.MapGet("{companyId}/".CreateEndpoint("NonConformityEndpoints"), async (
+            string companyId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGetAllNonConformitiesInputPort inputPort) =>
+        {
+            var result = await inputPort.HandleAsync(companyId, from, end);
+            return TypedResults.Ok(result);
+        });
+        return builder;
+    }
+}
+```
+### Reponse: NonConformityMaterResponse
+
+```csharp
+public class NonConformityMaterResponse(Guid id, string entityId, DateTime reportedAt,
+    string affectedProcess, string cause, string status, int detailsCount)
+{
+    public Guid Id => id;
+    public string EntityId => entityId;
+    public DateTime ReportedAt => reportedAt;
+    public string AffectedProcess => affectedProcess;
+    public string Cause => cause;
+    public string Status => status;
+    public int DetailsCount => detailsCount;
+}
+```
+
+
+## Repositorio: IGetAllNonConformitiesRepository
+
+```csharp
+public interface IGetAllNonConformitiesRepository
+{
+    Task<IEnumerable<NonConformityMaterResponse>> GetAllNonConformitiesAsync(string id, DateTime? from, DateTime? end);
+}
+```
+
+### Implementación del Repositorio.
+```csharp
+internal class GetAllNonConformitiesRepository(
+    IQueryableNonConformityDataContext nonConformityDataContext) : IGetAllNonConformitiesRepository
+{
+    public async Task<IEnumerable<NonConformityMaterResponse>> GetAllNonConformitiesAsync(string id, DateTime? from, DateTime? end)
+    {
+        var Query = nonConformityDataContext.NonConformities
+            .Where(NonConformity =>
+                NonConformity.CompanyId == id &&
+                NonConformity.ReportedAt >= from &&
+                NonConformity.ReportedAt <= end)
+            .OrderBy(NonConformity => NonConformity.ReportedAt);
+
+        var NonConformities = await nonConformityDataContext.ToListAsync(Query);
+
+        return NonConformities.Select(
+            NonConformity => new NonConformityMaterResponse(
+                NonConformity.Id,
+                NonConformity.EntityId,
+                NonConformity.ReportedAt,
+                NonConformity.AffectedProcess,
+                NonConformity.Cause,
+                NonConformity.Status,
+                nonConformityDataContext.NonConformityDetails.Count(NonConformityDetail =>
+                    NonConformityDetail.NonConformityId == NonConformity.Id)));
+    }
+}
+```
+
+## Caso de uso: IGetAllNonConformitiesInputPort
+
+```csharp
+public interface IGetAllNonConformitiesInputPort
+{
+    Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, DateTime? from, DateTime? end);
+}
+```
+
+### Implementación del Caso de uso.
+
+```csharp
+internal class GetAllNonConformitiesHandler(IGetAllNonConformitiesRepository repository): IGetAllNonConformitiesInputPort
+{
+    public async Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, DateTime? from, DateTime? end)
+    {
+        DateTime UtcFrom = from != null ? from.Value.Date
+            : DateTime.UtcNow.Date.AddDays(-30);
+
+        DateTime UtcEnd = end != null ? end.Value.Date.AddDays(1).AddTicks(-1)
+            : DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
+
+        return await repository.GetAllNonConformitiesAsync(id, UtcFrom, UtcEnd);
+    }
+}
+```
+
+# Integración en Blazor WebAssembly (UI)
+```razor
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
+
+<h3>Place Order</h3>
+
+<!-- Formulario de pedido aquí -->
+
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
+
+@if (ViewModel.Result != null)
+{
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
+    </div>
+}
+
+@code {
+    private async Task PlaceOrder()
+    {
+        await ViewModel.PlaceOrderAsync();
+    }
+}
+```
+
+# Caso de uso: GetNonConformitiesByAffectedProcess
+El caso de uso GetNonConformitiesByAffectedProcess es responsable de obtener todos los registros no conformidad del sistema según el proceso afectado para una compañía específica dentro de un rango de fechas.
+
+## Parametros de entrada.
+- companyId (obligatorio): Identificador de la empresa cuyos registros se desean consultar.
+- affectedProcess (obligatorio): Proceso afectado.
+- from (opcional): Fecha de inicio del rango. Si no se especifica, se toma como valor predeterminado 30 días antes del día actual.
+- end (opcional): Fecha de fin del rango. Si no se especifica, se toma como valor predeterminado el final del día actual.
+
+## Endpoint REST
+Este endpoint permite obtener los registros de no conformidad desde un cliente HTTP.
+
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder UseGetNonConformityByAffectedProcessEndpoint(
+        this IEndpointRouteBuilder builder)
+    {
+
+        builder.MapGet(("{companyId}/" + GetNonConformityByAffectedProcessEndpoint.AffectedProcess + "/{affectedProcess}").CreateEndpoint("NonConformityEndpoints"), async (
+            string companyId,
+            string affectedProcess,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGetNonConformityByAffectedProcessInputPort inputPort) =>
+        {
+            var result = await inputPort.HandleAsync(companyId, affectedProcess, from, end);
+            return TypedResults.Ok(result);
+
+        });
+
+
+        return builder;
+    }
+}
+```
+### Reponse: NonConformityMaterResponse
+
+```csharp
+public class NonConformityMaterResponse(Guid id, string entityId, DateTime reportedAt,
+    string affectedProcess, string cause, string status, int detailsCount)
+{
+    public Guid Id => id;
+    public string EntityId => entityId;
+    public DateTime ReportedAt => reportedAt;
+    public string AffectedProcess => affectedProcess;
+    public string Cause => cause;
+    public string Status => status;
+    public int DetailsCount => detailsCount;
+}
+```
+
+
+## Repositorio: IGetNonConformityByAffectedProcessRepository
+
+```csharp
+public interface IGetNonConformityByAffectedProcessRepository
+{
+    Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByAffectedProcesssAsync(string id, string affectedProcess, DateTime? from, DateTime? end);
+}
+```
+
+### Implementación del Repositorio.
+```csharp
+internal class GetNonConformityByAffectedProcessRepository(IQueryableNonConformityDataContext nonConformityDataContext) : IGetNonConformityByAffectedProcessRepository
+{
+    public async Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByAffectedProcesssAsync(string id, string affectedProcess, 
+        DateTime? from, DateTime? end)
+    {
+        var Query = nonConformityDataContext.NonConformities
+            .Where(NonConformity =>
+                NonConformity.CompanyId == id &&
+                NonConformity.AffectedProcess == affectedProcess &&
+                NonConformity.ReportedAt >= from &&
+                NonConformity.ReportedAt <= end)
+            .OrderBy(NonConformity => NonConformity.ReportedAt);
+
+        var NonConformities = await nonConformityDataContext.ToListAsync(Query);
+
+        return NonConformities.Select(
+            NonConformity => new NonConformityMaterResponse(
+                NonConformity.Id,
+                NonConformity.EntityId,
+                NonConformity.ReportedAt,
+                NonConformity.AffectedProcess,
+                NonConformity.Cause,
+                NonConformity.Status,
+                nonConformityDataContext.NonConformityDetails.Count(NonConformityDetail =>
+                    NonConformityDetail.NonConformityId == NonConformity.Id)));
+    }
+}
+```
+
+## Caso de uso: IGetNonConformityByAffectedProcessInputPort
+
+```csharp
+public interface IGetNonConformityByAffectedProcessInputPort
+{
+    Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, string affectedProcess, DateTime? from,  DateTime? end);
+}
+```
+
+### Implementación del Caso de uso.
+
+```csharp
+internal class GetNonConformityByAffectedProcessHandler
+    (IGetNonConformityByAffectedProcessRepository repository): IGetNonConformityByAffectedProcessInputPort
+{
+    public async Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, string affectedProcess, DateTime? from, DateTime? end)
+    {
+        DateTime UtcFrom = from != null ? from.Value.Date
+            : DateTime.UtcNow.Date.AddDays(-30);
+
+        DateTime UtcEnd = end != null ? end.Value.Date.AddDays(1).AddTicks(-1)
+            : DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
+
+        return await repository.GetNonConformityByAffectedProcesssAsync(id, affectedProcess, UtcFrom, UtcEnd);
+    }
+}
+```
+
+# Integración en Blazor WebAssembly (UI)
+```razor
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
+
+<h3>Place Order</h3>
+
+<!-- Formulario de pedido aquí -->
+
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
+
+@if (ViewModel.Result != null)
+{
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
+    </div>
+}
+
+@code {
+    private async Task PlaceOrder()
+    {
+        await ViewModel.PlaceOrderAsync();
+    }
+}
+```
+
+# Caso de uso: GetNonConformityByStatus
+El caso de uso GetNonConformityByStatus es responsable de obtener todos los registros no conformidad del sistema según su status para una compañía específica dentro de un rango de fechas.
+
+## Parametros de entrada.
+- companyId (obligatorio): Identificador de la empresa cuyos registros se desean consultar.
+- status (obligatorio): estatus del registro.
+- from (opcional): Fecha de inicio del rango. Si no se especifica, se toma como valor predeterminado 30 días antes del día actual.
+- end (opcional): Fecha de fin del rango. Si no se especifica, se toma como valor predeterminado el final del día actual.
+
+## Endpoint REST
+Este endpoint permite obtener los registros de no conformidad desde un cliente HTTP.
+
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder UseGetNonConformityByStatusEndpoint(
+        this IEndpointRouteBuilder builder)
+    {
+        builder.MapGet(("{companyId}/" + GetNonConformityByStatusEndpoint.Status + "/{status}").CreateEndpoint("NonConformityEndpoints"), async (
+            string companyId,
+            string status,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGetNonConformityByStatusInputPort inputPort) =>
+        {
+            var result = await inputPort.HandleAsync(companyId, status, from, end);
+            return TypedResults.Ok(result);
+
+        });
+
+        return builder;
+    }
+}
+```
+### Reponse: NonConformityMaterResponse
+
+```csharp
+public class NonConformityMaterResponse(Guid id, string entityId, DateTime reportedAt,
+    string affectedProcess, string cause, string status, int detailsCount)
+{
+    public Guid Id => id;
+    public string EntityId => entityId;
+    public DateTime ReportedAt => reportedAt;
+    public string AffectedProcess => affectedProcess;
+    public string Cause => cause;
+    public string Status => status;
+    public int DetailsCount => detailsCount;
+}
+```
+
+
+## Repositorio: IGetNonConformityByStatusRepository
+
+```csharp
+public interface IGetNonConformityByStatusRepository
+{
+    Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByStatusAsync(string id, string status, DateTime? from, DateTime? end);
+
+}
+```
+
+### Implementación del Repositorio.
+```csharp
+internal class GetNonConformityByStatusRepository(
+    IQueryableNonConformityDataContext nonConformityDataContext) : IGetNonConformityByStatusRepository
+{
+    public async Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByStatusAsync(string id, string status, DateTime? from, DateTime? end)
+    {
+        var Query = nonConformityDataContext.NonConformities
+            .Where(NonConformity =>
+                NonConformity.CompanyId == id &&
+                NonConformity.Status == status &&
+                NonConformity.ReportedAt >= from &&
+                NonConformity.ReportedAt <= end)
+            .OrderBy(NonConformity => NonConformity.ReportedAt);
+
+        var NonConformities = await nonConformityDataContext.ToListAsync(Query);
+
+        return NonConformities.Select(
+            NonConformity => new NonConformityMaterResponse(
+                NonConformity.Id,
+                NonConformity.EntityId,
+                NonConformity.ReportedAt,
+                NonConformity.AffectedProcess,
+                NonConformity.Cause,
+                NonConformity.Status,
+                nonConformityDataContext.NonConformityDetails.Count(NonConformityDetail =>
+                    NonConformityDetail.NonConformityId == NonConformity.Id)));
+    }
+}
+```
+
+## Caso de uso: IGetNonConformityByStatusInputPort
+
+```csharp
+public interface IGetNonConformityByStatusInputPort
+{
+    Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, string status, DateTime? from, DateTime? end);
+
+}
+```
+
+### Implementación del Caso de uso.
+
+```csharp
+internal class GetNonConformityByStatusHandler(
+    IGetNonConformityByStatusRepository repository) : IGetNonConformityByStatusInputPort
+{
+    public async Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, string status, DateTime? from, DateTime? end)
+    {
+        DateTime UtcFrom = from != null ? from.Value.Date
+            : DateTime.UtcNow.Date.AddDays(-30);
+
+        DateTime UtcEnd = end != null ? end.Value.Date.AddDays(1).AddTicks(-1)
+            : DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
+
+        return await repository.GetNonConformityByStatusAsync(id, status, UtcFrom, UtcEnd);
+    }
+}
+```
+
+# Integración en Blazor WebAssembly (UI)
+```razor
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
+
+<h3>Place Order</h3>
+
+<!-- Formulario de pedido aquí -->
+
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
+
+@if (ViewModel.Result != null)
+{
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
+    </div>
+}
+
+@code {
+    private async Task PlaceOrder()
+    {
+        await ViewModel.PlaceOrderAsync();
+    }
+}
+```
+
+
+# Caso de uso: GetNonConformityByEntityId
+Este caso de uso permite obtener un registro de no conformidad específico, identificado por su EntityId, junto con todos sus detalles asociados. La búsqueda se limita a una compañía determinada y a un rango de fechas definido, asegurando que solo se recuperen los casos reportados dentro del período indicado.
+
+## Parametros de entrada.
+- companyId (obligatorio): Identificador de la empresa cuyo registro se desean consultar.
+- entityId (obligatorio): Id del registro de no conformidad.
+- from (opcional): Fecha de inicio del rango. Si no se especifica, se toma como valor predeterminado 30 días antes del día actual.
+- end (opcional): Fecha de fin del rango. Si no se especifica, se toma como valor predeterminado el final del día actual.
+
+## Endpoint REST
+Este endpoint permite obtener el registro de no conformidad y sus detalles desde un cliente HTTP.
+
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder UseGetNonConformityByEntityIdEndpoint(
+        this IEndpointRouteBuilder builder)
+    {
+        builder.MapGet(("{companyId}/" + GetNonConformityByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint("NonConformityEndpoints"), async (
+            string companyId,
+            string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGetNonConformityByEntityIdInputPort inputPort) =>
+        {
+            var result = await inputPort.HandleAsync(companyId, entityId, from, end);
+            return TypedResults.Ok(result);
+
+        });
+        return builder;
+    }
+}
+```
+### Reponse: NonConformityResponse
+
+```csharp
+public class NonConformityResponse(DateTime repotedAt, string affectedProcess,
+    string status, string cause, List<NonConformityDetailResponse> details)
+{
+    public DateTime ReportedAt => repotedAt;
+    public string AffectedProcess => affectedProcess;
+    public string Status => status;
+    public string Cause => cause;
+    public List<NonConformityDetailResponse> Details => details;
+
+}
+```
+
+## Repositorio: IGetNonConformityByEntityIdRepository
+
+```csharp
+public interface IGetNonConformityByEntityIdRepository
+{
+    Task<IEnumerable<NonConformityResponse>> GetNonConformityByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end);
+}
+```
+
+### Implementación del Repositorio.
+```csharp
+internal class GetNonConformityByEntityIdRepository(
+    IQueryableNonConformityDataContext nonConformityDataContext) : IGetNonConformityByEntityIdRepository
+{
+    public async Task<IEnumerable<NonConformityResponse>> GetNonConformityByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
+    {
+        var NonConformities = await nonConformityDataContext.ToListAsync(
+            nonConformityDataContext.NonConformities
+                .Where(NonConformity => NonConformity.CompanyId == id && NonConformity.Id.ToString() == entityId)
+        );
+
+        var NonConformityDetails = await nonConformityDataContext.ToListAsync(
+            nonConformityDataContext.NonConformityDetails
+                .Where(d =>
+                    d.NonConformityId.ToString() == entityId &&
+                    d.ReportedAt >= from &&
+                    d.ReportedAt <= end)
+                );
+
+        return NonConformities
+            .Select(NonConformity => new NonConformityResponse(
+                NonConformity.ReportedAt,
+                NonConformity.AffectedProcess,
+                NonConformity.Status,
+                NonConformity.Cause,
+                NonConformityDetails
+                    .Where(Detail => Detail.NonConformityId == NonConformity.Id)
+                    .OrderBy(Detail => Detail.ReportedAt)
+                    .Select(Detail => new NonConformityDetailResponse(
+                        Detail.ReportedAt,
+                        Detail.ReportedBy,
+                        Detail.Description,
+                        Detail.Status))
+                    .ToList()
+            ))
+            .ToList();
+
+    }
+}
+```
+
+## Caso de uso: IGetNonConformityByEntityIdInputPort
+
+```csharp
+public interface IGetNonConformityByEntityIdInputPort
+{
+    Task<IEnumerable<NonConformityResponse>> HandleAsync(string id, string entityId, DateTime? from, DateTime? end);
+
+}
+```
+
+### Implementación del Caso de uso.
+
+```csharp
+internal class GetNonConformityByEntityIdHandler(
+    IGetNonConformityByEntityIdRepository repository) : IGetNonConformityByEntityIdInputPort
+{
+    public async Task<IEnumerable<NonConformityResponse>> HandleAsync(string id, string entityId, DateTime? from, DateTime? end)
+    {
+        DateTime UtcFrom = from != null ? from.Value.Date
+            : DateTime.UtcNow.Date.AddDays(-30);
+
+        DateTime UtcEnd = end != null ? end.Value.Date.AddDays(1).AddTicks(-1)
+            : DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
+
+        return await repository.GetNonConformityByEntityIdAsync(id, entityId, UtcFrom, UtcEnd);
+    }
+}
+```
+
+# Integración en Blazor WebAssembly (UI)
+```razor
+@page "/place-order"
+@inject PlaceOrderVM ViewModel
+
+<h3>Place Order</h3>
+
+<!-- Formulario de pedido aquí -->
+
+<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
+
+@if (ViewModel.Result != null)
+{
+    <div class="notification is-success">
+        <p>Order placed successfully!</p>
+        <p>Order ID: @ViewModel.Result.OrderId</p>
+    </div>
+}
+
+@code {
+    private async Task PlaceOrder()
+    {
+        await ViewModel.PlaceOrderAsync();
+    }
+}
+```

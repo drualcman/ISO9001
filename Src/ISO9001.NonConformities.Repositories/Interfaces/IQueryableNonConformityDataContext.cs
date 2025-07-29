@@ -8,8 +8,11 @@ namespace ISO9001.NonConformities.Repositories.Interfaces
 
         IQueryable<NonConformityDetailReadModel> NonConformityDetails { get; }
 
-        Task<IEnumerable<ReturnType>> ToListAsync<ReturnType>(
-            IQueryable<ReturnType> queryable);
+        Task<IEnumerable<NonConformityReadModel>> ToListAsync(
+            IQueryable<NonConformityReadModel> queryable);
+
+        Task<IEnumerable<NonConformityDetailReadModel>> ToListAsync(
+            IQueryable<NonConformityDetailReadModel> queryable);
     }
 }
 

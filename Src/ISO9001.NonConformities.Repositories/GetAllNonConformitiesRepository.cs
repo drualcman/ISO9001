@@ -1,5 +1,6 @@
 ﻿using ISO9001.Entities.Responses;
 using ISO9001.GetAllNonConformities.BusinessObjects;
+using ISO9001.NonConformities.Repositories.Entities;
 using ISO9001.NonConformities.Repositories.Interfaces;
 
 namespace ISO9001.NonConformities.Repositories
@@ -16,8 +17,10 @@ namespace ISO9001.NonConformities.Repositories
                     NonConformity.ReportedAt <= end)
                 .OrderBy(NonConformity => NonConformity.ReportedAt);
 
-            return await nonConformityDataContext.ToListAsync(
-                Query.Select(NonConformity => new NonConformityMaterResponse(
+            var NonConformities = await nonConformityDataContext.ToListAsync(Query);
+
+            return NonConformities.Select(
+                NonConformity => new NonConformityMaterResponse(
                     NonConformity.Id,
                     NonConformity.EntityId,
                     NonConformity.ReportedAt,
@@ -25,8 +28,7 @@ namespace ISO9001.NonConformities.Repositories
                     NonConformity.Cause,
                     NonConformity.Status,
                     nonConformityDataContext.NonConformityDetails.Count(NonConformityDetail =>
-                    NonConformityDetail.NonConformityId == NonConformity.Id)
-                    )));
+                        NonConformityDetail.NonConformityId == NonConformity.Id)));
         }
     }
 }
