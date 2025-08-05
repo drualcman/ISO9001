@@ -1,4 +1,6 @@
 ﻿using ISO9001.GetAllIncidentReports.BusinessObjects.Interfaces;
+using ISO9001.IncidentReports.Repositories.AuditEventProvider;
+using ISO9001.Interfaces.Interfaces;
 using ISO9001.RegisterIncidentReport.BusinessObjects.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,8 @@ namespace ISO9001.IncidentReports.Repositories
         {
             services.AddScoped<IRegisterIncidentReportRepository, RegisterIncidentReportRepository>();
             services.AddScoped<IGetAllIncidentReportsRepository, GetAllIncidentReportsRepository>();
+
+            services.AddScoped<IAuditEventProvider, IncidentReportEventProvider>();
             return services;
         }
     }

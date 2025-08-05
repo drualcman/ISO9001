@@ -9,7 +9,7 @@ namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
         {
             var Record = new DataContexts.Entities.IncidentReport
             {
-                Id = +InMemoryIncidentReportStore.IncidentReportCurrentId,
+                Id = ++InMemoryIncidentReportStore.IncidentReportCurrentId,
                 CompanyId = incidentReport.CompanyId,
                 EntityId = incidentReport.EntityId,
                 ReportedAt = incidentReport.ReportedAt,

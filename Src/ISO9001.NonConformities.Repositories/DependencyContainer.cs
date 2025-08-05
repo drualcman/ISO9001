@@ -2,6 +2,8 @@
 using ISO9001.GetNonConformityByAffectedProcess.BusinessObjects;
 using ISO9001.GetNonConformityByEntityId.BusinessObjects;
 using ISO9001.GetNonConformityByStatus.BusinessObjects;
+using ISO9001.Interfaces.Interfaces;
+using ISO9001.NonConformities.Repositories.AuditEventProvider;
 using ISO9001.RegisterNonConformity.BusinessObjects.Interfaces;
 using ISO9001.RegisterNonConformityDetail.BusinessObjects.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,8 @@ namespace ISO9001.NonConformities.Repositories
             services.AddScoped<IGetNonConformityByAffectedProcessRepository, GetNonConformityByAffectedProcessRepository>();
             services.AddScoped<IGetNonConformityByEntityIdRepository, GetNonConformityByEntityIdRepository>();
             services.AddScoped<IGetNonConformityByStatusRepository, GetNonConformityByStatusRepository>();
+
+            services.AddScoped<IAuditEventProvider, NonConformityEventProvider>();
             return services;
         }
     }

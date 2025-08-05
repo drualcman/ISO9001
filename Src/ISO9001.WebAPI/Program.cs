@@ -2,6 +2,7 @@ using ISO9001.GetAllAuditLogs.Rest.Mappings;
 using ISO9001.GetAllCustomerFeedback.Rest.Mappings;
 using ISO9001.GetAllIncidentReports.Rest.Mappings;
 using ISO9001.GetAllNonConformities.Rest.Mappings;
+using ISO9001.GetAuditEvents.Rest.Mappings;
 using ISO9001.GetAuditLogsByAction.Rest.Mappings;
 using ISO9001.GetAuditLogsByEntityId.Rest.Mappings;
 using ISO9001.GetCustomerFeedbackByCustomerId.Rest.Mappings;
@@ -77,6 +78,8 @@ app.UseGetNonConformityByEntityIdEndpoint();
 app.UseGetNonConformityByStatusEndpoint();
 app.UseRegisterNonConformityEndpoint();
 app.UseRegisterNonConformityDetailEndpoint();
+
+app.UseGetAuditEventsEndpoint();
 
 app.UseHttpsRedirection();
 app.UseCors();
