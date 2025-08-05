@@ -1,6 +1,6 @@
 ﻿using ISO9001.Entities.Responses;
 
-namespace ISO9001.GetAllAuditLogs.BusinessObjects
+namespace ISO9001.GetAllAuditLogs.BusinessObjects.Interfaces
 {
     public interface IGetAllAuditLogsInputPort
     {

@@ -1,6 +1,8 @@
-﻿using ISO9001.GetAllAuditLogs.BusinessObjects;
+﻿using ISO9001.AuditLogs.Repositories.AuditEventProvider;
+using ISO9001.GetAllAuditLogs.BusinessObjects.Interfaces;
 using ISO9001.GetAuditLogsByAction.BusinessObjects.Interfaces;
 using ISO9001.GetAuditLogsByEntityIdBusinessObjects.Interfaces;
+using ISO9001.Interfaces.Interfaces;
 using ISO9001.RegisterAuditLog.BusinessObjects.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +17,7 @@ namespace ISO9001.AuditLogs.Repositories
             services.AddScoped<IGetAuditLogsByEntityIdRepository, GetAuditLogsByEntityIdRepository>();
             services.AddScoped<IGetAuditLogsByActionRepository, GetAuditLogsByActionRepository>();
 
+            services.AddScoped<IAuditEventProvider, AuditLogEventProvider>();
             return services;
         }
     }

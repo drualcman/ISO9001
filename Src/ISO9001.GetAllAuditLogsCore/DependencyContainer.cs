@@ -1,4 +1,4 @@
-﻿using ISO9001.GetAllAuditLogs.BusinessObjects;
+﻿using ISO9001.GetAllAuditLogs.BusinessObjects.Interfaces;
 using ISO9001.GetAllAuditLogsCore.Handlers;
 using Microsoft.Extensions.DependencyInjection;
 

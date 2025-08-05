@@ -1,10 +1,12 @@
-﻿using ISO9001.AuditLogs.Repositories;
+﻿using ISO9001.AuditEvents.Repositories;
+using ISO9001.AuditLogs.Repositories;
 using ISO9001.CustomerFeedbacks.Repositories;
 using ISO9001.Database.InMemory;
 using ISO9001.GetAllAuditLogs.IoC;
 using ISO9001.GetAllCustomerFeedback.IoC;
 using ISO9001.GetAllIncidentReports.IoC;
 using ISO9001.GetAllNonConformities.IoC;
+using ISO9001.GetAuditEvents.IoC;
 using ISO9001.GetAuditLogsByAction.IoC;
 using ISO9001.GetAuditLogsByEntityId.IoC;
 using ISO9001.GetCustomerFeedbackByCustomerId.IoC;
@@ -51,6 +53,9 @@ namespace ISO9001.WebAPI
             builder.Services.AddGetNonConformityByEntityIdServices();
             builder.Services.AddGetNonConformityByStatusServices();
             builder.Services.AddNonConformityRepositoryServices();
+
+            builder.Services.AddGetAuditEventsServices();
+            builder.Services.AddAuditEventsRepositories();
 
             builder.Services.AddDatabaseInMemory();
 

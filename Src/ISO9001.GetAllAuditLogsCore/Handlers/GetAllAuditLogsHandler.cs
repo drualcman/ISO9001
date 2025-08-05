@@ -1,5 +1,5 @@
 ﻿using ISO9001.Entities.Responses;
-using ISO9001.GetAllAuditLogs.BusinessObjects;
+using ISO9001.GetAllAuditLogs.BusinessObjects.Interfaces;
 
 namespace ISO9001.GetAllAuditLogsCore.Handlers
 {
