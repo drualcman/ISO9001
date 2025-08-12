@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,10 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ISO9001.GetAllIncidentReports.BusinessObjects\ISO9001.GetAllIncidentReports.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetIncidentReportById.BusinessObjects\ISO9001.GetIncidentReportById.BusinessObjects.csproj" />
-    <ProjectReference Include="..\ISO9001.Interfaces\ISO9001.Interfaces.csproj" />
-    <ProjectReference Include="..\ISO9001.RegisterIncidentReport.BusinessObjects\ISO9001.RegisterIncidentReport.BusinessObjects.csproj" />
   </ItemGroup>
 
 </Project>

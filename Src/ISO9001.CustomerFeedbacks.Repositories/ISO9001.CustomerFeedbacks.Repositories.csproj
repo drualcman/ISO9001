@@ -13,6 +13,7 @@
     <ProjectReference Include="..\ISO9001.GetAllCustomerFeedback.BusinessObjects\ISO9001.GetAllCustomerFeedback.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByCustomerId.BusinessObjects\ISO9001.GetCustomerFeedbackByCustomerId.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByEntityId.BusinessObjects\ISO9001.GetCustomerFeedbackByEntityId.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.GetCustomerFeedbackById.BusinessObjects\ISO9001.GetCustomerFeedbackById.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByRating.BusinessObjects\ISO9001.GetCustomerFeedbackByRating.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.Interfaces\ISO9001.Interfaces.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.BusinessObjects\ISO9001.RegisterCustomerFeedback.BusinessObjects.csproj" />
