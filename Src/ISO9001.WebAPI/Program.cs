@@ -34,15 +34,15 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
+if(app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-app.UseWebApiDocumentator();
 
 app.UseISO9001Endpoints();
-
+app.UseWebApiDocumentatorSessions();
 app.UseHttpsRedirection();
 app.UseCors();
+app.MapWebApiDocumentator();
 
-app.Run();
+await app.RunAsync();
