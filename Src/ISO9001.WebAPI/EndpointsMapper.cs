@@ -24,34 +24,34 @@ namespace ISO9001.WebAPI
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseISO9001Endpoints(
+        public static IEndpointRouteBuilder MapISO9001Endpoints(
             this IEndpointRouteBuilder builder)
         {
-            builder.UseGetAllAuditLogsEndpoint();
-            builder.UseGetAuditLogByIdEndpoint();
-            builder.UseGetAuditLogByActionEndpoint();
-            builder.UseGetAuditLogsByEntityIdEndpoint();
-            builder.UseRegisterAuditLogEndpoint();
+            builder.MapGetAllAuditLogsEndpoint();
+            builder.MapGetAuditLogByIdEndpoint();
+            builder.MapGetAuditLogByActionEndpoint();
+            builder.MapGetAuditLogsByEntityIdEndpoint();
+            builder.MapRegisterAuditLogEndpoint();
 
-            builder.UseGetAllCustomerFeedbackEndpoints();
-            builder.UseGetCustomerFeedbackByIdEndpoint();
-            builder.UseGetCustomerFeedbackByRatingEndpoint();
-            builder.UseGetCustomerFeedbackByCustomerIdEndpoint();
-            builder.UseGetCustomerFeedbackByEntityIdEndpoint();
-            builder.UseRegisterCustomerFeedbackEndpoint();
+            builder.MapGetAllCustomerFeedbackEndpoints();
+            builder.MapGetCustomerFeedbackByIdEndpoint();
+            builder.MapGetCustomerFeedbackByRatingEndpoint();
+            builder.MapGetCustomerFeedbackByCustomerIdEndpoint();
+            builder.MapGetCustomerFeedbackByEntityIdEndpoint();
+            builder.MapRegisterCustomerFeedbackEndpoint();
 
-            builder.UseGetAllIncidentReportsEndpoint();
-            builder.UseRegisterIncidentReportEndpoint();
-            builder.UseGetIncidentReportByIdEndpoint();
+            builder.MapGetAllIncidentReportsEndpoint();
+            builder.MapRegisterIncidentReportEndpoint();
+            builder.MapGetIncidentReportByIdEndpoint();
 
-            builder.UseGetAllNonConformitiesEndpoint();
-            builder.UseGetNonConformityByAffectedProcessEndpoint();
-            builder.UseGetNonConformityByEntityIdEndpoint();
-            builder.UseGetNonConformityByStatusEndpoint();
-            builder.UseRegisterNonConformityEndpoint();
-            builder.UseRegisterNonConformityDetailEndpoint();
+            builder.MapGetAllNonConformitiesEndpoint();
+            builder.MapGetNonConformityByAffectedProcessEndpoint();
+            builder.MapGetNonConformityByEntityIdEndpoint();
+            builder.MapGetNonConformityByStatusEndpoint();
+            builder.MapRegisterNonConformityEndpoint();
+            builder.MapRegisterNonConformityDetailEndpoint();
 
-            builder.UseGetAuditEventsEndpoint();
+            builder.MapGetAuditEventsEndpoint();
 
             return builder;
         }

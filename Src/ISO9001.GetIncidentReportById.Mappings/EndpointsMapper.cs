@@ -8,7 +8,7 @@ namespace ISO9001.GetIncidentReportById.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseGetIncidentReportByIdEndpoint(
+        public static IEndpointRouteBuilder MapGetIncidentReportByIdEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapGet(("{companyId}/" + GetIncidentReportByIdEndpoint.Id + "/{id}").CreateEndpoint("IncidentReportEndpoints"), async (

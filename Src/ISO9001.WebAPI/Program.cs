@@ -39,10 +39,10 @@ if(app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseISO9001Endpoints();
 app.UseWebApiDocumentatorSessions();
 app.UseHttpsRedirection();
 app.UseCors();
 app.MapWebApiDocumentator();
+app.MapISO9001Endpoints();
 
 await app.RunAsync();

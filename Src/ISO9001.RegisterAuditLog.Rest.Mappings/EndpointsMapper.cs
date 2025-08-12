@@ -10,7 +10,7 @@ namespace ISO9001.RegisterAuditLog.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseRegisterAuditLogEndpoint(
+        public static IEndpointRouteBuilder MapRegisterAuditLogEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapPost("".CreateEndpoint("AuditLogEndpoints"),

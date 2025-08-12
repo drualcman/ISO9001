@@ -9,7 +9,7 @@ namespace ISO9001.GetAuditLogsByEntityId.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseGetAuditLogsByEntityIdEndpoint(
+        public static IEndpointRouteBuilder MapGetAuditLogsByEntityIdEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapGet(("{companyId}/" + GetAuditLogsByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint("AuditLogEndpoints"), async (

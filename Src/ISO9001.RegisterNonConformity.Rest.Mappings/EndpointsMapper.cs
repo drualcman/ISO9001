@@ -10,7 +10,7 @@ namespace ISO9001.RegisterNonConformity.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseRegisterNonConformityEndpoint(
+        public static IEndpointRouteBuilder MapRegisterNonConformityEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapPost("".CreateEndpoint("NonConformityEndpoints"),

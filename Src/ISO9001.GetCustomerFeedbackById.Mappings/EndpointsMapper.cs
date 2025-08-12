@@ -8,7 +8,7 @@ namespace ISO9001.GetCustomerFeedbackById.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseGetCustomerFeedbackByIdEndpoint(
+        public static IEndpointRouteBuilder MapGetCustomerFeedbackByIdEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapGet(("{companyId}/" + GetCustomerFeedbackByIdEndpoint.Id + "/{id}").CreateEndpoint("CustomerFeedbackEndpoints"), async (

@@ -10,7 +10,7 @@ namespace ISO9001.RegisterCustomerFeedback.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseRegisterCustomerFeedbackEndpoint(
+        public static IEndpointRouteBuilder MapRegisterCustomerFeedbackEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapPost("".CreateEndpoint("CustomerFeedbackEndpoints"),

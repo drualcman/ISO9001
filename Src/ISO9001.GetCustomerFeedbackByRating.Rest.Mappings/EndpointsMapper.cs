@@ -9,7 +9,7 @@ namespace ISO9001.GetCustomerFeedbackByRating.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseGetCustomerFeedbackByRatingEndpoint(
+        public static IEndpointRouteBuilder MapGetCustomerFeedbackByRatingEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapGet(("{companyId}/" + GetCustomerFeedbackByRatingEndpoint.Rating + "/{rating}").CreateEndpoint("CustomerFeedbackEndpoints"), async (

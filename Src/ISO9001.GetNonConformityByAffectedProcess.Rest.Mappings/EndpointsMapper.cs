@@ -9,7 +9,7 @@ namespace ISO9001.GetNonConformityByAffectedProcess.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseGetNonConformityByAffectedProcessEndpoint(
+        public static IEndpointRouteBuilder MapGetNonConformityByAffectedProcessEndpoint(
             this IEndpointRouteBuilder builder)
         {
 

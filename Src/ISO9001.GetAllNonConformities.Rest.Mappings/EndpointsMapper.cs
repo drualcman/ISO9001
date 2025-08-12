@@ -9,7 +9,7 @@ namespace ISO9001.GetAllNonConformities.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseGetAllNonConformitiesEndpoint(
+        public static IEndpointRouteBuilder MapGetAllNonConformitiesEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapGet("{companyId}/".CreateEndpoint("NonConformityEndpoints"), async (

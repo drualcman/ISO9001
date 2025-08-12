@@ -10,7 +10,7 @@ namespace ISO9001.RegisterIncidentReport.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseRegisterIncidentReportEndpoint(
+        public static IEndpointRouteBuilder MapRegisterIncidentReportEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapPost("".CreateEndpoint("IncidentReportEndpoints"),

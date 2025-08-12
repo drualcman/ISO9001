@@ -9,7 +9,7 @@ namespace ISO9001.GetAuditEvents.Rest.Mappings
 {
     public static class EndpointsMapper
     {
-        public static IEndpointRouteBuilder UseGetAuditEventsEndpoint(
+        public static IEndpointRouteBuilder MapGetAuditEventsEndpoint(
             this IEndpointRouteBuilder builder)
         {
             builder.MapGet("{companyId}/".CreateEndpoint("AuditEventEndpoints"), async (
