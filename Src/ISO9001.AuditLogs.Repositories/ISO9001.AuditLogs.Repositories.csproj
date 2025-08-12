@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISO9001.GetAllAuditLogs.BusinessObjects\ISO9001.GetAllAuditLogs.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.GetAuditLogById.BusinessObjects\ISO9001.GetAuditLogById.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetAuditLogsByAction.BusinessObjects\ISO9001.GetAuditLogsByAction.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetAuditLogsByEntityIdBusinessObjects\ISO9001.GetAuditLogsByEntityIdBusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.Interfaces\ISO9001.Interfaces.csproj" />
