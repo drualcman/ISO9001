@@ -226,7 +226,7 @@ Este endpoint permite registrar la entidad NonConformity junto a su primer detal
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseRegisterNonConformityEndpoint(
+    public static IEndpointRouteBuilder MapRegisterNonConformityEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost("".CreateEndpoint("NonConformityEndpoints"),
@@ -395,7 +395,7 @@ Este endpoint permite obtener los registros de no conformidad desde un cliente H
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetAllNonConformitiesEndpoint(
+    public static IEndpointRouteBuilder MapGetAllNonConformitiesEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet("{companyId}/".CreateEndpoint("NonConformityEndpoints"), async (
@@ -536,7 +536,7 @@ Este endpoint permite obtener los registros de no conformidad desde un cliente H
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetNonConformityByAffectedProcessEndpoint(
+    public static IEndpointRouteBuilder MapGetNonConformityByAffectedProcessEndpoint(
         this IEndpointRouteBuilder builder)
     {
 
@@ -684,7 +684,7 @@ Este endpoint permite obtener los registros de no conformidad desde un cliente H
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetNonConformityByStatusEndpoint(
+    public static IEndpointRouteBuilder MapGetNonConformityByStatusEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetNonConformityByStatusEndpoint.Status + "/{status}").CreateEndpoint("NonConformityEndpoints"), async (
@@ -833,7 +833,7 @@ Este endpoint permite obtener el registro de no conformidad y sus detalles desde
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetNonConformityByEntityIdEndpoint(
+    public static IEndpointRouteBuilder MapGetNonConformityByEntityIdEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetNonConformityByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint("NonConformityEndpoints"), async (

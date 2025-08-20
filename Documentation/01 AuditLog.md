@@ -137,7 +137,7 @@ Este endpoint permite registrar logs desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseRegisterAuditLogEndpoint(
+    public static IEndpointRouteBuilder MapRegisterAuditLogEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost("api/auditlog",
@@ -294,7 +294,7 @@ Este endpoint permite obtener los logs desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetAllAuditLogsEndpoint(
+    public static IEndpointRouteBuilder MapGetAllAuditLogsEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet("{companyId}/".CreateEndpoint("AuditLogEndpoints"), async (
@@ -438,7 +438,7 @@ Este endpoint permite obtener los logs desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetAuditLogByActionEndpoint(
+    public static IEndpointRouteBuilder MapGetAuditLogByActionEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetAuditLogsByActionEndpoint.Action + "/{action}").CreateEndpoint("AuditLogEndpoints"), async (
@@ -584,7 +584,7 @@ Este endpoint permite obtener los logs desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetAuditLogsByEntityIdEndpoint(
+    public static IEndpointRouteBuilder MapGetAuditLogsByEntityIdEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetAuditLogsByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint("AuditLogEndpoints"), async (

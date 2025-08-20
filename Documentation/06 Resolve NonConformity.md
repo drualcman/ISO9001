@@ -83,7 +83,7 @@ Este endpoint permite registrar la entidad NonConformityDetail desde un cliente 
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseRegisterNonConformityDetailEndpoint(
+    public static IEndpointRouteBuilder MapRegisterNonConformityDetailEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost(("{companyId}/" + RegisterNonConformityDetailEndpoint.Detail).CreateEndpoint("NonConformityEndpoints"),
