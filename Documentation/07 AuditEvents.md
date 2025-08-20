@@ -1,200 +1,215 @@
 # Panel de auditoría
-## Entidades del Dominio (Auditoría)
-Primero definimos la entidad principal:
+
+# Caso de uso: GetAuditEvents
+El caso de uso GetAuditEvents es responsable de obtener un panel de auditoria para una entidad dentro de una compañía específica. Este planel incluye todos los eventos de auditoria registrados en el sistema:
+- AuditLog
+- CustomerFeedback
+- IncidentReport
+- NonConformity
+
+
+## Endpoint REST
+Este endpoint permite obtener el panel de auditoria desde un cliente HTTP.
 
 ```csharp
-public sealed class AuditEvent
+public static class EndpointsMapper
 {
-    public Guid Id { get; }
-    public Guid OrderId { get; }
-    public DateTime Timestamp { get; }
-    public string EventType { get; } // e.g., "OrderCreated", "PaymentReceived", "NonConformityReported"
-    public string Description { get; }
-    public string ResponsibleUser { get; }
-
-    public AuditEvent(Guid id, Guid orderId, DateTime timestamp, string eventType, string description, string responsibleUser)
+    public static IEndpointRouteBuilder MapGetAuditEventsEndpoint(
+        this IEndpointRouteBuilder builder)
     {
-        Id = id;
-        OrderId = orderId;
-        Timestamp = timestamp;
-        EventType = eventType;
-        Description = description;
-        ResponsibleUser = responsibleUser;
-    }
-}
-```
-
-## Caso de Uso: Obtener Auditoría por Pedido
-Input Port
-```csharp
-public interface IGetAuditLogByOrderUseCase
-{
-    Task HandleAsync(GetAuditLogByOrderRequest request, IAuditLogOutputPort outputPort);
-}
-```
-## Request DTO
-```csharp
-public sealed class GetAuditLogByOrderRequest
-{
-    public Guid OrderId { get; }
-
-    public GetAuditLogByOrderRequest(Guid orderId)
-    {
-        OrderId = orderId;
-    }
-}
-```
-## Output Port
-Este puerto será implementado por el presentador, que preparará los datos para la capa de presentación:
-
-```csharp
-public interface IAuditLogOutputPort
-{
-    Task PresentAsync(IEnumerable<AuditEvent> auditEvents);
-}
-```
-
-## Interactor (Caso de uso)
-El interactor coordina la lógica y se apoya en un repositorio que obtiene los eventos por OrderId.
-
-```csharp
-public sealed class GetAuditLogByOrderInteractor : IGetAuditLogByOrderUseCase
-{
-    private readonly IAuditLogRepository _repository;
-
-    public GetAuditLogByOrderInteractor(IAuditLogRepository repository)
-    {
-        _repository = repository;
-    }
-
-    public async Task HandleAsync(GetAuditLogByOrderRequest request, IAuditLogOutputPort outputPort)
-    {
-        IEnumerable<AuditEvent> auditEvents = await _repository.GetByOrderIdAsync(request.OrderId);
-
-        await outputPort.PresentAsync(auditEvents);
-    }
-}
-```
-
-## Repositorio
-La abstracción para obtener los eventos desde la infraestructura:
-
-```csharp
-public interface IAuditLogRepository
-{
-    Task<IEnumerable<AuditEvent>> GetByOrderIdAsync(Guid orderId);
-}
-```
-
-## Implementación del Repositorio (AuditLogRepository)
-Esta clase accede a la fuente de datos. Usaremos una clase base simple como si estuviera accediendo a una base de datos relacional (o archivo de log en una implementación real).
-
-Supongamos que ya tienes una DbContext o equivalente. Si no, esta parte se puede adaptar a tu persistencia.
-```csharp
-public sealed class AuditLogRepository : IAuditLogRepository
-{
-    private readonly ApplicationDbContext _context;
-
-    public AuditLogRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
-    public async Task<IEnumerable<AuditEvent>> GetByOrderIdAsync(Guid orderId)
-    {
-        List<AuditEventEntity> entities = await _context.AuditEvents
-            .Where(e => e.OrderId == orderId)
-            .OrderBy(e => e.Timestamp)
-            .ToListAsync();
-
-        List<AuditEvent> result = new List<AuditEvent>();
-
-        foreach (AuditEventEntity entity in entities)
+        builder.MapGet("{companyId}/".CreateEndpoint("AuditEventEndpoints"), async (
+            string companyId,
+            [FromQuery] string entityId,
+            IGetAuditEventsInputPort inputPort) =>
         {
-            AuditEvent auditEvent = new AuditEvent(
-                entity.Id,
-                entity.OrderId,
-                entity.Timestamp,
-                entity.EventType,
-                entity.Description,
-                entity.ResponsibleUser
-            );
+            var result = await inputPort.HandleAsync(entityId, companyId);
+            return TypedResults.Ok(result);
+        });
 
-            result.Add(auditEvent);
+        return builder;
+
+    }
+}
+```
+### Reponse: AuditEventResponse
+La respuesta es una colección de objetos AuditEventResponse. Cada objeto indica el tipo de evento en el campo EventType.
+
+```csharp
+{
+    public class AuditEventResponse(string id, string entityId, DateTime timeStamp,
+        string eventType, string description, string responsibleUser)
+    {
+        public string Id => id;
+        public string EntityId => entityId;
+        public DateTime TimeStamp => timeStamp;
+        public string EventType => eventType;
+        public string Description => description;
+        public string ResponsibleUser => responsibleUser;
+    }
+}
+```
+
+## Repositorio: IGetAuditEventsRepository
+
+```csharp
+public interface IGetAuditEventsRepository
+{
+    Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId);
+}
+```
+
+### Implementación del Repositorio.
+Se utiliza un patrón de proveedores de eventos de auditoría (IAuditEventProvider). Cada tipo de evento implementa su propio proveedor, y el repositorio central los unifica.
+```csharp
+internal class GetAuditEventsRepository(IEnumerable<IAuditEventProvider> providers) : IGetAuditEventsRepository
+{
+    public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId,string companyId)
+    {
+        List<AuditEventResponse> AllAuditEvents = [];
+
+        foreach(IAuditEventProvider provider in providers)
+        {
+            var AuditEvents = await provider.GetAuditEventsAsync(entityId, companyId);
+
+            AllAuditEvents.AddRange(AuditEvents);
         }
 
-        return result;
+        return AllAuditEvents;
     }
 }
 ```
-Donde AuditEventEntity sería la clase de entidad mapeada para persistencia.
 
-## Entidad de Infraestructura (AuditEventEntity)
+##### AuditLogEventProvider
 ```csharp
-public sealed class AuditEventEntity
+internal class AuditLogEventProvider(IQueryableAuditLogDataContext context) : IAuditEventProvider
 {
-    public Guid Id { get; set; }
-    public Guid OrderId { get; set; }
-    public DateTime Timestamp { get; set; }
-    public string EventType { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string ResponsibleUser { get; set; } = string.Empty;
-}
-```
+    public string EventType => "AuditLog";
 
-## ViewModel (para la UI)
-Primero definimos el ViewModel que usará la vista de Blazor:
-
-```csharp
-public sealed class AuditLogViewModel
-{
-    public List<AuditLogItemViewModel> Events { get; } = new List<AuditLogItemViewModel>();
-}
-
-public sealed class AuditLogItemViewModel
-{
-    public string EventType { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Timestamp { get; set; } = string.Empty;
-    public string ResponsibleUser { get; set; } = string.Empty;
-}
-```
-
-## Presentador (AuditLogPresenter)
-Este presentador implementa el IAuditLogOutputPort y llena el AuditLogViewModel con datos legibles por el UI:
-
-```csharp
-public sealed class AuditLogPresenter : IAuditLogOutputPort
-{
-    private readonly AuditLogViewModel _viewModel;
-
-    public AuditLogPresenter(AuditLogViewModel viewModel)
+    public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        _viewModel = viewModel;
+        var AuditLogs = context.AuditLogs.Where
+            (AuditLog => AuditLog.EntityId == entityId && 
+            AuditLog.CompanyId == companyId)
+            .OrderBy(AuditLog => AuditLog.LogId)
+            .Select(AuditLog => new AuditEventResponse(
+                AuditLog.LogId.ToString(), 
+                AuditLog.EntityId,
+                AuditLog.Timestamp, 
+                EventType, 
+                AuditLog.Details,
+                AuditLog.PerformedBy));
+
+        return await Task.FromResult(AuditLogs);
     }
+}
+```
+##### CustomerFeedbackEventProvider
+```csharp
+internal class CustomerFeedbackEventProvider(IQueryableCustomerFeedbackDataContext context) : IAuditEventProvider
+{
+    public string EventType => "CustomerFeedback";
 
-    public Task PresentAsync(IEnumerable<AuditEvent> auditEvents)
+    public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        _viewModel.Events.Clear();
+        var CustomerFeedbacks = context.CustomerFeedbacks.Where
+            (CustomerFeedback => CustomerFeedback.EntityId == entityId &&
+            CustomerFeedback.CompanyId == companyId)
+            .OrderBy(CustomerFeedback => CustomerFeedback.Id)
+            .Select(CustomerFeedback => new AuditEventResponse(
+                CustomerFeedback.Id.ToString(),
+                CustomerFeedback.EntityId,
+                CustomerFeedback.ReportedAt,
+                EventType,
+                CustomerFeedback.Comments,
+                CustomerFeedback.CustomerId));
 
-        foreach (AuditEvent auditEvent in auditEvents)
+        return await Task.FromResult(CustomerFeedbacks);
+    }
+}
+```
+
+##### IncidentReportEventProvider
+```csharp
+internal class IncidentReportEventProvider(IQueryableIncidentReportDataContext context): IAuditEventProvider
+{
+    public string EventType => "IncidentReport";
+
+    public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
+    {
+        var IncidentReports = context.IncidentReports.Where
+            (IncidentReport => IncidentReport.EntityId == entityId &&
+                IncidentReport.CompanyId == companyId)
+            .OrderBy(IncidentReport => IncidentReport.Id)
+            .Select(IncidentReport => new AuditEventResponse(
+                IncidentReport.Id.ToString(),
+                IncidentReport.EntityId,
+                IncidentReport.ReportedAt,
+                EventType,
+                IncidentReport.Description,
+                IncidentReport.UserId
+                ));
+
+        return await Task.FromResult(IncidentReports);
+    }
+}
+```
+
+##### NonConformityEventProvider
+```csharp
+internal class NonConformityEventProvider(IQueryableNonConformityDataContext context): IAuditEventProvider
+{
+    public string EventType => "NonConformity";
+
+    public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
+    {
+        var Query = context.NonConformities
+            .Where(NonConformity => NonConformity.EntityId == entityId && NonConformity.CompanyId == companyId)
+            .OrderBy(NonConformity => NonConformity.ReportedAt);
+
+        var NonConformities = await context.ToListAsync(Query);
+
+        var Result = NonConformities.Select(NonConformity =>
         {
-            AuditLogItemViewModel item = new AuditLogItemViewModel
-            {
-                EventType = auditEvent.EventType,
-                Description = auditEvent.Description,
-                Timestamp = auditEvent.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"),
-                ResponsibleUser = auditEvent.ResponsibleUser
-            };
+            var LastDetail = context.NonConformityDetails
+            .Where(Detail => Detail.NonConformityId == NonConformity.Id)
+            .OrderByDescending(Detail => Detail.CreatedAt)
+            .FirstOrDefault();
 
-            _viewModel.Events.Add(item);
-        }
+            return new AuditEventResponse(
+                NonConformity.Id.ToString(),
+                NonConformity.EntityId,
+                NonConformity.ReportedAt,
+                EventType,
+                LastDetail.Description,
+                LastDetail.ReportedBy
+                );
+        });
 
-        return Task.CompletedTask;
+        return await Task.FromResult(Result);
     }
 }
 ```
-Este patrón mantiene el ViewModel limpio y sin referencias a clases del dominio ni a la infraestructura, lo cual es esencial para el desacoplamiento.
+
+## Caso de uso: IGetAuditEventsInputPort
+
+```csharp
+public interface IGetAuditEventsInputPort
+{
+    Task<IEnumerable<AuditEventResponse>> HandleAsync(string entityId, string companyId);
+}
+```
+
+### Implementación del Caso de uso.
+
+```csharp
+internal class GetAuditEventsHandler(IGetAuditEventsRepository repository) : IGetAuditEventsInputPort
+{
+    public async Task<IEnumerable<AuditEventResponse>> HandleAsync(string entityId, string companyId)
+    {
+        return await repository.GetAuditEventsAsync(entityId, companyId);
+    }
+}
+```
 
 ## ViewModel de Blazor (Binding para la Vista)
 Creamos una clase que actúa como Model en el patrón MVVM (la lógica del componente se separa aquí):

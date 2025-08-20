@@ -49,108 +49,187 @@ El proceso de resolución generalmente será gestionado por el usuario de la emp
 #### Notificación al Cliente:
 Una vez resuelta la no conformidad, se envía una notificación al cliente confirmando que el problema ha sido resuelto, lo que puede hacerse a través de un correo electrónico, mensaje en la interfaz o ambos.
 
-## Request / Response DTOs para Resolución
-Vamos a crear los DTOs necesarios para gestionar la resolución de la no conformidad.
+# Entidad: NonConformityDetail
+Representa el seguimiento, comentario o acción tomada en relación a un caso de no conformidad. Puede haber varios NonConformityDetail por cada NonConformity. 
+La entidad NonConformityDetaill debe incluir:
+
+ReportedBy: Usuario que reportó o documentó este detalle.
+
+Description: Descripción del detalle, acción tomada o comentario.
+
+Status: Descripción del detalle, acción tomada o comentario.
+
+ReportedAt: Fecha y hora en la que se agregó este detalle.
 
 ```csharp
-public class ResolveNonConformityRequest
+public class NonConformityDetail
 {
-    public Guid NonConformityId { get; set; }
-    public string ResolutionDetails { get; set; } = string.Empty;
-    public string ResolvedBy { get; set; } = string.Empty;
-}
-
-public class ResolveNonConformityResponse
-{
-    public Guid NonConformityId { get; set; }
-    public DateTime ResolvedAt { get; set; }
-    public string ResolutionDetails { get; set; } = string.Empty;
+    public string ReportedBy { get; set; }
+    public string Description { get; set; }
+    public string Status { get; set; }
+    public DateTime ReportedAt { get; set; }
 }
 ```
 
-## InputPort / OutputPort para Resolución
-```csharp
-public interface IResolveNonConformityInputPort
-{
-    Task HandleAsync(ResolveNonConformityRequest request);
-}
+# Caso de uso: RegisterNonConformityDetail
+El caso de uso RegisterNonConformityDetail es responsable dar seguimiento a la entidad maestra de no conformidad (NonConformity), actualizando su estado y registrando los detalles de la resolución.
 
-public interface IResolveNonConformityOutputPort
-{
-    Task HandleAsync(ResolveNonConformityResponse response);
-}
-```
+## Parametros de Entrada.
+- NonConformityCreateDetailRequest (obligatorio).
 
-## Interactor para Resolución
-El interactor gestionará la lógica de resolución de la no conformidad, actualizando su estado y registrando los detalles de la resolución.
+## Endpoint REST
+Este endpoint permite registrar la entidad NonConformityDetail desde un cliente HTTP.
 
 ```csharp
-public class ResolveNonConformityInteractor : IResolveNonConformityInputPort
+public static class EndpointsMapper
 {
-    private readonly INonConformityRepository repository;
-    private readonly IResolveNonConformityOutputPort outputPort;
-
-    public ResolveNonConformityInteractor(
-        INonConformityRepository repository,
-        IResolveNonConformityOutputPort outputPort)
+    public static IEndpointRouteBuilder UseRegisterNonConformityDetailEndpoint(
+        this IEndpointRouteBuilder builder)
     {
-        this.repository = repository;
-        this.outputPort = outputPort;
+        builder.MapPost(("{companyId}/" + RegisterNonConformityDetailEndpoint.Detail).CreateEndpoint("NonConformityEndpoints"),
+            async (
+                string companyId,
+                NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetailInputPort inputPort) =>
+            {
+                NonConformityCreateDetailDto data = new NonConformityCreateDetailDto(
+                    Guid.Parse(nonConformity.NonConformityId),
+                    companyId,
+                    nonConformity.ReportedAt,
+                    nonConformity.ReportedBy,
+                    nonConformity.Description,
+                    nonConformity.Status);
+                await inputPort.HandleAsync(data);
+                return TypedResults.Created();
+            });
+
+        return builder;
+    }
+}
+```
+
+
+### DTO y Request
+
+```csharp
+public class NonConformityCreateDetailDto(Guid entityId, string companyId, DateTime reportedAt,
+    string reportedBy, string description, string status)
+{
+    public Guid EntityId => entityId;
+    public string CompanyId => companyId;
+    public DateTime ReportedAt => reportedAt;
+    public string ReportedBy => reportedBy;
+    public string Description => description;
+    public string Status => status;
+}
+```
+
+```csharp
+public class NonConformityCreateDetailRequest
+{
+    public DateTime ReportedAt { get; set; }
+    public string NonConformityId { get; set; }
+    public string ReportedBy { get; set; }
+    public string Description { get; set; }
+    public string Status { get; set; }
+}
+```
+
+## Repositorio: IRegisterNonConformityDetailRepository
+
+```csharp
+public interface IRegisterNonConformityDetailRepository
+{
+    Task RegisterNonConformityDetailAsync(NonConformityCreateDetailDto nonConformityDetail);
+    Task SaveChangesAsync();
+    Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status);
+    Task<bool> NonConformityExistsByGuidAsync(Guid entityId);
+}
+```
+
+### Implementación del Repositorio.
+Es importante resaltar que las definiciones de las interfaces "IQueryableNonConformityDataContext" e "IWritableNonConformityDataContext" están definidas en la documentación "05 NonConformity.md".
+
+```csharp
+internal class RegisterNonConformityDetailRepository(
+    IQueryableNonConformityDataContext queryNonConformityDataContext,
+    IWritableNonConformityDataContext writableNonConformityDataContext): IRegisterNonConformityDetailRepository
+{
+
+    public Task<bool> NonConformityExistsByGuidAsync(Guid entityId)
+    {
+        NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
+            .FirstOrDefault(nonConformity =>
+                nonConformity.Id == entityId);
+
+        bool Exists = NonConformityMaster != null;
+        return Task.FromResult(Exists);
     }
 
-    public async Task HandleAsync(ResolveNonConformityRequest request)
+    public async Task RegisterNonConformityDetailAsync(NonConformityCreateDetailDto nonConformityDetail)
     {
-        var nonConformity = await repository.GetByIdAsync(request.NonConformityId);
 
-        if (nonConformity == null || nonConformity.Status == "Closed")
+        NonConformityDetail NewDetail = new NonConformityDetail
         {
-            // Handle non-conformity not found or already resolved
-            return;
-        }
-
-        nonConformity.Status = "Closed";
-        nonConformity.ResolvedAt = DateTime.UtcNow;
-        nonConformity.ResolutionDetails = request.ResolutionDetails;
-        nonConformity.ResolvedBy = request.ResolvedBy;
-
-        await repository.UpdateAsync(nonConformity);
-
-        var response = new ResolveNonConformityResponse
-        {
-            NonConformityId = nonConformity.Id,
-            ResolvedAt = nonConformity.ResolvedAt.Value,
-            ResolutionDetails = nonConformity.ResolutionDetails
+            ReportedBy = nonConformityDetail.ReportedBy,
+            Description = nonConformityDetail.Description,
+            Status = nonConformityDetail.Status,
+            ReportedAt = nonConformityDetail.ReportedAt
         };
 
-        await outputPort.HandleAsync(response);
-    }
-}
-```
-
-## Presenter para Resolución
-El presenter actualiza el ViewModel después de que el interactor haya resuelto la no conformidad.
-
-```csharp
-public class ResolveNonConformityPresenter : IResolveNonConformityOutputPort
-{
-    private readonly ResolveNonConformityViewModel viewModel;
-
-    public ResolveNonConformityPresenter(ResolveNonConformityViewModel viewModel)
-    {
-        this.viewModel = viewModel;
+        await writableNonConformityDataContext.AddNonConformityDetailAsync(NewDetail, nonConformityDetail.EntityId);
     }
 
-    public Task HandleAsync(ResolveNonConformityResponse response)
+
+    public Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status)
     {
-        viewModel.NonConformityId = response.NonConformityId;
-        viewModel.ResolvedAt = response.ResolvedAt;
-        viewModel.ResolutionDetails = response.ResolutionDetails;
-        viewModel.Status = "Non-conformity resolved successfully";
+        NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
+            .FirstOrDefault(nonConformity =>
+                nonConformity.Id == entityId);
+
+        NonConformityMaster.Status = status;
+        writableNonConformityDataContext.UpdateNonConformityAsync(NonConformityMaster);
         return Task.CompletedTask;
     }
+
+    public Task SaveChangesAsync() => writableNonConformityDataContext.SaveChangesAsync();
 }
 ```
 
+## Caso de uso: IRegisterNonConformityDetailInputPort
+
+```csharp
+public interface IRegisterNonConformityDetailInputPort
+{
+    Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail);
+}
+```
+
+### Implementación del Caso de uso.
+Dentro del caso de uso, primero se válida si existe un NonConformity con el Id ingresada. En caso de que no exista se lanzará  una exepción, de lo contrario, se registrará el detalle en el sistema. Así mismo, se actualizará el estado del NonConformity maestro con el status del detalle ingresado y finalmente se guardán los cambios en el sistema.
+
+```csharp
+internal class RegisterNonConformityDetailHandler
+    (IRegisterNonConformityDetailRepository repository) : IRegisterNonConformityDetailInputPort
+{
+    public async Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail)
+    {
+        bool NonConformityExists = await repository.NonConformityExistsByGuidAsync(nonConformityDetail.EntityId);
+        if (!NonConformityExists)
+        {
+            throw new InvalidOperationException("NonConformity doesn't exist");
+        }
+        else
+        {
+            await repository.RegisterNonConformityDetailAsync(nonConformityDetail);
+            await repository.UpdateStatusNonConformityMasterAsync(nonConformityDetail.EntityId, nonConformityDetail.Status);
+            await repository.SaveChangesAsync();
+        }
+
+    }
+}
+```
+
+# Integración en Blazor WebAssembly (UI)
 ## ViewModel para Resolución
 El ViewModel mantiene el estado de la resolución, que se enlazará con la interfaz de usuario de Blazor.
 
@@ -280,6 +359,5 @@ Ahora vamos a crear un formulario en Blazor para resolver una no conformidad, do
 # Resumen de resolución de No Conformidad:
 - Entidad NonConformity: Se amplió con detalles de resolución.
 - Caso de Uso ResolveNonConformity: Actualiza el estado de la no conformidad y registra los detalles de la resolución.
-- Presenter ResolveNonConformityPresenter: Actualiza el ViewModel tras la resolución.
 - ViewModel ResolveNonConformityViewModel: Mantiene el estado de la resolución y se enlaza con la UI.
 - Componente Blazor ResolveNonConformity.razor: Permite al usuario registrar los detalles de la resolución de una no conformidad.
