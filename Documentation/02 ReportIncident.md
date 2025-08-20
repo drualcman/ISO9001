@@ -150,7 +150,7 @@ Este endpoint permite registrar reportes de incidencia desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseRegisterIncidentReportEndpoint(
+    public static IEndpointRouteBuilder MapRegisterIncidentReportEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost("".CreateEndpoint("IncidentReportEndpoints"),
@@ -308,7 +308,7 @@ Este endpoint permite obtener los reportes de incidencia desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetAllIncidentReportsEndpoint(
+    public static IEndpointRouteBuilder MapGetAllIncidentReportsEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet("{companyId}/".CreateEndpoint("IncidentReportEndpoints"), async (

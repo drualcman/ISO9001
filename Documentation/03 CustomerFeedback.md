@@ -140,7 +140,7 @@ Este endpoint permite registrar CustomerFeedback desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseRegisterCustomerFeedbackEndpoint(
+    public static IEndpointRouteBuilder MapRegisterCustomerFeedbackEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost("".CreateEndpoint("CustomerFeedbackEndpoints"),
@@ -300,7 +300,7 @@ Este endpoint permite obtener los registros de satisfacción desde un cliente HT
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetAllCustomerFeedbackEndpoints(
+    public static IEndpointRouteBuilder MapGetAllCustomerFeedbackEndpoints(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet("{companyId}/".CreateEndpoint("CustomerFeedbackEndpoints"), async (
@@ -439,7 +439,7 @@ Este endpoint permite obtener los logs desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetCustomerFeedbackByCustomerIdEndpoint(
+    public static IEndpointRouteBuilder MapGetCustomerFeedbackByCustomerIdEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetCustomerFeedbackByCustomerIdEndpoint.Customer + "/{customerId}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
@@ -579,7 +579,7 @@ Este endpoint permite obtener los logs desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetCustomerFeedbackByEntityIdEndpoint(
+    public static IEndpointRouteBuilder MapGetCustomerFeedbackByEntityIdEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetCustomerFeedbackByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
@@ -710,7 +710,7 @@ Este endpoint permite obtener los logs desde un cliente HTTP.
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetCustomerFeedbackByRatingEndpoint(
+    public static IEndpointRouteBuilder MapGetCustomerFeedbackByRatingEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetCustomerFeedbackByRatingEndpoint.Rating + "/{rating}").CreateEndpoint("CustomerFeedbackEndpoints"), async (

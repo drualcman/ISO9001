@@ -226,7 +226,7 @@ Este endpoint permite registrar la entidad NonConformity junto a su primer detal
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseRegisterNonConformityEndpoint(
+    public static IEndpointRouteBuilder MapRegisterNonConformityEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost("".CreateEndpoint("NonConformityEndpoints"),
@@ -379,185 +379,7 @@ internal class RegisterNonConformityHandler
     }
 }
 ```
-# Caso de uso: RegisterNonConformityDetail
-El caso de uso RegisterNonConformityDetail es responsable de registrar la entidad NonConformityDetail en el sistema
 
-## Parametros de Entrada.
-- NonConformityCreateDetailRequest (obligatorio).
-
-## Endpoint REST
-Este endpoint permite registrar la entidad NonConformityDetail desde un cliente HTTP.
-
-```csharp
-public static class EndpointsMapper
-{
-    public static IEndpointRouteBuilder UseRegisterNonConformityDetailEndpoint(
-        this IEndpointRouteBuilder builder)
-    {
-        builder.MapPost(("{companyId}/" + RegisterNonConformityDetailEndpoint.Detail).CreateEndpoint("NonConformityEndpoints"),
-            async (
-                string companyId,
-                NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetailInputPort inputPort) =>
-            {
-                NonConformityCreateDetailDto data = new NonConformityCreateDetailDto(
-                    Guid.Parse(nonConformity.NonConformityId),
-                    companyId,
-                    nonConformity.ReportedAt,
-                    nonConformity.ReportedBy,
-                    nonConformity.Description,
-                    nonConformity.Status);
-                await inputPort.HandleAsync(data);
-                return TypedResults.Created();
-            });
-
-        return builder;
-    }
-}
-```
-### DTO y Request
-
-```csharp
-public class NonConformityCreateDetailDto(Guid entityId, string companyId, DateTime reportedAt,
-    string reportedBy, string description, string status)
-{
-    public Guid EntityId => entityId;
-    public string CompanyId => companyId;
-    public DateTime ReportedAt => reportedAt;
-    public string ReportedBy => reportedBy;
-    public string Description => description;
-    public string Status => status;
-}
-```
-
-```csharp
-public class NonConformityCreateDetailRequest
-{
-    public DateTime ReportedAt { get; set; }
-    public string NonConformityId { get; set; }
-    public string ReportedBy { get; set; }
-    public string Description { get; set; }
-    public string Status { get; set; }
-}
-```
-## Repositorio: IRegisterNonConformityDetailRepository
-
-```csharp
-public interface IRegisterNonConformityDetailRepository
-{
-    Task RegisterNonConformityDetailAsync(NonConformityCreateDetailDto nonConformityDetail);
-    Task SaveChangesAsync();
-    Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status);
-    Task<bool> NonConformityExistsByGuidAsync(Guid entityId);
-}
-```
-
-### Implementación del Repositorio.
-```csharp
-internal class RegisterNonConformityDetailRepository(
-    IQueryableNonConformityDataContext queryNonConformityDataContext,
-    IWritableNonConformityDataContext writableNonConformityDataContext): IRegisterNonConformityDetailRepository
-{
-
-    public Task<bool> NonConformityExistsByGuidAsync(Guid entityId)
-    {
-        NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
-            .FirstOrDefault(nonConformity =>
-                nonConformity.Id == entityId);
-
-        bool Exists = NonConformityMaster != null;
-        return Task.FromResult(Exists);
-    }
-
-    public async Task RegisterNonConformityDetailAsync(NonConformityCreateDetailDto nonConformityDetail)
-    {
-
-        NonConformityDetail NewDetail = new NonConformityDetail
-        {
-            ReportedBy = nonConformityDetail.ReportedBy,
-            Description = nonConformityDetail.Description,
-            Status = nonConformityDetail.Status,
-            ReportedAt = nonConformityDetail.ReportedAt
-        };
-
-        await writableNonConformityDataContext.AddNonConformityDetailAsync(NewDetail, nonConformityDetail.EntityId);
-    }
-
-
-    public Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status)
-    {
-        NonConformityReadModel NonConformityMaster = queryNonConformityDataContext.NonConformities
-            .FirstOrDefault(nonConformity =>
-                nonConformity.Id == entityId);
-
-        NonConformityMaster.Status = status;
-        writableNonConformityDataContext.UpdateNonConformityAsync(NonConformityMaster);
-        return Task.CompletedTask;
-    }
-
-    public Task SaveChangesAsync() => writableNonConformityDataContext.SaveChangesAsync();
-}
-```
-
-## Caso de uso: IRegisterNonConformityDetailInputPort
-
-```csharp
-public interface IRegisterNonConformityDetailInputPort
-{
-    Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail);
-}
-```
-
-### Implementación del Caso de uso.
-Dentro del caso de uso, primero se válida si existe un NonConformity con el Id ingresada. En caso de que no exista se lanzará 
-una exepción, de lo contrario, se registrará el detalle en el sistema, se actualizará el estado del NonConformity maestro con el status del detalle ingresado y finalmente se guardán los cambios en el sistema.
-
-```csharp
-internal class RegisterNonConformityDetailHandler
-    (IRegisterNonConformityDetailRepository repository) : IRegisterNonConformityDetailInputPort
-{
-    public async Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail)
-    {
-        bool NonConformityExists = await repository.NonConformityExistsByGuidAsync(nonConformityDetail.EntityId);
-        if (!NonConformityExists)
-        {
-            throw new InvalidOperationException("NonConformity doesn't exist");
-        }
-        else
-        {
-            await repository.RegisterNonConformityDetailAsync(nonConformityDetail);
-            await repository.UpdateStatusNonConformityMasterAsync(nonConformityDetail.EntityId, nonConformityDetail.Status);
-            await repository.SaveChangesAsync();
-        }
-
-    }
-}
-```
-# Integración en Blazor WebAssembly (UI)
-```razor
-@page "/place-order"
-@inject PlaceOrderVM ViewModel
-
-<h3>Place Order</h3>
-
-<!-- Formulario de pedido aquí -->
-
-<button class="button is-primary" @onclick="PlaceOrder">Place Order</button>
-
-@if (ViewModel.Result != null)
-{
-    <div class="notification is-success">
-        <p>Order placed successfully!</p>
-        <p>Order ID: @ViewModel.Result.OrderId</p>
-    </div>
-}
-
-@code {
-    private async Task PlaceOrder()
-    {
-        await ViewModel.PlaceOrderAsync();
-    }
-}
-```
 # Caso de uso: GetAllNonConformities
 El caso de uso GetAllNonConformities es responsable de obtener todos los registros no conformidad del sistema para una compañía específica dentro de un rango de fechas.
 
@@ -573,7 +395,7 @@ Este endpoint permite obtener los registros de no conformidad desde un cliente H
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetAllNonConformitiesEndpoint(
+    public static IEndpointRouteBuilder MapGetAllNonConformitiesEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet("{companyId}/".CreateEndpoint("NonConformityEndpoints"), async (
@@ -714,7 +536,7 @@ Este endpoint permite obtener los registros de no conformidad desde un cliente H
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetNonConformityByAffectedProcessEndpoint(
+    public static IEndpointRouteBuilder MapGetNonConformityByAffectedProcessEndpoint(
         this IEndpointRouteBuilder builder)
     {
 
@@ -862,7 +684,7 @@ Este endpoint permite obtener los registros de no conformidad desde un cliente H
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetNonConformityByStatusEndpoint(
+    public static IEndpointRouteBuilder MapGetNonConformityByStatusEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetNonConformityByStatusEndpoint.Status + "/{status}").CreateEndpoint("NonConformityEndpoints"), async (
@@ -1011,7 +833,7 @@ Este endpoint permite obtener el registro de no conformidad y sus detalles desde
 ```csharp
 public static class EndpointsMapper
 {
-    public static IEndpointRouteBuilder UseGetNonConformityByEntityIdEndpoint(
+    public static IEndpointRouteBuilder MapGetNonConformityByEntityIdEndpoint(
         this IEndpointRouteBuilder builder)
     {
         builder.MapGet(("{companyId}/" + GetNonConformityByEntityIdEndpoint.Entity + "/{entityId}").CreateEndpoint("NonConformityEndpoints"), async (
