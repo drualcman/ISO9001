@@ -1,6 +1,4 @@
 ﻿using ISO9001.AuditEvents.Repositories;
-using ISO9001.AuditLogs.Repositories;
-using ISO9001.CustomerFeedbacks.Repositories;
 using ISO9001.Database.InMemory;
 using ISO9001.GetAllAuditLogs.IoC;
 using ISO9001.GetAllCustomerFeedback.IoC;
@@ -18,13 +16,12 @@ using ISO9001.GetIncidentReportById.IoC;
 using ISO9001.GetNonConformityByAffectedProcess.IoC;
 using ISO9001.GetNonConformityByEntityId.IoC;
 using ISO9001.GetNonConformityByStatus.IoC;
-using ISO9001.IncidentReports.Repositories;
-using ISO9001.NonConformities.Repositories;
 using ISO9001.RegisterAuditLog.IoC;
 using ISO9001.RegisterCustomerFeedback.IoC;
 using ISO9001.RegisterIncidentReportIoC;
 using ISO9001.RegisterNonConformityDetail.IoC;
 using ISO9001.RegisterNonConformityIoC;
+using ISO9001.Repositories;
 
 namespace ISO9001.WebAPI
 {
@@ -37,7 +34,6 @@ namespace ISO9001.WebAPI
             builder.Services.AddGetAuditLogsByEntityIdServices();
             builder.Services.AddGetAuditLogsByActionServices();
             builder.Services.AddRegisterAuditLogServices();
-            builder.Services.AddAuditLogsRepositoryServices();
 
             builder.Services.AddRegisterCustomerFeedbackServices();
             builder.Services.AddGetAllCustomerFeedbackServices();
@@ -45,12 +41,10 @@ namespace ISO9001.WebAPI
             builder.Services.AddGetCustomerFeedbackByEntityIdServices();
             builder.Services.AddGetCustomerFeedbackByCustomerIdServices();
             builder.Services.AddGetCustomerFeedbackByRatingServices();
-            builder.Services.AddCustomerFeedbacksRepositoryServices();
 
             builder.Services.AddRegisterIncidentReportServices();
             builder.Services.AddGetAllIncidentReportServices();
             builder.Services.AddGetIncidentReportByIdServices();
-            builder.Services.AddIncidentReportRepositoryServices();
 
             builder.Services.AddRegisterNonConformityServices();
             builder.Services.AddRegisterNonConformityDetailServices();
@@ -58,14 +52,12 @@ namespace ISO9001.WebAPI
             builder.Services.AddGetNonConformityByAffectedProcessServices();
             builder.Services.AddGetNonConformityByEntityIdServices();
             builder.Services.AddGetNonConformityByStatusServices();
-            builder.Services.AddNonConformityRepositoryServices();
 
             builder.Services.AddGetAuditEventsServices();
             builder.Services.AddAuditEventsRepositories();
 
+            builder.Services.AddISO9001Repositories();
             builder.Services.AddDatabaseInMemory();
-
-
             return builder;
         }
     }

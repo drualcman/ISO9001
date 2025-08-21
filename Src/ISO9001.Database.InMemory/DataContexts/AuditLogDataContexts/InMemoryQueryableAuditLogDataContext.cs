@@ -1,9 +1,9 @@
-﻿using ISO9001.AuditLogs.Repositories.Entities;
-using ISO9001.AuditLogs.Repositories.Interfaces;
+﻿using ISO9001.Repositories.AuditLogRepositories.Entities;
+using ISO9001.Repositories.AuditLogRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
 {
-    internal class InMemoryQueryableAuditLogDataContext: IQueryableAuditLogDataContext
+    internal class InMemoryQueryableAuditLogDataContext : IQueryableAuditLogDataContext
     {
         public IQueryable<AuditLogReadModel> AuditLogs =>
             InMemoryAuditLogStore.AuditLogs
