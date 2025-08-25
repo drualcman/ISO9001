@@ -27,7 +27,7 @@ namespace ISO9001.Repositories.NonConformityRepositories
             {
                 ReportedBy = nonConformityDetail.ReportedBy,
                 Description = nonConformityDetail.Description,
-                Status = nonConformityDetail.Status,
+                Status = nonConformityDetail.Status.ToLower(),
                 ReportedAt = nonConformityDetail.ReportedAt
             };
 
@@ -41,7 +41,7 @@ namespace ISO9001.Repositories.NonConformityRepositories
                 .FirstOrDefault(nonConformity =>
                     nonConformity.Id == entityId);
 
-            NonConformityMaster.Status = status;
+            NonConformityMaster.Status = status.ToLower();
             writableNonConformityDataContext.UpdateNonConformityAsync(NonConformityMaster);
             return Task.CompletedTask;
         }

@@ -14,6 +14,7 @@ using ISO9001.GetIncidentReportById.Mappings;
 using ISO9001.GetNonConformityByAffectedProcess.Rest.Mappings;
 using ISO9001.GetNonConformityByEntityId.Rest.Mappings;
 using ISO9001.GetNonConformityByStatus.Rest.Mappings;
+using ISO9001.GetQualityDashBoard.Mappings;
 using ISO9001.RegisterAuditLog.Rest.Mappings;
 using ISO9001.RegisterCustomerFeedback.Rest.Mappings;
 using ISO9001.RegisterIncidentReport.Rest.Mappings;
@@ -52,6 +53,7 @@ namespace ISO9001.WebAPI
             builder.MapRegisterNonConformityDetailEndpoint();
 
             builder.MapGetAuditEventsEndpoint();
+            builder.MapGetQualityDashBoard();
 
             return builder;
         }

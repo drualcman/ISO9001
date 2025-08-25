@@ -46,6 +46,8 @@
     <ProjectReference Include="..\ISO9001.GetNonConformityByEntityId.Rest.Mappings\ISO9001.GetNonConformityByEntityId.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.IoC\ISO9001.GetNonConformityByStatus.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.Rest.Mappings\ISO9001.GetNonConformityByStatus.Rest.Mappings.csproj" />
+    <ProjectReference Include="..\ISO9001.GetQualityDashBoard.IoC\ISO9001.GetQualityDashBoard.IoC.csproj" />
+    <ProjectReference Include="..\ISO9001.GetQualityDashBoard.Mappings\ISO9001.GetQualityDashBoard.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterAuditLog.IoC\ISO9001.RegisterAuditLog.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterAuditLog.Rest.Mappings\ISO9001.RegisterAuditLog.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.IoC\ISO9001.RegisterCustomerFeedback.IoC.csproj" />

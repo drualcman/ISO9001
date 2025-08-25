@@ -16,6 +16,7 @@ using ISO9001.GetIncidentReportById.IoC;
 using ISO9001.GetNonConformityByAffectedProcess.IoC;
 using ISO9001.GetNonConformityByEntityId.IoC;
 using ISO9001.GetNonConformityByStatus.IoC;
+using ISO9001.GetQualityDashBoard.IoC;
 using ISO9001.RegisterAuditLog.IoC;
 using ISO9001.RegisterCustomerFeedback.IoC;
 using ISO9001.RegisterIncidentReportIoC;
@@ -55,6 +56,8 @@ namespace ISO9001.WebAPI
 
             builder.Services.AddGetAuditEventsServices();
             builder.Services.AddAuditEventsRepositories();
+
+            builder.Services.AddGetQualityDashBoardServices();
 
             builder.Services.AddISO9001Repositories();
             builder.Services.AddDatabaseInMemory();

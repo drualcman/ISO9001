@@ -22,6 +22,7 @@
     <ProjectReference Include="..\ISO9001.GetNonConformityByAffectedProcess.BusinessObjects\ISO9001.GetNonConformityByAffectedProcess.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetNonConformityByEntityId.BusinessObjects\ISO9001.GetNonConformityByEntityId.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.BusinessObjects\ISO9001.GetNonConformityByStatus.BusinessObjects.csproj" />
+    <ProjectReference Include="..\ISO9001.GetQualityDashBoard.BusinessObjects\ISO9001.GetQualityDashBoard.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.Interfaces\ISO9001.Interfaces.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterAuditLog.BusinessObjects\ISO9001.RegisterAuditLog.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.BusinessObjects\ISO9001.RegisterCustomerFeedback.BusinessObjects.csproj" />
