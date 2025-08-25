@@ -1,5 +1,5 @@
-﻿using ISO9001.CustomerFeedbacks.Repositories.Entities;
-using ISO9001.CustomerFeedbacks.Repositories.Interfaces;
+﻿using ISO9001.Repositories.CustomerFeedbackRepositories.Entities;
+using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
 {

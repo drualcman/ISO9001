@@ -13,8 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISO9001.AuditEvents.Repositories\ISO9001.AuditEvents.Repositories.csproj" />
-    <ProjectReference Include="..\ISO9001.AuditLogs.Repositories\ISO9001.AuditLogs.Repositories.csproj" />
-    <ProjectReference Include="..\ISO9001.CustomerFeedbacks.Repositories\ISO9001.CustomerFeedbacks.Repositories.csproj" />
     <ProjectReference Include="..\ISO9001.Database.InMemory\ISO9001.Database.InMemory.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllAuditLogs.IoC\ISO9001.GetAllAuditLogs.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllAuditLogs.Rest.Mappings\ISO9001.GetAllAuditLogs.Rest.Mappings.csproj" />
@@ -48,7 +46,8 @@
     <ProjectReference Include="..\ISO9001.GetNonConformityByEntityId.Rest.Mappings\ISO9001.GetNonConformityByEntityId.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.IoC\ISO9001.GetNonConformityByStatus.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.Rest.Mappings\ISO9001.GetNonConformityByStatus.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\ISO9001.NonConformities.Repositories\ISO9001.NonConformities.Repositories.csproj" />
+    <ProjectReference Include="..\ISO9001.GetQualityDashBoard.IoC\ISO9001.GetQualityDashBoard.IoC.csproj" />
+    <ProjectReference Include="..\ISO9001.GetQualityDashBoard.Mappings\ISO9001.GetQualityDashBoard.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterAuditLog.IoC\ISO9001.RegisterAuditLog.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterAuditLog.Rest.Mappings\ISO9001.RegisterAuditLog.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.IoC\ISO9001.RegisterCustomerFeedback.IoC.csproj" />
@@ -59,6 +58,7 @@
     <ProjectReference Include="..\ISO9001.RegisterNonConformityDetail.IoC\ISO9001.RegisterNonConformityDetail.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterNonConformityDetail.Rest.Mappings\ISO9001.RegisterNonConformityDetail.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterNonConformityIoC\ISO9001.RegisterNonConformityIoC.csproj" />
+    <ProjectReference Include="..\ISO9001.Repositories\ISO9001.Repositories.csproj" />
   </ItemGroup>
 
 </Project>
