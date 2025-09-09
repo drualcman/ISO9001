@@ -8,249 +8,292 @@ Mostrar visualmente en Blazor los siguientes indicadores:
 - Tiempo promedio de resolución de no conformidades.
 - Cantidad de feedbacks recibidos vs. calificación promedio.
 - Pedidos con mayor número de incidencias.
+- Total de incidencias.
 - Tendencias mensuales de no conformidades y feedback.
 - Estos datos ayudarán al Responsable de Calidad a identificar problemas recurrentes, evaluar mejoras y preparar auditorías.
 
 ## Entidades del Dominio para KPIs
 Ya tenemos NonConformity y CustomerFeedback, pero necesitamos una entidad para QualityReport solo si deseamos persistir snapshots históricos. Si es en tiempo real, usaremos directamente queries al repositorio.
 
-## Caso de Uso – Obtener KPIs de Calidad
-### Request:
-```csharp
-public sealed class GetQualityDashboardRequest
-{
-    public DateTime From { get; }
-    public DateTime To { get; }
+## Endpoint REST
+Este endpoint permite obtener el dashboard de calidad desde un cliente HTTP.
 
-    public GetQualityDashboardRequest(DateTime from, DateTime to)
+```csharp
+public static class EndpointsMapper
+{
+    public static IEndpointRouteBuilder MapGetQualityDashBoard(
+        this IEndpointRouteBuilder builder)
     {
-        From = from;
-        To = to;
+        builder.MapGet("{companyId}/dashboard/".CreateEndpoint("DashBoardEndpoints"), async (
+            string companyId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGetQualityDashBoardInputPort inputPort) =>
+        {
+            var result = await inputPort.HandleAsync(companyId, from, end);
+            return TypedResults.Ok(result);
+        });
+
+        return builder;
+
     }
 }
 ```
-### Output:
-```csharp
-public sealed class QualityDashboardResponse
-{
-    public int OpenNonConformities { get; set; }
-    public int ClosedNonConformities { get; set; }
-    public double AverageResolutionDays { get; set; }
-    public int TotalFeedbacks { get; set; }
-    public double AverageRating { get; set; }
-    public Dictionary<string, int> IncidentsPerOrder { get; set; } = new();
-    public List<MonthlyQualityKpi> MonthlyKpis { get; set; } = new();
-}
+### Reponse: AuditEventResponse
+La respuesta es un objeto QualityDashboardResponse. Este objeto contiene
+- Número de no conformidades abiertas.
+- Número de no conformidades cerradas.
+- Tiempo promedio de resolución de no conformidades.
+- Total de feedbacks recibidos.
+- Calificación promedio.
+- Reportes de incidencia por EntityId.
+- Total de reportes de incidencia.
+- Tendencias mensuales de no conformidades y feedback.
 
-public sealed class MonthlyQualityKpi
+```csharp
+public class QualityDashboardResponse(int openNonConformities, int closedNonConformities,
+    TimeSpan avarageResolutionDays, int totalFeedbacks, double avarageRating, 
+    Dictionary<string, int> incidentsPerOrder, int totalIncidentReports,
+    List<MonthlyQualityKpi> monthlyKpis)
 {
-    public string Month { get; set; } = string.Empty;
-    public int NonConformities { get; set; }
-    public int Feedbacks { get; set; }
+    public int OpenNonConformities => openNonConformities;
+    public int ClosedNonConformities => closedNonConformities;
+    public TimeSpan AvarageResolutionDays => avarageResolutionDays;
+    public int TotalFeedbacks => totalFeedbacks;
+    public double AvarageRating => avarageRating;
+    public Dictionary<string, int> IncidentsPerOrder => incidentsPerOrder;
+    public int TotalIncidentReports => totalIncidentReports;
+    public List<MonthlyQualityKpi> MonthlyKpis => monthlyKpis;
 }
 ```
 
-### InputPort y OutputPort:
 ```csharp
-public interface IGetQualityDashboardUseCase
+public class MonthlyQualityKpi(
+    string year, string month, int nonConformities, int feedbacks)
 {
-    Task HandleAsync(GetQualityDashboardRequest request, IQualityDashboardOutputPort outputPort);
-}
-
-public interface IQualityDashboardOutputPort
-{
-    Task PresentAsync(QualityDashboardResponse response);
+    public string Year => year;
+    public string Month => month;
+    public int NonConformities => nonConformities;
+    public int Feedbacks => feedbacks;
 }
 ```
 
-### Interactor – GetQualityDashboardInteractor
-```csharp
-public sealed class GetQualityDashboardInteractor : IGetQualityDashboardUseCase
-{
-    private readonly INonConformityRepository _nonConformityRepository;
-    private readonly ICustomerFeedbackRepository _feedbackRepository;
+## Repositorio: IGetQualityDashBoardRepository
 
-    public GetQualityDashboardInteractor(
-        INonConformityRepository nonConformityRepository,
-        ICustomerFeedbackRepository feedbackRepository)
+```csharp
+public interface IGetQualityDashBoardRepository
+{
+    Task<int> GetNonConformitiesCountByStatus(string companyId, string status,DateTime? from, DateTime? end);
+    Task<int> GetOpenNonConformitiesCount(string companyId, string closedStatus, DateTime? from, DateTime? end);
+    Task<TimeSpan> GetAverageResolutionDays(string companyId, DateTime? from, DateTime? end);
+    Task<int> GetTotalCustomerFeedbacks(string companyId, DateTime? from, DateTime? end);
+    Task<double> GetAverageRatingOfCustomerFeedback(string companyId, DateTime? from, DateTime? end);
+    Task<int> GetTotalIncidentReports(string companyId, DateTime? from, DateTime? end);
+    Task<Dictionary<string, int>> GetIncidentReportsByEntityId(string companyId, DateTime? from, DateTime? end);
+    Task<List<MonthlyQualityKpi>> GetMonthlyQualityKpis(string companyId, DateTime? from, DateTime? end);
+
+}
+```
+
+### Implementación del Repositorio.
+En la implementación del repositorio, se inyectan los contextos de datos necesarios, o en su defecto, las abstracciones de los repositorios de otros casos de uso.
+```csharp
+internal class GetQualityDashBoardRepository(
+    IGetAllCustomerFeedbackRepository getAllCustomerFeedbackRepository,
+    IGetAllIncidentReportsRepository getAllIncidentReportRepository,
+    IGetAllNonConformitiesRepository getAllNonConformitiesRepository,
+    IQueryableNonConformityDataContext nonConformityDataContext) : IGetQualityDashBoardRepository
+{
+
+    public async Task<TimeSpan> GetAverageResolutionDays(string companyId, DateTime? from, DateTime? end)
     {
-        _nonConformityRepository = nonConformityRepository;
-        _feedbackRepository = feedbackRepository;
-    }
-
-    public async Task HandleAsync(GetQualityDashboardRequest request, IQualityDashboardOutputPort outputPort)
-    {
-        List<NonConformity> nonConformities = await _nonConformityRepository.GetByDateRangeAsync(request.From, request.To);
-        List<CustomerFeedback> feedbacks = await _feedbackRepository.GetByDateRangeAsync(request.From, request.To);
-
-        int openCount = 0;
-        int closedCount = 0;
-        double totalDaysToResolve = 0;
-        int resolvedCount = 0;
-        Dictionary<string, int> incidentsPerOrder = new();
-        Dictionary<string, MonthlyQualityKpi> monthly = new();
-
-        foreach (NonConformity nc in nonConformities)
-        {
-            if (nc.IsResolved)
-            {
-                closedCount++;
-                if (nc.ResolutionDate.HasValue)
-                {
-                    TimeSpan duration = nc.ResolutionDate.Value - nc.ReportedAt;
-                    totalDaysToResolve += duration.TotalDays;
-                    resolvedCount++;
-                }
-            }
-            else
-            {
-                openCount++;
-            }
-
-            if (!string.IsNullOrWhiteSpace(nc.RelatedOrderId))
-            {
-                if (!incidentsPerOrder.ContainsKey(nc.RelatedOrderId))
-                {
-                    incidentsPerOrder[nc.RelatedOrderId] = 0;
-                }
-
-                incidentsPerOrder[nc.RelatedOrderId]++;
-            }
-
-            string monthKey = nc.ReportedAt.ToString("yyyy-MM");
-            if (!monthly.ContainsKey(monthKey))
-            {
-                monthly[monthKey] = new MonthlyQualityKpi { Month = monthKey };
-            }
-
-            monthly[monthKey].NonConformities++;
-        }
-
-        int feedbackTotal = feedbacks.Count;
-        double averageRating = 0;
-
-        if (feedbackTotal > 0)
-        {
-            averageRating = feedbacks.Average(f => f.Rating);
-
-            foreach (CustomerFeedback fb in feedbacks)
-            {
-                string monthKey = fb.ReceivedAt.ToString("yyyy-MM");
-                if (!monthly.ContainsKey(monthKey))
-                {
-                    monthly[monthKey] = new MonthlyQualityKpi { Month = monthKey };
-                }
-
-                monthly[monthKey].Feedbacks++;
-            }
-        }
-
-        double averageResolution = resolvedCount > 0 ? totalDaysToResolve / resolvedCount : 0;
-
-        QualityDashboardResponse response = new QualityDashboardResponse
-        {
-            OpenNonConformities = openCount,
-            ClosedNonConformities = closedCount,
-            AverageResolutionDays = averageResolution,
-            TotalFeedbacks = feedbackTotal,
-            AverageRating = averageRating,
-            IncidentsPerOrder = incidentsPerOrder
-                .OrderByDescending(kvp => kvp.Value)
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-            MonthlyKpis = monthly.Values.OrderBy(kpi => kpi.Month).ToList()
-        };
-
-        await outputPort.PresentAsync(response);
-    }
-}
-```
-
-## Repositories
-Implementar los repositorios necesarios para que el interactor del Dashboard funcione correctamente. Nos enfocamos en:
-
-- INonConformityRepository
-- ICustomerFeedbackRepository
-
-Cada uno debe exponer un método GetByDateRangeAsync que permita recuperar la información necesaria.
-
-### Interfaz del Repositorio de No Conformidades
-```csharp
-public interface INonConformityRepository
-{
-    Task<List<NonConformity>> GetByDateRangeAsync(DateTime from, DateTime to);
-}
-```
-Ejemplo de implementación en memoria (puedes luego adaptarlo a Entity Framework o lo que uses):
-```csharp
-public sealed class InMemoryNonConformityRepository : INonConformityRepository
-{
-    private readonly List<NonConformity> _storage = new();
-
-    public Task<List<NonConformity>> GetByDateRangeAsync(DateTime from, DateTime to)
-    {
-        List<NonConformity> result = _storage
-            .Where(nc => nc.ReportedAt >= from && nc.ReportedAt <= to)
+        var NonConformities = await getAllNonConformitiesRepository.GetAllNonConformitiesAsync(companyId, from, end);
+        var NonConformityIds = NonConformities
+            .Select(NonConformity => NonConformity.Id)
             .ToList();
 
-        return Task.FromResult(result);
-    }
-
-    // Puedes añadir métodos como AddAsync, UpdateAsync, etc. si es necesario.
-}
-```
-### Interfaz del Repositorio de Feedback del Cliente
-```csharp
-public interface ICustomerFeedbackRepository
-{
-    Task<List<CustomerFeedback>> GetByDateRangeAsync(DateTime from, DateTime to);
-}
-```
-Implementación en memoria:
-```csharp
-public sealed class InMemoryCustomerFeedbackRepository : ICustomerFeedbackRepository
-{
-    private readonly List<CustomerFeedback> _storage = new();
-
-    public Task<List<CustomerFeedback>> GetByDateRangeAsync(DateTime from, DateTime to)
-    {
-        List<CustomerFeedback> result = _storage
-            .Where(f => f.ReceivedAt >= from && f.ReceivedAt <= to)
+        var NonConformityDetails = nonConformityDataContext.NonConformityDetails
+            .Where(Detail => NonConformityIds.Contains(Detail.NonConformityId))
+            .GroupBy(Detail => Detail.NonConformityId)
             .ToList();
 
-        return Task.FromResult(result);
+        var AverageDates = new List<TimeSpan>();
+
+        foreach (var group in NonConformityDetails)
+        {
+            if (group.Count() > 1)
+            {
+                var OrderedDates = group
+                    .Select(Detail => Detail.ReportedAt)
+                    .OrderBy(Date => Date)
+                    .ToList();
+
+                List<TimeSpan> Intervals = new();
+
+                for (int i = 1; i < OrderedDates.Count; i++)
+                {
+                    Intervals.Add(OrderedDates[i] - OrderedDates[i - 1]);
+                }
+                var AverageTicks = Intervals.Average(ts => ts.Ticks);
+                AverageDates.Add(TimeSpan.FromTicks(Convert.ToInt64(AverageTicks)));
+
+            }
+
+        }
+
+        if (!AverageDates.Any())
+            return TimeSpan.Zero;
+
+        var AllAverageTicks = AverageDates.Average(ts => ts.Ticks);
+        return TimeSpan.FromTicks(Convert.ToInt64(AllAverageTicks));
+    }
+
+    public Task<int> GetNonConformitiesCountByStatus(string companyId, string status,
+        DateTime? from, DateTime? end) =>
+        Task.FromResult(nonConformityDataContext.NonConformities
+            .Where(NonConformity =>
+            NonConformity.CompanyId == companyId &&
+            NonConformity.Status.ToLower() == status.ToLower() &&
+            NonConformity.ReportedAt >= from &&
+            NonConformity.ReportedAt <= end)
+            .Count());
+
+
+    public Task<int> GetOpenNonConformitiesCount(string companyId, string closedStatus,
+        DateTime? from, DateTime? end) =>
+        Task.FromResult(nonConformityDataContext.NonConformities
+            .Where(NonConformity =>
+            NonConformity.CompanyId == companyId &&
+            NonConformity.Status.ToLower() != closedStatus.ToLower() &&
+            NonConformity.ReportedAt >= from &&
+            NonConformity.ReportedAt <= end)
+            .Count());
+
+    public async Task<int> GetTotalCustomerFeedbacks(string companyId, DateTime? from, DateTime? end) =>
+        (await getAllCustomerFeedbackRepository.GetAllCustomerFeedbacksAsync(companyId, from, end)).Count();
+
+    public async Task<double> GetAverageRatingOfCustomerFeedback(string companyId, DateTime? from, DateTime? end)
+    {
+        var CustomerFeedbacks = await getAllCustomerFeedbackRepository.
+            GetAllCustomerFeedbacksAsync(companyId, from, end);
+        if (!CustomerFeedbacks.Any())
+            return 0;
+        return CustomerFeedbacks.Average(CustomerFeedback => CustomerFeedback.Rating);
+    }
+
+    public async Task<int> GetTotalIncidentReports(string companyId, DateTime? from, DateTime? end) =>
+        (await getAllIncidentReportRepository.GetAllIncidentReportsAsync(companyId, from, end)).Count();
+
+    public async Task<Dictionary<string, int>> GetIncidentReportsByEntityId(
+        string companyId, DateTime? from, DateTime? end)
+    {
+        var IncidentReports = await getAllIncidentReportRepository.GetAllIncidentReportsAsync
+            (companyId, from, end);
+
+        var IncidentReportsByEntityId = IncidentReports
+            .GroupBy(IncidentReport => IncidentReport.EntityId)
+            .ToDictionary(Group => Group.Key, Group => Group.Count());
+
+        return IncidentReportsByEntityId;
+    }
+
+    public async Task<List<MonthlyQualityKpi>> GetMonthlyQualityKpis(string companyId, DateTime? from, DateTime? end)
+    {
+        var NonConformities = await getAllNonConformitiesRepository.GetAllNonConformitiesAsync(companyId, from, end);
+        var NonConformitiesMonthlyKpi =
+            NonConformities
+            .GroupBy(NonConformity => new
+            {
+                Year = NonConformity.ReportedAt.Year,
+                Month = NonConformity.ReportedAt.Month
+            })
+            .Select(Group => new { Group.Key.Year, Group.Key.Month, NC = Group.Count(), FB = 0 });
+
+        var Feedbacks = await getAllCustomerFeedbackRepository.GetAllCustomerFeedbacksAsync(companyId, from, end);
+        var FeedbacksMonthlyKpi =
+            Feedbacks
+            .GroupBy(Feedback => new
+            {
+                Year = Feedback.ReportedAt.Year,
+                Month = Feedback.ReportedAt.Month
+            })
+            .Select(Group => new { Group.Key.Year, Group.Key.Month, NC = 0, FB = Group.Count() });
+
+        var MonthlyKpis = NonConformitiesMonthlyKpi
+            .Concat(FeedbacksMonthlyKpi)
+            .GroupBy(MonthlyItem => new { MonthlyItem.Year, MonthlyItem.Month })
+            .Select(Group => new MonthlyQualityKpi(
+                Group.Key.Year.ToString(), Group.Key.Month.ToString(),
+                Group.Sum(MonthlyItem => MonthlyItem.NC), Group.Sum(MonthlyItem => MonthlyItem.FB)
+                ));
+
+        return MonthlyKpis.ToList();
     }
 }
 ```
-Estas implementaciones en memoria nos sirven como prueba o para testing. Luego puedes crear versiones específicas que usen EF Core u otra tecnología en la infraestructura.
 
-## Presentador – QualityDashboardPresenter
+
+## Caso de uso: IGetQualityDashBoardInputPort
+
 ```csharp
-public sealed class QualityDashboardPresenter : IQualityDashboardOutputPort
+public interface IGetQualityDashBoardInputPort
 {
-    private readonly QualityDashboardViewModel _viewModel;
+    Task<QualityDashboardResponse> HandleAsync(string companyId, DateTime? from, DateTime? end);
+}
+```
 
-    public QualityDashboardPresenter(QualityDashboardViewModel viewModel)
+### Implementación del Caso de uso.
+
+```csharp
+internal class GetQualityDashBoardHandler(
+    IGetQualityDashBoardRepository repository) : IGetQualityDashBoardInputPort
+{
+    private const string NonConformityStatusClosed = "closed";
+
+    public async Task<QualityDashboardResponse> HandleAsync(string companyId,
+        DateTime? from, DateTime? end)
     {
-        _viewModel = viewModel;
-    }
+        DateTime UtcFrom = from != null ? from.Value.Date
+            : DateTime.UtcNow.Date.AddDays(-30);
 
-    public Task PresentAsync(QualityDashboardResponse response)
-    {
-        _viewModel.OpenNonConformities = response.OpenNonConformities;
-        _viewModel.ClosedNonConformities = response.ClosedNonConformities;
-        _viewModel.AverageResolutionDays = response.AverageResolutionDays;
-        _viewModel.TotalFeedbacks = response.TotalFeedbacks;
-        _viewModel.AverageRating = response.AverageRating;
-        _viewModel.IncidentsPerOrder = response.IncidentsPerOrder;
-        _viewModel.MonthlyKpis = response.MonthlyKpis;
+        DateTime UtcEnd = end != null ? end.Value.Date.AddDays(1).AddTicks(-1)
+            : DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
 
-        _viewModel.HasData = true;
+        int ClosedNonConformities =
+            await repository.GetNonConformitiesCountByStatus(companyId, NonConformityStatusClosed, UtcFrom, UtcEnd);
 
-        return Task.CompletedTask;
+        int OpenNonConformities =
+            await repository.GetOpenNonConformitiesCount(companyId, NonConformityStatusClosed, UtcFrom, UtcEnd);
+
+        TimeSpan AvarageNonConformityResolutionDays =
+            await repository.GetAverageResolutionDays(companyId, UtcFrom, UtcEnd);
+
+        int CustomerFeedbacks = await repository.GetTotalCustomerFeedbacks(companyId, UtcFrom, UtcEnd);
+
+        double AvarageCustomerFeedback = await repository.GetAverageRatingOfCustomerFeedback(companyId, UtcFrom, UtcEnd);
+
+        int IncidentReports = await repository.GetTotalIncidentReports(companyId, UtcFrom, UtcEnd);
+
+        Dictionary<string, int> IncidentsPerOrder = await repository.GetIncidentReportsByEntityId(companyId, UtcFrom, UtcEnd);
+
+        List<MonthlyQualityKpi> MonthlyQualityKpis = await repository.GetMonthlyQualityKpis(companyId, UtcFrom, UtcEnd);
+
+        return new QualityDashboardResponse(
+            OpenNonConformities,
+            ClosedNonConformities,
+            AvarageNonConformityResolutionDays,
+            CustomerFeedbacks,
+            AvarageCustomerFeedback,
+            IncidentsPerOrder,
+            IncidentReports,
+            MonthlyQualityKpis
+            );
+
     }
 }
 ```
-## ViewModel – QualityDashboardViewModel
+
+## ViewModel:  QualityDashboardViewModel
 ```csharp
 public sealed class QualityDashboardViewModel : INotifyPropertyChanged
 {
@@ -415,9 +458,7 @@ Encabezado General:
 
 - Se muestra el número de Non-Conformities abiertas y cerradas, y el promedio de resolución en días.
 - Se muestran las estadísticas de feedbacks y la calificación promedio.
-
-- Incidentes por Pedido:
-
+- Incidentes por Pedido y total de incidentes.
 - Una tabla muestra el número de incidentes relacionados con cada pedido.
 - KPIs Mensuales:
 - Una tabla muestra los KPIs mensuales, que incluyen el número de non-conformities y feedbacks por mes.

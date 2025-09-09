@@ -23,18 +23,28 @@ namespace ISO9001.GetQualityDashBoard.Core.Handlers
             int OpenNonConformities =
                 await repository.GetOpenNonConformitiesCount(companyId, NonConformityStatusClosed, UtcFrom, UtcEnd);
 
+            TimeSpan AvarageNonConformityResolutionDays =
+                await repository.GetAverageResolutionDays(companyId, UtcFrom, UtcEnd);
+
             int CustomerFeedbacks = await repository.GetTotalCustomerFeedbacks(companyId, UtcFrom, UtcEnd);
 
-            double AvarageCustomerFeedback = await repository.GetAvarageRatingOfCustomerFeedback(companyId, UtcFrom, UtcEnd);
+            double AvarageCustomerFeedback = await repository.GetAverageRatingOfCustomerFeedback(companyId, UtcFrom, UtcEnd);
 
             int IncidentReports = await repository.GetTotalIncidentReports(companyId, UtcFrom, UtcEnd);
 
+            Dictionary<string, int> IncidentsPerOrder = await repository.GetIncidentReportsByEntityId(companyId, UtcFrom, UtcEnd);
+
+            List<MonthlyQualityKpi> MonthlyQualityKpis = await repository.GetMonthlyQualityKpis(companyId, UtcFrom, UtcEnd);
+ 
             return new QualityDashboardResponse(
                 OpenNonConformities,
                 ClosedNonConformities,
+                AvarageNonConformityResolutionDays,
                 CustomerFeedbacks,
                 AvarageCustomerFeedback,
-                IncidentReports
+                IncidentsPerOrder,
+                IncidentReports,
+                MonthlyQualityKpis
                 );
 
         }
