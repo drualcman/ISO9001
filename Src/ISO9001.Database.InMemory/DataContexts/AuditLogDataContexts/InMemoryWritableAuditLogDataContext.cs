@@ -3,13 +3,14 @@ using ISO9001.Repositories.AuditLogRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
 {
-    internal class InMemoryWritableAuditLogDataContext : IWritableAuditLogDataContext
+    internal class InMemoryWritableAuditLogDataContext(
+        InMemoryAuditLogStore dataContext) : IWritableAuditLogDataContext
     {
         public Task AddAsync(AuditLog auditLog)
         {
             var Record = new DataContexts.Entities.AuditLog
             {
-                Id = ++InMemoryAuditLogStore.CurrentId,
+                Id = ++dataContext.CurrentId,
                 CreatedAt = DateTime.UtcNow,
                 EntityId = auditLog.EntityId,
                 CompanyId = auditLog.CompanyId,
@@ -20,7 +21,7 @@ namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
                 Data = auditLog.Data
             };
 
-            InMemoryAuditLogStore.AuditLogs.Add(Record);
+            dataContext.AuditLogs.Add(Record);
             return Task.CompletedTask;
         }
 

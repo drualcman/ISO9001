@@ -3,10 +3,11 @@ using ISO9001.Repositories.NonConformityRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
-    internal class InMemoryQueryableNonConformityDataContext : IQueryableNonConformityDataContext
+    internal class InMemoryQueryableNonConformityDataContext(
+        InMemoryNonConformityStore dataContext) : IQueryableNonConformityDataContext
     {
         public IQueryable<NonConformityReadModel> NonConformities =>
-            InMemoryNonConformityStore.NonConformities
+            dataContext.NonConformities
             .Select(NonConformity => new NonConformityReadModel
             {
                 Id = NonConformity.Id,
@@ -20,7 +21,7 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
             }).AsQueryable();
 
         public IQueryable<NonConformityDetailReadModel> NonConformityDetails =>
-        InMemoryNonConformityStore.NonConformityDetails
+        dataContext.NonConformityDetails
         .Select(NonConformityDetail => new NonConformityDetailReadModel
         {
             Id = NonConformityDetail.Id,

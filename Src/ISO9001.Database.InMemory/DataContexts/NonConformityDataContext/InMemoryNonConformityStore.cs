@@ -2,11 +2,11 @@
 
 namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
-    internal static class InMemoryNonConformityStore
+    internal class InMemoryNonConformityStore
     {
-        public static List<NonConformity> NonConformities { get; } = new();
-        public static List<NonConformityDetail> NonConformityDetails { get; } = new();
-        public static int NonConformityDetailsCurrentId { get; set; }
+        public List<NonConformity> NonConformities { get; } = new();
+        public List<NonConformityDetail> NonConformityDetails { get; } = new();
+        public int NonConformityDetailsCurrentId { get; set; }
 
     }
 }

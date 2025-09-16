@@ -22,7 +22,8 @@ namespace ISO9001.Repositories.DashBoardRepositories
                 .ToList();
 
             var NonConformityDetails = nonConformityDataContext.NonConformityDetails
-                .Where(Detail => NonConformityIds.Contains(Detail.NonConformityId))
+                .Where(Detail => NonConformityIds.Contains(Detail.NonConformityId) && 
+                    Detail.ReportedAt >= from && Detail.ReportedAt <= end)
                 .GroupBy(Detail => Detail.NonConformityId)
                 .ToList();
 
@@ -132,9 +133,11 @@ namespace ISO9001.Repositories.DashBoardRepositories
                 .Concat(FeedbacksMonthlyKpi)
                 .GroupBy(MonthlyItem => new { MonthlyItem.Year, MonthlyItem.Month })
                 .Select(Group => new MonthlyQualityKpi(
-                    Group.Key.Year.ToString(), Group.Key.Month.ToString(),
+                    Group.Key.Year.ToString(), Group.Key.Month.ToString("D2"),
                     Group.Sum(MonthlyItem => MonthlyItem.NC), Group.Sum(MonthlyItem => MonthlyItem.FB)
-                    ));
+                    ))
+                    .OrderByDescending(kpi => int.Parse(kpi.Year))
+                    .ThenByDescending(kpi => int.Parse(kpi.Month)); ;
 
             return MonthlyKpis.ToList();
         }

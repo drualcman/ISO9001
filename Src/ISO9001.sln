@@ -356,6 +356,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rest", "Rest", "{DCE7E59C-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISO9001.GetQualityDashBoard.Mappings", "ISO9001.GetQualityDashBoard.Mappings\ISO9001.GetQualityDashBoard.Mappings.csproj", "{698FA94E-9FB3-4C54-A38B-35D81F6E80F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISO9001.GetQualityDashBoard.IntegrationTest", "ISO9001.GetQualityDashBoard.IntegrationTest\ISO9001.GetQualityDashBoard.IntegrationTest.csproj", "{F41BC9E5-C2E3-46CE-8CC3-A3474AC0FEFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -742,6 +744,10 @@ Global
 		{698FA94E-9FB3-4C54-A38B-35D81F6E80F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{698FA94E-9FB3-4C54-A38B-35D81F6E80F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{698FA94E-9FB3-4C54-A38B-35D81F6E80F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F41BC9E5-C2E3-46CE-8CC3-A3474AC0FEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F41BC9E5-C2E3-46CE-8CC3-A3474AC0FEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F41BC9E5-C2E3-46CE-8CC3-A3474AC0FEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F41BC9E5-C2E3-46CE-8CC3-A3474AC0FEFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -919,6 +925,7 @@ Global
 		{DD31130D-68F1-4A77-AC63-8764540BA2D7} = {B647424C-284C-4C4F-821C-A4D64DBD9A1A}
 		{DCE7E59C-0D52-4A5A-924D-8BEC241D4B11} = {65C8C8E8-12B4-48DC-8AEE-536CE692D74E}
 		{698FA94E-9FB3-4C54-A38B-35D81F6E80F4} = {DCE7E59C-0D52-4A5A-924D-8BEC241D4B11}
+		{F41BC9E5-C2E3-46CE-8CC3-A3474AC0FEFE} = {B647424C-284C-4C4F-821C-A4D64DBD9A1A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE22DBD4-FC59-4B05-B777-FEDAC8C1E977}

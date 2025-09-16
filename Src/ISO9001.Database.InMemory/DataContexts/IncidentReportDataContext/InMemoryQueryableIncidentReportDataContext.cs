@@ -3,10 +3,11 @@ using ISO9001.Repositories.IncidentReportRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
 {
-    internal class InMemoryQueryableIncidentReportDataContext : IQueryableIncidentReportDataContext
+    internal class InMemoryQueryableIncidentReportDataContext(
+        InMemoryIncidentReportStore dataContext): IQueryableIncidentReportDataContext
     {
         public IQueryable<IncidentReportReadModel> IncidentReports =>
-            InMemoryIncidentReportStore.IncidentReports
+            dataContext.IncidentReports
             .Select(IncidentReport => new IncidentReportReadModel
             {
                 Id = IncidentReport.Id,
