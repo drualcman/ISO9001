@@ -3,13 +3,14 @@ using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
 {
-    internal class InMemoryWritableCustomerFeedbackDataContext : IWritableCustomerFeedbackDataContext
+    internal class InMemoryWritableCustomerFeedbackDataContext(
+        InMemoryCustomerFeedbackStore dataContext) : IWritableCustomerFeedbackDataContext
     {
         public Task AddAsync(CustomerFeedback customerFeedback)
         {
             var Record = new Entities.CustomerFeedback
             {
-                Id = ++InMemoryCustomerFeedbackStore.CurrentId,
+                Id = ++dataContext.CurrentId,
                 EntityId = customerFeedback.EntityId,
                 CompanyId = customerFeedback.CompanyId,
                 CustomerId = customerFeedback.CustomerId,
@@ -19,7 +20,7 @@ namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
                 CreatedAt = DateTime.UtcNow
             };
 
-            InMemoryCustomerFeedbackStore.CustomerFeedbacks.Add(Record);
+            dataContext.CustomerFeedbacks.Add(Record);
             return Task.CompletedTask;
         }
 

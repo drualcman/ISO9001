@@ -3,10 +3,11 @@ using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
 {
-    internal class InMemoryQueryableCustomerFeedbackDataContext : IQueryableCustomerFeedbackDataContext
+    internal class InMemoryQueryableCustomerFeedbackDataContext(
+        InMemoryCustomerFeedbackStore dataContext) : IQueryableCustomerFeedbackDataContext
     {
         public IQueryable<CustomerFeedbackReadModel> CustomerFeedbacks =>
-            InMemoryCustomerFeedbackStore.CustomerFeedbacks
+            dataContext.CustomerFeedbacks
             .Select(CustomerFeedback => new CustomerFeedbackReadModel
             {
                 Id = CustomerFeedback.Id,

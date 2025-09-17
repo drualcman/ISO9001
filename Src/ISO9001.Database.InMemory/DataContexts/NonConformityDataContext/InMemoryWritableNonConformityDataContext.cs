@@ -3,7 +3,8 @@ using ISO9001.Repositories.NonConformityRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
-    internal class InMemoryWritableNonConformityDataContext : IWritableNonConformityDataContext
+    internal class InMemoryWritableNonConformityDataContext(
+        InMemoryNonConformityStore dataContext) : IWritableNonConformityDataContext
     {
         public Task AddNonConformityAsync(NonConformity nonConformityMaster)
         {
@@ -18,19 +19,19 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
                 Status = nonConformityMaster.Status,
                 CreatedAt = DateTime.UtcNow
             };
-            InMemoryNonConformityStore.NonConformities.Add(NonConformityRecord);
+            dataContext.NonConformities.Add(NonConformityRecord);
             return Task.CompletedTask;
         }
 
         public Task AddNonConformityDetailAsync(NonConformityDetail nonConformityDetail, Guid id)
         {
-            var NonConformity = InMemoryNonConformityStore.NonConformities
+            var NonConformity = dataContext.NonConformities
                 .FirstOrDefault(nonConformity =>
                 nonConformity.Id == id);
 
             var NonConformityDetailRecord = new DataContexts.Entities.NonConformityDetail
             {
-                Id = ++InMemoryNonConformityStore.NonConformityDetailsCurrentId,
+                Id = ++dataContext.NonConformityDetailsCurrentId,
                 NonConformityId = NonConformity.Id,
                 ReportedAt = nonConformityDetail.ReportedAt,
                 ReportedBy = nonConformityDetail.ReportedBy,
@@ -39,13 +40,13 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
                 CreatedAt = DateTime.UtcNow
             };
 
-            InMemoryNonConformityStore.NonConformityDetails.Add(NonConformityDetailRecord);
+            dataContext.NonConformityDetails.Add(NonConformityDetailRecord);
             return Task.CompletedTask;
         }
 
         public Task UpdateNonConformityAsync(NonConformityReadModel nonConformityUpdated)
         {
-            var NonConformitRecord = InMemoryNonConformityStore.NonConformities
+            var NonConformitRecord = dataContext.NonConformities
                 .FirstOrDefault(NonConformity => NonConformity.Id == nonConformityUpdated.Id);
 
             NonConformitRecord.EntityId = nonConformityUpdated.EntityId;

@@ -29,6 +29,7 @@ namespace ISO9001.GetQualityDashBoard.Core.Handlers
             int CustomerFeedbacks = await repository.GetTotalCustomerFeedbacks(companyId, UtcFrom, UtcEnd);
 
             double AvarageCustomerFeedback = await repository.GetAverageRatingOfCustomerFeedback(companyId, UtcFrom, UtcEnd);
+            AvarageCustomerFeedback = Math.Round(AvarageCustomerFeedback, 2);
 
             int IncidentReports = await repository.GetTotalIncidentReports(companyId, UtcFrom, UtcEnd);
 

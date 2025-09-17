@@ -9,4 +9,8 @@
     <ProjectReference Include="..\ISO9001.Repositories\ISO9001.Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="ISO9001.GetQualityDashBoard.IntegrationTest" />
+  </ItemGroup>
+
 </Project>

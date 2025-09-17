@@ -2,9 +2,9 @@
 
 namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
 {
-    internal static class InMemoryIncidentReportStore
+    internal class InMemoryIncidentReportStore
     {
-        public static List<IncidentReport> IncidentReports { get; } = new();
-        public static int IncidentReportCurrentId { get; set; }
+        public List<IncidentReport> IncidentReports { get; } = new();
+        public int IncidentReportCurrentId { get; set; }
     }
 }

@@ -3,10 +3,11 @@ using ISO9001.Repositories.AuditLogRepositories.Interfaces;
 
 namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
 {
-    internal class InMemoryQueryableAuditLogDataContext : IQueryableAuditLogDataContext
+    internal class InMemoryQueryableAuditLogDataContext(
+        InMemoryAuditLogStore dataContext) : IQueryableAuditLogDataContext
     {
         public IQueryable<AuditLogReadModel> AuditLogs =>
-            InMemoryAuditLogStore.AuditLogs
+            dataContext.AuditLogs
                 .Select(AuditLog => new AuditLogReadModel
                 {
                     LogId = AuditLog.Id,

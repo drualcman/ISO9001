@@ -63,10 +63,10 @@ Puedes implementar ambos contextos de datos utilizando un sistema de base de dat
 ### InMemoryAuditLogStore
 
 ```csharp
-internal static class InMemoryAuditLogStore
+internal class InMemoryAuditLogStore
 {
-    public static List<AuditLog> AuditLogs { get; } = new ();
-    public static int CurrentId { get; set; }
+    public List<AuditLog> AuditLogs { get; } = new ();
+    public int CurrentId { get; set; }
 }
 ```
 
@@ -74,13 +74,14 @@ internal static class InMemoryAuditLogStore
 ### InMemoryWritableAuditLogDataContext
 
 ```csharp
-internal class InMemoryWritableAuditLogDataContext: IWritableAuditLogDataContext
+internal class InMemoryWritableAuditLogDataContext(
+    InMemoryAuditLogStore dataContext) : IWritableAuditLogDataContext
 {
     public Task AddAsync(AuditLog auditLog)
     {
         var Record = new DataContexts.Entities.AuditLog
         {
-            Id = ++InMemoryAuditLogStore.CurrentId,
+            Id = ++dataContext.CurrentId,
             CreatedAt = DateTime.UtcNow,
             EntityId = auditLog.EntityId,
             CompanyId = auditLog.CompanyId,
@@ -91,7 +92,7 @@ internal class InMemoryWritableAuditLogDataContext: IWritableAuditLogDataContext
             Data = auditLog.Data
         };
 
-        InMemoryAuditLogStore.AuditLogs.Add(Record);
+        dataContext.AuditLogs.Add(Record);
         return Task.CompletedTask;
     }
 
@@ -105,10 +106,11 @@ internal class InMemoryWritableAuditLogDataContext: IWritableAuditLogDataContext
 ### InMemoryQueryableAuditLogDataContext
 
 ```csharp
-internal class InMemoryQueryableAuditLogDataContext: IQueryableAuditLogDataContext
+internal class InMemoryQueryableAuditLogDataContext(
+    InMemoryAuditLogStore dataContext) : IQueryableAuditLogDataContext
 {
     public IQueryable<AuditLogReadModel> AuditLogs =>
-        InMemoryAuditLogStore.AuditLogs
+        dataContext.AuditLogs
             .Select(AuditLog => new AuditLogReadModel
             {
                 LogId = AuditLog.Id,

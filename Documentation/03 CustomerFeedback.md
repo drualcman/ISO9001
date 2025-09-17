@@ -68,8 +68,8 @@ Puedes implementar ambos contextos de datos utilizando un sistema de base de dat
 ```csharp
 internal class InMemoryCustomerFeedbackStore
 {
-    public static List<CustomerFeedback> CustomerFeedbacks { get; } = new();
-    public static int CurrentId { get; set; }
+    public List<CustomerFeedback> CustomerFeedbacks { get; } = new();
+    public int CurrentId { get; set; }
 }
 ```
 
@@ -77,13 +77,14 @@ internal class InMemoryCustomerFeedbackStore
 ### InMemoryWritableCustomerFeedbackDataContext
 
 ```csharp
-internal class InMemoryWritableCustomerFeedbackDataContext : IWritableCustomerFeedbackDataContext
+internal class InMemoryWritableCustomerFeedbackDataContext(
+    InMemoryCustomerFeedbackStore dataContext) : IWritableCustomerFeedbackDataContext
 {
     public Task AddAsync(CustomerFeedback customerFeedback)
     {
         var Record = new Entities.CustomerFeedback
         {
-            Id = ++InMemoryCustomerFeedbackStore.CurrentId,
+            Id = ++dataContext.CurrentId,
             EntityId = customerFeedback.EntityId,
             CompanyId = customerFeedback.CompanyId,
             CustomerId = customerFeedback.CustomerId,
@@ -93,7 +94,7 @@ internal class InMemoryWritableCustomerFeedbackDataContext : IWritableCustomerFe
             CreatedAt = DateTime.UtcNow
         };
 
-        InMemoryCustomerFeedbackStore.CustomerFeedbacks.Add(Record);
+        dataContext.CustomerFeedbacks.Add(Record);
         return Task.CompletedTask;
     }
 
@@ -107,10 +108,11 @@ internal class InMemoryWritableCustomerFeedbackDataContext : IWritableCustomerFe
 ### InMemoryQueryableCustomerFeedbackDataContext
 
 ```csharp
-internal class InMemoryQueryableCustomerFeedbackDataContext : IQueryableCustomerFeedbackDataContext
+internal class InMemoryQueryableCustomerFeedbackDataContext(
+    InMemoryCustomerFeedbackStore dataContext) : IQueryableCustomerFeedbackDataContext
 {
     public IQueryable<CustomerFeedbackReadModel> CustomerFeedbacks =>
-        InMemoryCustomerFeedbackStore.CustomerFeedbacks
+        dataContext.CustomerFeedbacks
         .Select(CustomerFeedback => new CustomerFeedbackReadModel
         {
             Id = CustomerFeedback.Id,
