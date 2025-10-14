@@ -1,9 +1,4 @@
-﻿using ISO9001.AuditLog.Core.Interfaces;
-using ISO9001.Entities.Responses;
-using ISO9001.Repositories.AuditLogRepositories.Entities;
-using ISO9001.Repositories.AuditLogRepositories.Interfaces;
-
-namespace ISO9001.Repositories.AuditLogRepositories
+﻿namespace ISO9001.Repositories.AuditLogRepositories
 {
     internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataContext) : IQueryableAuditLogRepository
     {

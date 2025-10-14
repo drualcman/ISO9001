@@ -1,6 +1,4 @@
-﻿using ISO9001.GetCustomerFeedbackByCustomerId.Core.Handlers;
-
-namespace ISO9001.CustomerFeedback.Core;
+﻿namespace ISO9001.CustomerFeedback.Core;
 
 public static class DependencyContainer
 {

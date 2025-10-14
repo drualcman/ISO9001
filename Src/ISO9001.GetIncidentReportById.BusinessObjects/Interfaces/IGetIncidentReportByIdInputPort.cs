@@ -1,9 +1,0 @@
-﻿using ISO9001.Entities.Responses;
-
-namespace ISO9001.GetIncidentReportById.BusinessObjects.Interfaces
-{
-    public interface IGetIncidentReportByIdInputPort
-    {
-        Task<IncidentReportResponse> HandleAsync(string companyId, int id);
-    }
-}

@@ -1,0 +1,10 @@
+global using ISO9001.Helpers;
+global using ISO9001.IncidentReport.Core.Internals.GetAllIncidentReports;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Routing;
+global using Microsoft.AspNetCore.Builder;
+global using ISO9001.IncidentReport.Core.Internals.GetIncidentReportById;
+global using ISO9001.Entities.Dtos;
+global using ISO9001.Entities.Requests;
+global using ISO9001.IncidentReport.Core.Internals.RegisterIncidentReport;

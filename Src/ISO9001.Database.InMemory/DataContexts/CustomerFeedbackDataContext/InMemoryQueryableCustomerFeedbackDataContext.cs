@@ -1,7 +1,4 @@
-﻿using ISO9001.Repositories.CustomerFeedbackRepositories.Entities;
-using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
-
-namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
+﻿namespace ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext
 {
     internal class InMemoryQueryableCustomerFeedbackDataContext(
         InMemoryCustomerFeedbackStore dataContext) : IQueryableCustomerFeedbackDataContext

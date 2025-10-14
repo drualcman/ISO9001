@@ -13,3 +13,4 @@ global using ISO9001.RegisterCustomerFeedback.BusinessObjects.Interfaces;
 global using ISO9001.RegisterCustomerFeedback.Core.Handlers;
 global using Microsoft.Extensions.DependencyInjection;
 global using ISO9001.GetAllCustomerFeedback.Core.Handlers;
+global using ISO9001.GetCustomerFeedbackByCustomerId.Core.Handlers;

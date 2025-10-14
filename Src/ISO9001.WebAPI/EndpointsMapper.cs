@@ -1,18 +1,4 @@
-﻿using ISO9001.AuditLog.Rest.Mappings;
-using ISO9001.CustomerFeedback.Rest.Mappings;
-using ISO9001.GetAllIncidentReports.Rest.Mappings;
-using ISO9001.GetAllNonConformities.Rest.Mappings;
-using ISO9001.GetAuditEvents.Rest.Mappings;
-using ISO9001.GetIncidentReportById.Mappings;
-using ISO9001.GetNonConformityByAffectedProcess.Rest.Mappings;
-using ISO9001.GetNonConformityByEntityId.Rest.Mappings;
-using ISO9001.GetNonConformityByStatus.Rest.Mappings;
-using ISO9001.GetQualityDashBoard.Mappings;
-using ISO9001.RegisterIncidentReport.Rest.Mappings;
-using ISO9001.RegisterNonConformity.Rest.Mappings;
-using ISO9001.RegisterNonConformityDetail.Rest.Mappings;
-
-namespace ISO9001.WebAPI
+﻿namespace ISO9001.WebAPI
 {
     public static class EndpointsMapper
     {
@@ -21,10 +7,7 @@ namespace ISO9001.WebAPI
         {
             builder.MapAuditLogEndpoints();
             builder.MapCustomerFeedbackEndpoints();
-
-            builder.MapGetAllIncidentReportsEndpoint();
-            builder.MapRegisterIncidentReportEndpoint();
-            builder.MapGetIncidentReportByIdEndpoint();
+            builder.MapIncidentReportEndpoints();
 
             builder.MapGetAllNonConformitiesEndpoint();
             builder.MapGetNonConformityByAffectedProcessEndpoint();

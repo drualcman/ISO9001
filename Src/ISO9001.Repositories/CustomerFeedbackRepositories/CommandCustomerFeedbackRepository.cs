@@ -1,8 +1,4 @@
-﻿using ISO9001.CustomerFeedback.Core.Interfaces;
-using ISO9001.Entities.Dtos;
-using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
-
-namespace ISO9001.Repositories.CustomerFeedbackRepositories
+﻿namespace ISO9001.Repositories.CustomerFeedbackRepositories
 {
     internal class CommandCustomerFeedbackRepository(
         IWritableCustomerFeedbackDataContext dataContext) : ICommandCustomerFeedbackRepository

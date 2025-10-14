@@ -292,7 +292,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
             #endregion
 
             #region RegisterIncidentReport
-            var IncidentReport1 = new IncidentReport
+            var IncidentReport1 = new Database.InMemory.DataContexts.Entities.IncidentReport
             {
                 Id = ++CustomerFeedbackMemoryStore.CurrentId,
                 CompanyId = CompanyId,
@@ -306,7 +306,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
                 Data = "{ \"Step\": 1 }"
             };
 
-            var IncidentReport2 = new IncidentReport
+            var IncidentReport2 = new Database.InMemory.DataContexts.Entities.IncidentReport
             {
                 Id = ++CustomerFeedbackMemoryStore.CurrentId,
                 CompanyId = CompanyId,
@@ -320,7 +320,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
                 Data = "{ \"Step\": 2 }"
             };
 
-            var IncidentReport3 = new IncidentReport
+            var IncidentReport3 = new Database.InMemory.DataContexts.Entities.IncidentReport
             {
                 Id = ++CustomerFeedbackMemoryStore.CurrentId,
                 CompanyId = CompanyId,
@@ -334,7 +334,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
                 Data = "{ \"Check\": false }"
             };
 
-            var IncidentReport4 = new IncidentReport
+            var IncidentReport4 = new Database.InMemory.DataContexts.Entities.IncidentReport
             {
                 Id = ++CustomerFeedbackMemoryStore.CurrentId,
                 CompanyId = CompanyId,
@@ -348,7 +348,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
                 Data = "{ \"Check\": true }"
             };
 
-            var IncidentReport5 = new IncidentReport
+            var IncidentReport5 = new Database.InMemory.DataContexts.Entities.IncidentReport
             {
                 Id = ++CustomerFeedbackMemoryStore.CurrentId,
                 CompanyId = CompanyId,
