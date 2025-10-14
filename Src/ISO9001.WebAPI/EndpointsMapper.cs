@@ -1,18 +1,13 @@
 ﻿using ISO9001.AuditLog.Rest.Mappings;
-using ISO9001.GetAllCustomerFeedback.Rest.Mappings;
+using ISO9001.CustomerFeedback.Rest.Mappings;
 using ISO9001.GetAllIncidentReports.Rest.Mappings;
 using ISO9001.GetAllNonConformities.Rest.Mappings;
 using ISO9001.GetAuditEvents.Rest.Mappings;
-using ISO9001.GetCustomerFeedbackByCustomerId.Rest.Mappings;
-using ISO9001.GetCustomerFeedbackByEntityId.Rest.Mappings;
-using ISO9001.GetCustomerFeedbackById.Mappings;
-using ISO9001.GetCustomerFeedbackByRating.Rest.Mappings;
 using ISO9001.GetIncidentReportById.Mappings;
 using ISO9001.GetNonConformityByAffectedProcess.Rest.Mappings;
 using ISO9001.GetNonConformityByEntityId.Rest.Mappings;
 using ISO9001.GetNonConformityByStatus.Rest.Mappings;
 using ISO9001.GetQualityDashBoard.Mappings;
-using ISO9001.RegisterCustomerFeedback.Rest.Mappings;
 using ISO9001.RegisterIncidentReport.Rest.Mappings;
 using ISO9001.RegisterNonConformity.Rest.Mappings;
 using ISO9001.RegisterNonConformityDetail.Rest.Mappings;
@@ -25,14 +20,7 @@ namespace ISO9001.WebAPI
             this IEndpointRouteBuilder builder)
         {
             builder.MapAuditLogEndpoints();
-
-
-            builder.MapGetAllCustomerFeedbackEndpoints();
-            builder.MapGetCustomerFeedbackByIdEndpoint();
-            builder.MapGetCustomerFeedbackByRatingEndpoint();
-            builder.MapGetCustomerFeedbackByCustomerIdEndpoint();
-            builder.MapGetCustomerFeedbackByEntityIdEndpoint();
-            builder.MapRegisterCustomerFeedbackEndpoint();
+            builder.MapCustomerFeedbackEndpoints();
 
             builder.MapGetAllIncidentReportsEndpoint();
             builder.MapRegisterIncidentReportEndpoint();

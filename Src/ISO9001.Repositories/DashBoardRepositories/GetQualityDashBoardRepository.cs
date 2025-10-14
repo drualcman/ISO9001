@@ -1,5 +1,5 @@
-﻿using ISO9001.Entities.Responses;
-using ISO9001.GetAllCustomerFeedback.BusinessObjects.Interfaces;
+﻿using ISO9001.CustomerFeedback.Core.Interfaces;
+using ISO9001.Entities.Responses;
 using ISO9001.GetAllIncidentReports.BusinessObjects.Interfaces;
 using ISO9001.GetAllNonConformities.BusinessObjects;
 using ISO9001.GetQualityDashBoard.BusinessObjects.Interfaces;
@@ -8,7 +8,7 @@ using ISO9001.Repositories.NonConformityRepositories.Interfaces;
 namespace ISO9001.Repositories.DashBoardRepositories
 {
     internal class GetQualityDashBoardRepository(
-        IGetAllCustomerFeedbackRepository getAllCustomerFeedbackRepository,
+        IQueryableCustomerFeedbackRepository getAllCustomerFeedbackRepository,
         IGetAllIncidentReportsRepository getAllIncidentReportRepository,
         IGetAllNonConformitiesRepository getAllNonConformitiesRepository,
         IQueryableNonConformityDataContext nonConformityDataContext) : IGetQualityDashBoardRepository
@@ -22,7 +22,7 @@ namespace ISO9001.Repositories.DashBoardRepositories
                 .ToList();
 
             var NonConformityDetails = nonConformityDataContext.NonConformityDetails
-                .Where(Detail => NonConformityIds.Contains(Detail.NonConformityId) && 
+                .Where(Detail => NonConformityIds.Contains(Detail.NonConformityId) &&
                     Detail.ReportedAt >= from && Detail.ReportedAt <= end)
                 .GroupBy(Detail => Detail.NonConformityId)
                 .ToList();

@@ -1,18 +1,13 @@
 ﻿using ISO9001.AuditLog.Core.Interfaces;
-using ISO9001.GetAllCustomerFeedback.BusinessObjects.Interfaces;
+using ISO9001.CustomerFeedback.Core.Interfaces;
 using ISO9001.GetAllIncidentReports.BusinessObjects.Interfaces;
 using ISO9001.GetAllNonConformities.BusinessObjects;
-using ISO9001.GetCustomerFeedbackByCustomerId.BusinessObjects.Interfaces;
-using ISO9001.GetCustomerFeedbackByEntityId.BusinessObjects.Interfaces;
-using ISO9001.GetCustomerFeedbackById.BusinessObjects.Interfaces;
-using ISO9001.GetCustomerFeedbackByRating.BusinessObjects.Interfaces;
 using ISO9001.GetIncidentReportById.BusinessObjects.Interfaces;
 using ISO9001.GetNonConformityByAffectedProcess.BusinessObjects;
 using ISO9001.GetNonConformityByEntityId.BusinessObjects;
 using ISO9001.GetNonConformityByStatus.BusinessObjects;
 using ISO9001.GetQualityDashBoard.BusinessObjects.Interfaces;
 using ISO9001.Interfaces.Interfaces;
-using ISO9001.RegisterCustomerFeedback.BusinessObjects.Interfaces;
 using ISO9001.RegisterIncidentReport.BusinessObjects.Interfaces;
 using ISO9001.RegisterNonConformity.BusinessObjects.Interfaces;
 using ISO9001.RegisterNonConformityDetail.BusinessObjects.Interfaces;
@@ -36,13 +31,8 @@ namespace ISO9001.Repositories
             services.AddScoped<ICommandAuditLogRepository, CommandAuditLogRepository>();
             services.AddScoped<IQueryableAuditLogRepository, QueryableAuditLogRepository>();
 
-
-            services.AddScoped<IRegisterCustomerFeedbackRepository, RegisterCustomerFeedbackRepository>();
-            services.AddScoped<IGetAllCustomerFeedbackRepository, GetAllCustomerFeedbackRepository>();
-            services.AddScoped<IGetCustomerFeedbackByIdRepository, GetCustomerFeedbackByIdRepository>();
-            services.AddScoped<IGetCustomerFeedbackByEntityIdRepository, GetCustomerFeedbackByEntityIdRepository>();
-            services.AddScoped<IGetCustomerFeedbackByCustomerIdRepository, GetCustomerFeedbackByCustomerIdRepository>();
-            services.AddScoped<IGetCustomerFeedbackByRatingRepository, GetCustomerFeedbackByRatingRepository>();
+            services.AddScoped<ICommandCustomerFeedbackRepository, CommandCustomerFeedbackRepository>();
+            services.AddScoped<IQueryableCustomerFeedbackRepository, QueryableCustomerFeedbackRepository>();
 
             services.AddScoped<IRegisterIncidentReportRepository, RegisterIncidentReportRepository>();
             services.AddScoped<IGetAllIncidentReportsRepository, GetAllIncidentReportsRepository>();
