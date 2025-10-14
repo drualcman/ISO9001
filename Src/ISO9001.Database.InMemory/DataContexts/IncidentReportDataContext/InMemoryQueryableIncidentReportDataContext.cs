@@ -1,7 +1,4 @@
-﻿using ISO9001.Repositories.IncidentReportRepositories.Entities;
-using ISO9001.Repositories.IncidentReportRepositories.Interfaces;
-
-namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
+﻿namespace ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext
 {
     internal class InMemoryQueryableIncidentReportDataContext(
         InMemoryIncidentReportStore dataContext): IQueryableIncidentReportDataContext

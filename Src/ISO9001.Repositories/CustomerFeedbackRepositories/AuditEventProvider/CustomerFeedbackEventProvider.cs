@@ -1,8 +1,4 @@
-﻿using ISO9001.Entities.Responses;
-using ISO9001.Interfaces.Interfaces;
-using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
-
-namespace ISO9001.Repositories.CustomerFeedbackRepositories.AuditEventProvider
+﻿namespace ISO9001.Repositories.CustomerFeedbackRepositories.AuditEventProvider
 {
     internal class CustomerFeedbackEventProvider(IQueryableCustomerFeedbackDataContext context) : IAuditEventProvider
     {

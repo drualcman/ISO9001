@@ -1,0 +1,10 @@
+global using ISO9001.Entities.Dtos;
+global using ISO9001.Entities.Responses;
+global using ISO9001.IncidentReport.Core.Interfaces;
+global using ISO9001.IncidentReport.Core.Internals.GetAllIncidentReports;
+global using ISO9001.IncidentReport.Core.Internals.GetIncidentReportById;
+global using ISO9001.IncidentReport.Core.Internals.RegisterIncidentReport;
+global using ISO9001.IncidentReport.Core.Handlers.GetAllIncidentReports;
+global using ISO9001.IncidentReport.Core.Handlers.GetIncidentReportById;
+global using ISO9001.IncidentReport.Core.Handlers.RegisterIncidentReport;
+global using Microsoft.Extensions.DependencyInjection;

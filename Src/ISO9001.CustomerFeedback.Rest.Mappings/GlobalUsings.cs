@@ -1,0 +1,13 @@
+global using ISO9001.Entities.Dtos;
+global using ISO9001.Entities.Requests;
+global using ISO9001.GetAllCustomerFeedback.BusinessObjects.Interfaces;
+global using ISO9001.GetCustomerFeedbackByCustomerId.BusinessObjects.Interfaces;
+global using ISO9001.GetCustomerFeedbackByEntityId.BusinessObjects.Interfaces;
+global using ISO9001.GetCustomerFeedbackById.BusinessObjects.Interfaces;
+global using ISO9001.GetCustomerFeedbackByRating.BusinessObjects.Interfaces;
+global using ISO9001.Helpers;
+global using ISO9001.RegisterCustomerFeedback.BusinessObjects.Interfaces;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Routing;

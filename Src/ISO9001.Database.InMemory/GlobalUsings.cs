@@ -1,0 +1,6 @@
+global using ISO9001.Repositories.AuditLogRepositories.Entities;
+global using ISO9001.Repositories.AuditLogRepositories.Interfaces;
+global using ISO9001.Repositories.CustomerFeedbackRepositories.Entities;
+global using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
+global using ISO9001.Repositories.IncidentReportRepositories.Entities;
+global using ISO9001.Repositories.IncidentReportRepositories.Interfaces;

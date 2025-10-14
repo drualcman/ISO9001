@@ -1,11 +1,6 @@
-﻿using ISO9001.Entities.Responses;
-using ISO9001.Interfaces.Interfaces;
-using ISO9001.Repositories.IncidentReportRepositories.Interfaces;
-using System.Linq;
-
-namespace ISO9001.Repositories.IncidentReportRepositories.AuditEventProvider
+﻿namespace ISO9001.Repositories.IncidentReportRepositories.AuditEventProvider
 {
-    internal class IncidentReportEventProvider(IQueryableIncidentReportDataContext context): IAuditEventProvider
+    internal class IncidentReportEventProvider(IQueryableIncidentReportDataContext context) : IAuditEventProvider
     {
         public string EventType => "IncidentReport";
 
