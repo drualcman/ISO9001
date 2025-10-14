@@ -13,9 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISO9001.AuditEvents.Repositories\ISO9001.AuditEvents.Repositories.csproj" />
+    <ProjectReference Include="..\ISO9001.AuditLog.Core\ISO9001.AuditLog.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.AuditLog.Rest.Mappings\ISO9001.AuditLog.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.Database.InMemory\ISO9001.Database.InMemory.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAllAuditLogs.IoC\ISO9001.GetAllAuditLogs.IoC.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAllAuditLogs.Rest.Mappings\ISO9001.GetAllAuditLogs.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllCustomerFeedback.IoC\ISO9001.GetAllCustomerFeedback.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllCustomerFeedback.Rest.Mappings\ISO9001.GetAllCustomerFeedback.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetAllIncidentReports.IoC\ISO9001.GetAllIncidentReports.IoC.csproj" />
@@ -24,12 +24,6 @@
     <ProjectReference Include="..\ISO9001.GetAllNonConformities.Rest.Mappings\ISO9001.GetAllNonConformities.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetAuditEvents.IoC\ISO9001.GetAuditEvents.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetAuditEvents.Rest.Mappings\ISO9001.GetAuditEvents.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAuditLogById.IoC\ISO9001.GetAuditLogById.IoC.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAuditLogById.Rest.Mappings\ISO9001.GetAuditLogById.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAuditLogsByAction.IoC\ISO9001.GetAuditLogsByAction.IoC.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAuditLogsByAction.Rest.Mappings\ISO9001.GetAuditLogsByAction.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAuditLogsByEntityId.IoC\ISO9001.GetAuditLogsByEntityId.IoC.csproj" />
-    <ProjectReference Include="..\ISO9001.GetAuditLogsByEntityId.Rest.Mappings\ISO9001.GetAuditLogsByEntityId.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByCustomerId.IoC\ISO9001.GetCustomerFeedbackByCustomerId.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByCustomerId.Rest.Mappings\ISO9001.GetCustomerFeedbackByCustomerId.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetCustomerFeedbackByEntityId.IoC\ISO9001.GetCustomerFeedbackByEntityId.IoC.csproj" />
@@ -48,8 +42,6 @@
     <ProjectReference Include="..\ISO9001.GetNonConformityByStatus.Rest.Mappings\ISO9001.GetNonConformityByStatus.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.GetQualityDashBoard.IoC\ISO9001.GetQualityDashBoard.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.GetQualityDashBoard.Mappings\ISO9001.GetQualityDashBoard.Mappings.csproj" />
-    <ProjectReference Include="..\ISO9001.RegisterAuditLog.IoC\ISO9001.RegisterAuditLog.IoC.csproj" />
-    <ProjectReference Include="..\ISO9001.RegisterAuditLog.Rest.Mappings\ISO9001.RegisterAuditLog.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.IoC\ISO9001.RegisterCustomerFeedback.IoC.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterCustomerFeedback.Rest.Mappings\ISO9001.RegisterCustomerFeedback.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.RegisterIncidentReport.Rest.Mappings\ISO9001.RegisterIncidentReport.Rest.Mappings.csproj" />
