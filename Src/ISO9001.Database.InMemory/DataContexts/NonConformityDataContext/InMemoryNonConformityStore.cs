@@ -1,11 +1,9 @@
-﻿using ISO9001.Database.InMemory.DataContexts.Entities;
-
-namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
+﻿namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
     internal class InMemoryNonConformityStore
     {
-        public List<NonConformity> NonConformities { get; } = new();
-        public List<NonConformityDetail> NonConformityDetails { get; } = new();
+        public List<Entities.NonConformity> NonConformities { get; } = new();
+        public List<Entities.NonConformityDetail> NonConformityDetails { get; } = new();
         public int NonConformityDetailsCurrentId { get; set; }
 
     }

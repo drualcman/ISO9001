@@ -3,7 +3,7 @@
     internal class GetQualityDashBoardRepository(
         IQueryableCustomerFeedbackRepository getAllCustomerFeedbackRepository,
         IQueryableIncidentReportRepository getAllIncidentReportRepository,
-        IGetAllNonConformitiesRepository getAllNonConformitiesRepository,
+        IQueryableNonConformityRepository getAllNonConformitiesRepository,
         IQueryableNonConformityDataContext nonConformityDataContext) : IGetQualityDashBoardRepository
     {
 

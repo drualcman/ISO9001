@@ -1,4 +1,6 @@
-﻿namespace ISO9001.WebAPI
+﻿using ISO9001.NonConformity.Rest.Mappings;
+
+namespace ISO9001.WebAPI
 {
     public static class EndpointsMapper
     {
@@ -8,13 +10,8 @@
             builder.MapAuditLogEndpoints();
             builder.MapCustomerFeedbackEndpoints();
             builder.MapIncidentReportEndpoints();
+            builder.MapNonConformityEndpoints();
 
-            builder.MapGetAllNonConformitiesEndpoint();
-            builder.MapGetNonConformityByAffectedProcessEndpoint();
-            builder.MapGetNonConformityByEntityIdEndpoint();
-            builder.MapGetNonConformityByStatusEndpoint();
-            builder.MapRegisterNonConformityEndpoint();
-            builder.MapRegisterNonConformityDetailEndpoint();
 
             builder.MapGetAuditEventsEndpoint();
             builder.MapGetQualityDashBoard();

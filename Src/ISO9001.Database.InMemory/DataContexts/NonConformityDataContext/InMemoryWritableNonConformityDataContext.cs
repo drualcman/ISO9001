@@ -1,12 +1,9 @@
-﻿using ISO9001.Repositories.NonConformityRepositories.Entities;
-using ISO9001.Repositories.NonConformityRepositories.Interfaces;
-
-namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
+﻿namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
     internal class InMemoryWritableNonConformityDataContext(
         InMemoryNonConformityStore dataContext) : IWritableNonConformityDataContext
     {
-        public Task AddNonConformityAsync(NonConformity nonConformityMaster)
+        public Task AddNonConformityAsync(Repositories.NonConformityRepositories.Entities.NonConformity nonConformityMaster)
         {
             var NonConformityRecord = new DataContexts.Entities.NonConformity
             {
@@ -23,7 +20,7 @@ namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
             return Task.CompletedTask;
         }
 
-        public Task AddNonConformityDetailAsync(NonConformityDetail nonConformityDetail, Guid id)
+        public Task AddNonConformityDetailAsync(Repositories.NonConformityRepositories.Entities.NonConformityDetail nonConformityDetail, Guid id)
         {
             var NonConformity = dataContext.NonConformities
                 .FirstOrDefault(nonConformity =>

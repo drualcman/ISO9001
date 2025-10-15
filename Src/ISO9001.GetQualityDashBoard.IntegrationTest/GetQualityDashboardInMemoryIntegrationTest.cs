@@ -46,7 +46,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
 
             var MasterDate1 = Now.AddMonths(-3);
 
-            var NC1 = new NonConformity
+            var NC1 = new Database.InMemory.DataContexts.Entities.NonConformity
             {
                 Id = Guid.NewGuid(),
                 EntityId = "nc-001",
@@ -93,7 +93,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
             var MasterDate2 = Now.AddMonths(-2);
 
 
-            var NC2 = new NonConformity
+            var NC2 = new Database.InMemory.DataContexts.Entities.NonConformity
             {
                 Id = Guid.NewGuid(),
                 EntityId = "nc-002",
@@ -138,7 +138,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
             NC2.Status = NC2Detail3.Status;
 
             var NC3Reported = Now.AddDays(-20);
-            var NC3 = new NonConformity
+            var NC3 = new Database.InMemory.DataContexts.Entities.NonConformity
             {
                 Id = Guid.NewGuid(),
                 EntityId = "nc-003",
