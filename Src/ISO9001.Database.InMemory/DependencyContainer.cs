@@ -2,10 +2,6 @@
 using ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext;
 using ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext;
 using ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
-using ISO9001.Repositories.AuditLogRepositories.Interfaces;
-using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
-using ISO9001.Repositories.IncidentReportRepositories.Interfaces;
-using ISO9001.Repositories.NonConformityRepositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ISO9001.Database.InMemory

@@ -1,17 +1,6 @@
-﻿using ISO9001.Database.InMemory;
-using ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext;
-using ISO9001.Database.InMemory.DataContexts.Entities;
-using ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext;
-using ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
-using ISO9001.Entities.Responses;
-using ISO9001.GetQualityDashBoard.BusinessObjects.Interfaces;
-using ISO9001.GetQualityDashBoard.IoC;
-using ISO9001.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace ISO9001.GetQualityDashBoard.IntegrationTest
+﻿namespace ISO9001.GetQualityDashBoard.IntegrationTest
 {
-    public class GetQualityDashboardInMemoryIntegrationTest:IDisposable
+    public class GetQualityDashboardInMemoryIntegrationTest : IDisposable
     {
         readonly ServiceProvider Provider;
         readonly InMemoryCustomerFeedbackStore CustomerFeedbackMemoryStore;
@@ -24,7 +13,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
         public GetQualityDashboardInMemoryIntegrationTest()
         {
             var Services = new ServiceCollection();
-            Services.AddGetQualityDashBoardServices();
+            Services.AddQualityDashboardCoreServices();
             Services.AddISO9001Repositories();
             Services.AddDatabaseInMemory();
 
@@ -39,7 +28,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
         }
 
         void SeedDatabase()
-        {            
+        {
             string CompanyId = "TestCompany";
 
             #region RegisterNonConformity

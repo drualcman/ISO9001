@@ -17,7 +17,7 @@
             services.AddScoped<ICommandNonConformityDetailRepository, CommandNonConformityDetailRepository>();
             services.AddScoped<IQueryableNonConformityRepository, QueryableNonConformityRepository>();
 
-            services.AddScoped<IGetQualityDashBoardRepository, GetQualityDashBoardRepository>();
+            services.AddScoped<IQueryableQualityDashboardRepository, QueryableQualityDashboardRepository>();
 
             services.AddScoped<IAuditEventProvider, AuditLogEventProvider>();
             services.AddScoped<IAuditEventProvider, CustomerFeedbackEventProvider>();

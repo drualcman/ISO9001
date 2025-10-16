@@ -11,9 +11,9 @@
     <ProjectReference Include="..\ISO9001.Entities\ISO9001.Entities.csproj" />
     <ProjectReference Include="..\ISO9001.IncidentReport.Core\ISO9001.IncidentReport.Core.csproj" />
     <ProjectReference Include="..\ISO9001.Interfaces\ISO9001.Interfaces.csproj" />
-    <ProjectReference Include="..\ISO9001.GetQualityDashBoard.BusinessObjects\ISO9001.GetQualityDashBoard.BusinessObjects.csproj" />
     <ProjectReference Include="..\ISO9001.Interfaces\ISO9001.Interfaces.csproj" />
     <ProjectReference Include="..\ISO9001.NonConformity.Core\ISO9001.NonConformity.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.QualityDashBoard.Core\ISO9001.QualityDashBoard.Core.csproj" />
   </ItemGroup>
 
 

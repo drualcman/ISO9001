@@ -1,4 +1,6 @@
-﻿using ISO9001.NonConformity.Core;
+﻿using ISO9001.AuditEvent.Core;
+using ISO9001.NonConformity.Core;
+using ISO9001.QualityDashBoard.Core;
 
 namespace ISO9001.WebAPI
 {
@@ -10,14 +12,12 @@ namespace ISO9001.WebAPI
             builder.Services.AddCustomerFeedbackCoreServices();
             builder.Services.AddIncidentReportCoreServices();
             builder.Services.AddNonConformityCoreServices();
-            builder.Services.AddGetAuditEventsServices();
+            builder.Services.AddQualityDashboardCoreServices();
+            builder.Services.AddAuditEventCoreServices();
 
 
             builder.Services.AddISO9001Repositories();
-            builder.Services.AddGetQualityDashBoardServices();
             builder.Services.AddAuditEventsRepositories();
-
-
             builder.Services.AddDatabaseInMemory();
             return builder;
         }

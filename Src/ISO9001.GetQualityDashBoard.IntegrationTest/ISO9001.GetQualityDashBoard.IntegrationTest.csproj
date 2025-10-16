@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ISO9001.Database.InMemory\ISO9001.Database.InMemory.csproj" />
-    <ProjectReference Include="..\ISO9001.GetQualityDashBoard.IoC\ISO9001.GetQualityDashBoard.IoC.csproj" />
+    <ProjectReference Include="..\ISO9001.QualityDashBoard.Core\ISO9001.QualityDashBoard.Core.csproj" />
     <ProjectReference Include="..\ISO9001.Repositories\ISO9001.Repositories.csproj" />
   </ItemGroup>
 
