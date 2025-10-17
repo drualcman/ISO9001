@@ -1,4 +1,7 @@
-﻿namespace ISO9001.Repositories
+﻿using ISO9001.AuditReport.Core.Interfaces;
+using ISO9001.Repositories.AuditReport;
+
+namespace ISO9001.Repositories
 {
     public static class DependencyContainer
     {
@@ -18,6 +21,7 @@
             services.AddScoped<IQueryableNonConformityRepository, QueryableNonConformityRepository>();
 
             services.AddScoped<IQueryableQualityDashboardRepository, QueryableQualityDashboardRepository>();
+            services.AddScoped<IQueryableAuditReportRepository, QueryableAuditReportRepository>();
 
             services.AddScoped<IAuditEventProvider, AuditLogEventProvider>();
             services.AddScoped<IAuditEventProvider, CustomerFeedbackEventProvider>();

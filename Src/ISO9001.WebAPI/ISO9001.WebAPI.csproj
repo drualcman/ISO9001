@@ -17,6 +17,8 @@
     <ProjectReference Include="..\ISO9001.AuditEvents.Repositories\ISO9001.AuditEvents.Repositories.csproj" />
     <ProjectReference Include="..\ISO9001.AuditLog.Core\ISO9001.AuditLog.Core.csproj" />
     <ProjectReference Include="..\ISO9001.AuditLog.Rest.Mappings\ISO9001.AuditLog.Rest.Mappings.csproj" />
+    <ProjectReference Include="..\ISO9001.AuditReport.Core\ISO9001.AuditReport.Core.csproj" />
+    <ProjectReference Include="..\ISO9001.AuditReport.Rest.Mappings\ISO9001.AuditReport.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.CustomerFeedback.Core\ISO9001.CustomerFeedback.Core.csproj" />
     <ProjectReference Include="..\ISO9001.CustomerFeedback.Rest.Mappings\ISO9001.CustomerFeedback.Rest.Mappings.csproj" />
     <ProjectReference Include="..\ISO9001.Database.InMemory\ISO9001.Database.InMemory.csproj" />
