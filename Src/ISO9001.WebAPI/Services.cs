@@ -1,4 +1,8 @@
-﻿namespace ISO9001.WebAPI
+﻿using ISO9001.AuditEvent.Core;
+using ISO9001.NonConformity.Core;
+using ISO9001.QualityDashBoard.Core;
+
+namespace ISO9001.WebAPI
 {
     public static class Services
     {
@@ -7,21 +11,13 @@
             builder.Services.AddAuditLogCoreServices();
             builder.Services.AddCustomerFeedbackCoreServices();
             builder.Services.AddIncidentReportCoreServices();
+            builder.Services.AddNonConformityCoreServices();
+            builder.Services.AddQualityDashboardCoreServices();
+            builder.Services.AddAuditEventCoreServices();
 
-
-            builder.Services.AddRegisterNonConformityServices();
-            builder.Services.AddRegisterNonConformityDetailServices();
-            builder.Services.AddGetAllNonConformitiesServices();
-            builder.Services.AddGetNonConformityByAffectedProcessServices();
-            builder.Services.AddGetNonConformityByEntityIdServices();
-            builder.Services.AddGetNonConformityByStatusServices();
-
-            builder.Services.AddGetAuditEventsServices();
-            builder.Services.AddAuditEventsRepositories();
-
-            builder.Services.AddGetQualityDashBoardServices();
 
             builder.Services.AddISO9001Repositories();
+            builder.Services.AddAuditEventsRepositories();
             builder.Services.AddDatabaseInMemory();
             return builder;
         }

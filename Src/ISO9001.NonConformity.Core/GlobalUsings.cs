@@ -1,0 +1,16 @@
+global using ISO9001.Entities.Dtos;
+global using ISO9001.Entities.Responses;
+global using ISO9001.NonConformity.Core.Interfaces;
+global using ISO9001.NonConformity.Core.Internals.GetAllNonConformities;
+global using ISO9001.NonConformity.Core.Internals.GetNonConformityByAffectedProcess;
+global using ISO9001.NonConformity.Core.Internals.GetNonConformityByEntityId;
+global using ISO9001.NonConformity.Core.Internals.GetNonConformityByStatus;
+global using ISO9001.NonConformity.Core.Internals.RegisterNonConformity;
+global using ISO9001.NonConformity.Core.Internals.RegisterNonConformityDetail;
+global using ISO9001.NonConformity.Core.Handlers.GetAllNonConformities;
+global using ISO9001.NonConformity.Core.Handlers.GetNonConformityByAffectedProcess;
+global using ISO9001.NonConformity.Core.Handlers.GetNonConformityByEntityId;
+global using ISO9001.NonConformity.Core.Handlers.GetNonConformityByStatus;
+global using ISO9001.NonConformity.Core.Handlers.RegisterNonConformity;
+global using ISO9001.NonConformity.Core.Handlers.RegisterNonConformityDetail;
+global using Microsoft.Extensions.DependencyInjection;

@@ -13,18 +13,14 @@
             services.AddScoped<ICommandIncidentReportRepository, CommandIncidentReportRepository>();
             services.AddScoped<IQueryableIncidentReportRepository, QueryableIncidentReportRepository>();
 
-            services.AddScoped<IRegisterNonConformityRepository, RegisterNonConformityRepository>();
-            services.AddScoped<IRegisterNonConformityDetailRepository, RegisterNonConformityDetailRepository>();
-            services.AddScoped<IGetAllNonConformitiesRepository, GetAllNonConformitiesRepository>();
-            services.AddScoped<IGetNonConformityByAffectedProcessRepository, GetNonConformityByAffectedProcessRepository>();
-            services.AddScoped<IGetNonConformityByEntityIdRepository, GetNonConformityByEntityIdRepository>();
-            services.AddScoped<IGetNonConformityByStatusRepository, GetNonConformityByStatusRepository>();
+            services.AddScoped<ICommandNonConformityRepository, CommandNonConformityRepository>();
+            services.AddScoped<ICommandNonConformityDetailRepository, CommandNonConformityDetailRepository>();
+            services.AddScoped<IQueryableNonConformityRepository, QueryableNonConformityRepository>();
 
-            services.AddScoped<IGetQualityDashBoardRepository, GetQualityDashBoardRepository>();
+            services.AddScoped<IQueryableQualityDashboardRepository, QueryableQualityDashboardRepository>();
 
             services.AddScoped<IAuditEventProvider, AuditLogEventProvider>();
             services.AddScoped<IAuditEventProvider, CustomerFeedbackEventProvider>();
-            services.AddScoped<IAuditEventProvider, IncidentReportEventProvider>();
             services.AddScoped<IAuditEventProvider, IncidentReportEventProvider>();
             services.AddScoped<IAuditEventProvider, NonConformityEventProvider>();
             return services;

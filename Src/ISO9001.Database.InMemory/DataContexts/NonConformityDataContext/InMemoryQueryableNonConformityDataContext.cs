@@ -1,7 +1,4 @@
-﻿using ISO9001.Repositories.NonConformityRepositories.Entities;
-using ISO9001.Repositories.NonConformityRepositories.Interfaces;
-
-namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
+﻿namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext
 {
     internal class InMemoryQueryableNonConformityDataContext(
         InMemoryNonConformityStore dataContext) : IQueryableNonConformityDataContext

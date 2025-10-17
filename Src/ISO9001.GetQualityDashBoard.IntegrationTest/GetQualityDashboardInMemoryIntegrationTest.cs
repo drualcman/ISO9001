@@ -1,17 +1,6 @@
-﻿using ISO9001.Database.InMemory;
-using ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext;
-using ISO9001.Database.InMemory.DataContexts.Entities;
-using ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext;
-using ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
-using ISO9001.Entities.Responses;
-using ISO9001.GetQualityDashBoard.BusinessObjects.Interfaces;
-using ISO9001.GetQualityDashBoard.IoC;
-using ISO9001.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace ISO9001.GetQualityDashBoard.IntegrationTest
+﻿namespace ISO9001.GetQualityDashBoard.IntegrationTest
 {
-    public class GetQualityDashboardInMemoryIntegrationTest:IDisposable
+    public class GetQualityDashboardInMemoryIntegrationTest : IDisposable
     {
         readonly ServiceProvider Provider;
         readonly InMemoryCustomerFeedbackStore CustomerFeedbackMemoryStore;
@@ -24,7 +13,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
         public GetQualityDashboardInMemoryIntegrationTest()
         {
             var Services = new ServiceCollection();
-            Services.AddGetQualityDashBoardServices();
+            Services.AddQualityDashboardCoreServices();
             Services.AddISO9001Repositories();
             Services.AddDatabaseInMemory();
 
@@ -39,14 +28,14 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
         }
 
         void SeedDatabase()
-        {            
+        {
             string CompanyId = "TestCompany";
 
             #region RegisterNonConformity
 
             var MasterDate1 = Now.AddMonths(-3);
 
-            var NC1 = new NonConformity
+            var NC1 = new Database.InMemory.DataContexts.Entities.NonConformity
             {
                 Id = Guid.NewGuid(),
                 EntityId = "nc-001",
@@ -93,7 +82,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
             var MasterDate2 = Now.AddMonths(-2);
 
 
-            var NC2 = new NonConformity
+            var NC2 = new Database.InMemory.DataContexts.Entities.NonConformity
             {
                 Id = Guid.NewGuid(),
                 EntityId = "nc-002",
@@ -138,7 +127,7 @@ namespace ISO9001.GetQualityDashBoard.IntegrationTest
             NC2.Status = NC2Detail3.Status;
 
             var NC3Reported = Now.AddDays(-20);
-            var NC3 = new NonConformity
+            var NC3 = new Database.InMemory.DataContexts.Entities.NonConformity
             {
                 Id = Guid.NewGuid(),
                 EntityId = "nc-003",

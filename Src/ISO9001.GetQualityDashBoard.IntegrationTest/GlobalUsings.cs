@@ -1,0 +1,10 @@
+global using ISO9001.Database.InMemory;
+global using ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext;
+global using ISO9001.Database.InMemory.DataContexts.Entities;
+global using ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext;
+global using ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
+global using ISO9001.Entities.Responses;
+global using ISO9001.QualityDashBoard.Core;
+global using ISO9001.QualityDashBoard.Core.Internals.GetQualityDashBoard;
+global using ISO9001.Repositories;
+global using Microsoft.Extensions.DependencyInjection;
