@@ -1,4 +1,5 @@
 ﻿using ISO9001.AuditReport.Core.Interfaces;
+using ISO9001.Repositories.AuditEvent;
 using ISO9001.Repositories.AuditReport;
 
 namespace ISO9001.Repositories
@@ -22,6 +23,7 @@ namespace ISO9001.Repositories
 
             services.AddScoped<IQueryableQualityDashboardRepository, QueryableQualityDashboardRepository>();
             services.AddScoped<IQueryableAuditReportRepository, QueryableAuditReportRepository>();
+            services.AddScoped<IQueryableAuditEventRepository, QueryableAuditEventRepository>();
 
             services.AddScoped<IAuditEventProvider, AuditLogEventProvider>();
             services.AddScoped<IAuditEventProvider, CustomerFeedbackEventProvider>();

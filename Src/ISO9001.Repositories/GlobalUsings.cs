@@ -24,3 +24,4 @@ global using ISO9001.Repositories.NonConformityRepositories.AuditEventProvider;
 global using ISO9001.Repositories.NonConformityRepositories.Entities;
 global using ISO9001.Repositories.NonConformityRepositories.Interfaces;
 global using Microsoft.Extensions.DependencyInjection;
+global using ISO9001.AuditEvent.Core.Interfaces;

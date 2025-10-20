@@ -1,4 +1,3 @@
-global using ISO9001.AuditEvents.Repositories;
 global using ISO9001.AuditLog.Core;
 global using ISO9001.AuditLog.Rest.Mappings;
 global using ISO9001.CustomerFeedback.Core;

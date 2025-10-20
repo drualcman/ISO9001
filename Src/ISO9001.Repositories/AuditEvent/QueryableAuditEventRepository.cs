@@ -1,4 +1,4 @@
-﻿namespace ISO9001.AuditEvents.Repositories
+﻿namespace ISO9001.Repositories.AuditEvent
 {
     internal class QueryableAuditEventRepository(IEnumerable<IAuditEventProvider> providers) : IQueryableAuditEventRepository
     {
@@ -14,6 +14,7 @@
             }
 
             return AllAuditEvents;
+
         }
     }
 }
