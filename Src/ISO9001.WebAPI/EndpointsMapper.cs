@@ -1,4 +1,5 @@
 ﻿using ISO9001.AuditEvent.Rest.Mappings;
+using ISO9001.AuditReport.Rest.Mappings;
 using ISO9001.NonConformity.Rest.Mappings;
 using ISO9001.QualityDashBoard.Rest.Mappings;
 
@@ -17,6 +18,7 @@ namespace ISO9001.WebAPI
 
             builder.MapAuditEventEndpoints();
             builder.MapQualityDashboardEndpoints();
+            builder.MapAuditReportEndpoints();
             return builder;
         }
     }
