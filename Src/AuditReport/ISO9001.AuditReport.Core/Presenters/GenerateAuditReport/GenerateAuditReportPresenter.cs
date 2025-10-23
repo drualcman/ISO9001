@@ -3,6 +3,8 @@
     internal class GenerateAuditReportPresenter(
         IReportAsBytes reportBytes): IGenerateAuditReportOutputPort
     {
+        public byte[] PdfBytes { get; private set; }
+
         public async Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses, 
             IEnumerable<IncidentReportResponse> incidentReportResponses, 
             IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses, 
@@ -618,14 +620,7 @@
 
             ReportViewModel reportModel = new ReportViewModel(reportSetUp, data);
             byte[] pdfBytes = await reportBytes.GenerateReport(reportModel);
-
-            string folderPath = @"C:\Reports";
-            Directory.CreateDirectory(folderPath);
-            string fileName = $"PlainTextReport_{DateTime.UtcNow:yyyyMMddHHmmss}.pdf";
-            string fullPath = Path.Combine(folderPath, fileName);
-
-            await File.WriteAllBytesAsync(fullPath, pdfBytes);
-
+            PdfBytes = pdfBytes;
 
         }
     }

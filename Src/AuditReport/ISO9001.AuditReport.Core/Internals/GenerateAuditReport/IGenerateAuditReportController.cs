@@ -2,6 +2,6 @@
 {
     public interface IGenerateAuditReportController
     {
-        Task HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end);
+        Task<byte[]> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end);
     }
 }
