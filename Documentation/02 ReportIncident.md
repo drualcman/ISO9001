@@ -67,10 +67,10 @@ Puedes implementar ambos contextos de datos utilizando un sistema de base de dat
 ### InMemoryIncidentReportStore
 
 ```csharp
-internal static class InMemoryIncidentReportStore
+internal class InMemoryIncidentReportStore
 {
-    public static List<IncidentReport> IncidentReports { get; } = new();
-    public static int IncidentReportCurrentId { get; set; }
+    public List<IncidentReport> IncidentReports { get; } = new();
+    public int IncidentReportCurrentId { get; set; }
 }
 ```
 
@@ -78,13 +78,14 @@ internal static class InMemoryIncidentReportStore
 ### InMemoryWritableIncidentReportDataContext
 
 ```csharp
-internal class InMemoryWritableIncidentReportDataContext: IWritableIncidentReportDataContext
+internal class InMemoryWritableIncidentReportDataContext(
+    InMemoryIncidentReportStore dataContext) : IWritableIncidentReportDataContext
 {
     public Task AddAsync(IncidentReport incidentReport)
     {
         var Record = new DataContexts.Entities.IncidentReport
         {
-            Id = +InMemoryIncidentReportStore.IncidentReportCurrentId,
+            Id = ++dataContext.IncidentReportCurrentId,
             CompanyId = incidentReport.CompanyId,
             EntityId = incidentReport.EntityId,
             ReportedAt = incidentReport.ReportedAt,
@@ -96,7 +97,7 @@ internal class InMemoryWritableIncidentReportDataContext: IWritableIncidentRepor
             Data = incidentReport.Data
         };
 
-        InMemoryIncidentReportStore.IncidentReports.Add(Record);
+        dataContext.IncidentReports.Add(Record);
         return Task.CompletedTask;
     }
 
@@ -110,32 +111,28 @@ internal class InMemoryWritableIncidentReportDataContext: IWritableIncidentRepor
 ### InMemoryQueryableIncidentReportDataContext
 
 ```csharp
-internal class GetAllIncidentReportsRepository(IQueryableIncidentReportDataContext dataContext) : IGetAllIncidentReportsRepository
+internal class InMemoryQueryableIncidentReportDataContext(
+    InMemoryIncidentReportStore dataContext): IQueryableIncidentReportDataContext
 {
-    public async Task<IEnumerable<IncidentReportResponse>> GetAllIncidentReportsAsync(string id, DateTime? from, DateTime? end)
-    {
-        var Query = dataContext.IncidentReports
-            .Where(IncidentReport =>
-                IncidentReport.CompanyId == id &&
-                IncidentReport.ReportedAt >= from &&
-                IncidentReport.ReportedAt <= end)
-            .OrderBy(IncidentReport => IncidentReport.ReportedAt);
+    public IQueryable<IncidentReportReadModel> IncidentReports =>
+        dataContext.IncidentReports
+        .Select(IncidentReport => new IncidentReportReadModel
+        {
+            Id = IncidentReport.Id,
+            CompanyId = IncidentReport.CompanyId,
+            EntityId = IncidentReport.EntityId,
+            ReportedAt = IncidentReport.ReportedAt,
+            CreatedAt = IncidentReport.CreatedAt,
+            UserId = IncidentReport.UserId,
+            Description = IncidentReport.Description,
+            AffectedProcess = IncidentReport.AffectedProcess,
+            Severity = IncidentReport.Severity,
+            Data = IncidentReport.Data
+        }).AsQueryable();
 
-        var IncidentReports = await dataContext.ToListAsync(Query);
+    public async Task<IEnumerable<IncidentReportReadModel>> ToListAsync(IQueryable<IncidentReportReadModel> queryable)
+        => await Task.FromResult(queryable.ToList());
 
-        return IncidentReports.Select(
-            IncidentReport => new IncidentReportResponse(
-                IncidentReport.EntityId,
-                IncidentReport.ReportedAt,
-                IncidentReport.UserId,
-                IncidentReport.Description,
-                IncidentReport.AffectedProcess,
-                IncidentReport.Severity,
-                IncidentReport.Data
-                ));
-
-
-    }
 }
 ```
 # Caso de uso: RegisterIncidentReport

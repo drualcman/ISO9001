@@ -100,11 +100,11 @@ Puedes implementar ambos contextos de datos utilizando un sistema de base de dat
 ### InMemoryNonConformityStore
 
 ```csharp
-internal static class InMemoryNonConformityStore
+internal class InMemoryNonConformityStore
 {
-    public static List<NonConformity> NonConformities { get; } = new();
-    public static List<NonConformityDetail> NonConformityDetails { get; } = new();
-    public static int NonConformityDetailsCurrentId { get; set; }
+    public List<NonConformity> NonConformities { get; } = new();
+    public List<NonConformityDetail> NonConformityDetails { get; } = new();
+    public int NonConformityDetailsCurrentId { get; set; }
 
 }
 ```
@@ -112,7 +112,8 @@ internal static class InMemoryNonConformityStore
 ### InMemoryWritableNonConformityDataContext
 
 ```csharp
-internal class InMemoryWritableNonConformityDataContext : IWritableNonConformityDataContext
+internal class InMemoryWritableNonConformityDataContext(
+    InMemoryNonConformityStore dataContext) : IWritableNonConformityDataContext
 {
     public Task AddNonConformityAsync(NonConformity nonConformityMaster)
     {
@@ -127,19 +128,19 @@ internal class InMemoryWritableNonConformityDataContext : IWritableNonConformity
             Status = nonConformityMaster.Status,
             CreatedAt = DateTime.UtcNow
         };
-        InMemoryNonConformityStore.NonConformities.Add(NonConformityRecord);
+        dataContext.NonConformities.Add(NonConformityRecord);
         return Task.CompletedTask;
     }
 
     public Task AddNonConformityDetailAsync(NonConformityDetail nonConformityDetail, Guid id)
     {
-        var NonConformity = InMemoryNonConformityStore.NonConformities
+        var NonConformity = dataContext.NonConformities
             .FirstOrDefault(nonConformity =>
             nonConformity.Id == id);
 
         var NonConformityDetailRecord = new DataContexts.Entities.NonConformityDetail
         {
-            Id = ++InMemoryNonConformityStore.NonConformityDetailsCurrentId,
+            Id = ++dataContext.NonConformityDetailsCurrentId,
             NonConformityId = NonConformity.Id,
             ReportedAt = nonConformityDetail.ReportedAt,
             ReportedBy = nonConformityDetail.ReportedBy,
@@ -148,13 +149,13 @@ internal class InMemoryWritableNonConformityDataContext : IWritableNonConformity
             CreatedAt = DateTime.UtcNow
         };
 
-        InMemoryNonConformityStore.NonConformityDetails.Add(NonConformityDetailRecord);
+        dataContext.NonConformityDetails.Add(NonConformityDetailRecord);
         return Task.CompletedTask;
     }
 
     public Task UpdateNonConformityAsync(NonConformityReadModel nonConformityUpdated)
     {
-        var NonConformitRecord = InMemoryNonConformityStore.NonConformities
+        var NonConformitRecord = dataContext.NonConformities
             .FirstOrDefault(NonConformity => NonConformity.Id == nonConformityUpdated.Id);
 
         NonConformitRecord.EntityId = nonConformityUpdated.EntityId;
@@ -177,10 +178,11 @@ internal class InMemoryWritableNonConformityDataContext : IWritableNonConformity
 ### InMemoryQueryableNonConformityDataContext
 
 ```csharp
-internal class InMemoryQueryableNonConformityDataContext : IQueryableNonConformityDataContext
+internal class InMemoryQueryableNonConformityDataContext(
+    InMemoryNonConformityStore dataContext) : IQueryableNonConformityDataContext
 {
     public IQueryable<NonConformityReadModel> NonConformities =>
-        InMemoryNonConformityStore.NonConformities
+        dataContext.NonConformities
         .Select(NonConformity => new NonConformityReadModel
         {
             Id = NonConformity.Id,
@@ -194,7 +196,7 @@ internal class InMemoryQueryableNonConformityDataContext : IQueryableNonConformi
         }).AsQueryable();
 
     public IQueryable<NonConformityDetailReadModel> NonConformityDetails =>
-    InMemoryNonConformityStore.NonConformityDetails
+    dataContext.NonConformityDetails
     .Select(NonConformityDetail => new NonConformityDetailReadModel
     {
         Id = NonConformityDetail.Id,
