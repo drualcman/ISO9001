@@ -1,9 +1,11 @@
-﻿namespace ISO9001.AuditReport.Core.Presenters.GenerateAuditReport
+﻿using DigitalDoor.Reporting.Entities.Interfaces;
+
+namespace ISO9001.AuditReport.Core.Presenters.GenerateAuditReport
 {
     internal class GenerateAuditReportPresenter(
-        IReportAsBytes reportBytes): IGenerateAuditReportOutputPort
+        IReportsOutputPort outputportReport, IReportsPresenter reportsPresenter) : IGenerateAuditReportOutputPort
     {
-        public byte[] PdfBytes { get; private set; }
+        public ReportViewModel ReportViewModel { get; private set; }
 
         public async Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses, 
             IEnumerable<IncidentReportResponse> incidentReportResponses, 
@@ -618,9 +620,8 @@
                 }
             }
 
-            ReportViewModel reportModel = new ReportViewModel(reportSetUp, data);
-            byte[] pdfBytes = await reportBytes.GenerateReport(reportModel);
-            PdfBytes = pdfBytes;
+            await outputportReport.Handle(reportSetUp, data);
+            ReportViewModel = reportsPresenter.Content;
 
         }
     }

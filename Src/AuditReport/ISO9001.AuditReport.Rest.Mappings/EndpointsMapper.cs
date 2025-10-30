@@ -15,8 +15,7 @@
                 [FromQuery] DateTime? end,
                 IGenerateAuditReportController controller) =>
                  {
-                    byte[] Bytes = await controller.HandleAsync(companyId, entityId, from, end);
-                     return Results.File(Bytes, "application/pdf", "AuditReport.pdf");
+                     return Results.Ok(await controller.HandleAsync(companyId, entityId, from, end));
                  });
             return builder;
         }

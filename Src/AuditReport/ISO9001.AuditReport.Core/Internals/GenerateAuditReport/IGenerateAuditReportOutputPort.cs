@@ -2,8 +2,7 @@
 {
     internal interface IGenerateAuditReportOutputPort
     {
-        public byte[] PdfBytes { get; }
-
+        public ReportViewModel ReportViewModel { get; }
         Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses, IEnumerable<IncidentReportResponse> incidentReportResponses,
             IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses, string entityId, DateTime from, DateTime end);
     }
