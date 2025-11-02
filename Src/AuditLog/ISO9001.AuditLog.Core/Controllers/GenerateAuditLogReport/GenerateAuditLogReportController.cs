@@ -1,0 +1,16 @@
+﻿using DigitalDoor.Reporting.Entities.ViewModels;
+using ISO9001.AuditLog.Core.Internals.GenerateAuditLogReport;
+
+namespace ISO9001.AuditLog.Core.Controllers.GenerateAuditLogReport
+{
+    internal class GenerateAuditLogReportController(
+            IGenerateAuditLogReportInputPort inputPort,
+            IGenerateAuditLogReportOutputPort outputPort) : IGenerateAuditLogReportController
+    {
+        public async Task<ReportViewModel> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end)
+        {
+            await inputPort.GenerateAuditReportAsync(companyId, entityId, from, end);
+            return outputPort.ReportViewModel;
+        }
+    }
+}

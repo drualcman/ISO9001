@@ -17,6 +17,8 @@ namespace ISO9001.WebAPI
             builder.Services.AddAuditEventCoreServices();
             builder.Services.AddAuditReportCoreServices();
 
+            builder.Services.AddReportingPresenterPdfServices();
+
             builder.Services.AddISO9001Repositories();
             builder.Services.AddDatabaseInMemory();
             return builder;

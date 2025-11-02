@@ -1,4 +1,6 @@
-﻿namespace ISO9001.AuditLog.Rest.Mappings
+﻿using ISO9001.AuditLog.Core.Internals.GenerateAuditLogReport;
+
+namespace ISO9001.AuditLog.Rest.Mappings
 {
     public static class EndpointsMapper
     {
@@ -60,6 +62,18 @@
             IGetAllAuditLogsInputPort inputPort) =>
             {
                 var result = await inputPort.HandleAsync(companyId, from, end);
+                return TypedResults.Ok(result);
+
+            });
+
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "AuditReport/").CreateEndpoint("AuditLogEndpoints"), async (
+            string companyId,
+            string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGenerateAuditLogReportController controller) =>
+            {
+                var result = await controller.HandleAsync(companyId, entityId, from, end);
                 return TypedResults.Ok(result);
 
             });

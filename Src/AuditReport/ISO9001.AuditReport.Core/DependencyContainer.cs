@@ -7,7 +7,6 @@
             services.AddScoped<IGenerateAuditReportController, GenerateAuditReportController>();
             services.AddScoped<IGenerateAuditReportInputPort, GenerateAuditReportHandler>();
             services.AddScoped<IGenerateAuditReportOutputPort, GenerateAuditReportPresenter>();
-            services.AddReportingPresenterPdfServices();
 
             return services;
         }

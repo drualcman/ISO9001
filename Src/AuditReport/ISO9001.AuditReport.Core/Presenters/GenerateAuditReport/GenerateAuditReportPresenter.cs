@@ -1,15 +1,13 @@
-﻿using DigitalDoor.Reporting.Entities.Interfaces;
-
-namespace ISO9001.AuditReport.Core.Presenters.GenerateAuditReport
+﻿namespace ISO9001.AuditReport.Core.Presenters.GenerateAuditReport
 {
     internal class GenerateAuditReportPresenter(
-        IReportsOutputPort outputportReport, IReportsPresenter reportsPresenter) : IGenerateAuditReportOutputPort
+        IReportsOutputPort outputPortReport, IReportsPresenter reportsPresenter) : IGenerateAuditReportOutputPort
     {
         public ReportViewModel ReportViewModel { get; private set; }
 
-        public async Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses, 
-            IEnumerable<IncidentReportResponse> incidentReportResponses, 
-            IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses, 
+        public async Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses,
+            IEnumerable<IncidentReportResponse> incidentReportResponses,
+            IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses,
             string entityId, DateTime from, DateTime end)
         {
             Setup reportSetUp = new()
@@ -506,7 +504,7 @@ namespace ISO9001.AuditReport.Core.Presenters.GenerateAuditReport
             #endregion
 
             var LatestNonConformity = nonConformityMaterResponses
-                .OrderByDescending(nc => nc.ReportedAt) 
+                .OrderByDescending(nc => nc.ReportedAt)
                 .FirstOrDefault();
 
             string LatestStatus = LatestNonConformity != null
@@ -620,7 +618,7 @@ namespace ISO9001.AuditReport.Core.Presenters.GenerateAuditReport
                 }
             }
 
-            await outputportReport.Handle(reportSetUp, data);
+            await outputPortReport.Handle(reportSetUp, data);
             ReportViewModel = reportsPresenter.Content;
 
         }
