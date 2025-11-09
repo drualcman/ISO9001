@@ -2,6 +2,6 @@
 {
     public interface IGenerateAuditLogReportInputPort
     {
-        ValueTask GenerateAuditReportAsync(string companyId, string entityId, DateTime? from, DateTime? end);
+        ValueTask GenerateAuditLogReportAsync(string companyId, string entityId, DateTime? from, DateTime? end);
     }
 }

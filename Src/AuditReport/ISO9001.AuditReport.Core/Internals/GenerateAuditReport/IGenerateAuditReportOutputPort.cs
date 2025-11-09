@@ -4,6 +4,6 @@
     {
         public ReportViewModel ReportViewModel { get; }
         Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses, IEnumerable<IncidentReportResponse> incidentReportResponses,
-            IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses, string entityId, DateTime from, DateTime end);
+            IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses, string entityId);
     }
 }

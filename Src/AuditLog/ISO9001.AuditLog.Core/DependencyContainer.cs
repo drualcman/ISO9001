@@ -1,7 +1,7 @@
 ﻿using ISO9001.AuditLog.Core.Controllers.GenerateAuditLogReport;
 using ISO9001.AuditLog.Core.Handlers.GenerateAuditLogReport;
 using ISO9001.AuditLog.Core.Internals.GenerateAuditLogReport;
-using ISO9001.AuditLog.Core.Presenters;
+using ISO9001.AuditLog.Core.Presenters.GenerateAuditLogReport;
 
 namespace ISO9001.AuditLog.Core;
 

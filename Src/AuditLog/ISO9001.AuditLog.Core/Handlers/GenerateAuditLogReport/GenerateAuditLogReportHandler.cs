@@ -6,7 +6,7 @@ namespace ISO9001.AuditLog.Core.Handlers.GenerateAuditLogReport
         IGetAuditLogsByEntityIdInputPort inputPort,
         IGenerateAuditLogReportOutputPort outputPort): IGenerateAuditLogReportInputPort
     {
-        public async ValueTask GenerateAuditReportAsync(string companyId, 
+        public async ValueTask GenerateAuditLogReportAsync(string companyId, 
             string entityId, DateTime? from, DateTime? end)
         {
             DateTime UtcFrom = from != null ? from.Value.Date
@@ -17,7 +17,7 @@ namespace ISO9001.AuditLog.Core.Handlers.GenerateAuditLogReport
 
 
             var AuditLogs = await inputPort.HandleAsync(companyId, entityId, UtcFrom, UtcEnd);
-            await outputPort.Handle(AuditLogs, entityId, UtcFrom, UtcEnd);
+            await outputPort.Handle(AuditLogs, companyId);
 
         }
     }

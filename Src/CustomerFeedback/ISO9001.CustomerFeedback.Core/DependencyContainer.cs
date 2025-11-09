@@ -1,4 +1,9 @@
-﻿namespace ISO9001.CustomerFeedback.Core;
+﻿using ISO9001.CustomerFeedback.Core.Controllers.GenerateCustomerFeedbackReport;
+using ISO9001.CustomerFeedback.Core.Handlers.GenerateCustomerFeedbackReport;
+using ISO9001.CustomerFeedback.Core.Internals.GenerateCustomerFeedbackReport;
+using ISO9001.CustomerFeedback.Core.Presenters.GenerateCustomerFeedbackReport;
+
+namespace ISO9001.CustomerFeedback.Core;
 
 public static class DependencyContainer
 {
@@ -11,6 +16,10 @@ public static class DependencyContainer
         services.AddScoped<IGetCustomerFeedbackByEntityIdInputPort, GetGustomerFeedbackByEntityIdHandler>();
         services.AddScoped<IGetAllCustomerFeedbackInputPort, GetAllCustomerFeedbackHandler>();
         services.AddScoped<IGetCustomerFeedbackByCustomerIdInputPort, GetCustomerFeedbackByCustomerIdHandler>();
+
+        services.AddScoped<IGenerateCustomerFeedbackController, GenerateCustomerFeedbackReportController>();
+        services.AddScoped<IGenerateCustomerFeedbackInputPort, GenerateCustomerFeedbackReportHandler>();
+        services.AddScoped<IGenerateCustomerFeedbackOutputPort, GenerateCustomerFeedbackReportPresenter>();
         return services;
     }
 
