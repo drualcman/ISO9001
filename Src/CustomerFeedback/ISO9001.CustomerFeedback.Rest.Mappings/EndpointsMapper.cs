@@ -1,6 +1,4 @@
-﻿using ISO9001.CustomerFeedback.Core.Internals.GenerateCustomerFeedbackReport;
-
-namespace ISO9001.CustomerFeedback.Rest.Mappings
+﻿namespace ISO9001.CustomerFeedback.Rest.Mappings
 {
     public static class EndpointsMapper
     {
@@ -77,7 +75,7 @@ namespace ISO9001.CustomerFeedback.Rest.Mappings
 
                     });
 
-            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "CustomerFeedbackReport/").CreateEndpoint("CustomerFeedbackEndpoints"), async (
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("CustomerFeedbackEndpoints"), async (
             string companyId,
             string entityId,
             [FromQuery] DateTime? from,

@@ -6,7 +6,12 @@
         {
             services.AddScoped<IGetAllIncidentReportsInputPort, GetAllIncidentReportsHandler>();
             services.AddScoped<IGetIncidentReportByIdInputPort, GetIncidentReportByIdHandler>();
+            services.AddScoped<IGetIncidentReportByEntityIdInputPort, GetIncidentReportByEntityIdHandler>();
             services.AddScoped<IRegisterIncidentReportInputPort, RegisterIncidentReportHandler>();
+
+            services.AddScoped<IGenerateIncidentReportReportController, GenerateIncidentReportReportController>();
+            services.AddScoped<IGenerateIncidentReportReportInputPort, GenerateIncidentReportReportHandler>();
+            services.AddScoped<IGenerateIncidentReportReportOutputPort, GenerateIncidentReportReportPresenter>();
             return services;
         }
     }

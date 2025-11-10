@@ -1,0 +1,19 @@
+﻿namespace ISO9001.IncidentReport.Core.Handlers.GetIncidentReportByEntityId
+{
+    internal class GetIncidentReportByEntityIdHandler(
+        IQueryableIncidentReportRepository repository): IGetIncidentReportByEntityIdInputPort
+    {
+        public async Task<IEnumerable<IncidentReportResponse>> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end)
+        {
+            DateTime UtcFrom = from != null ? from.Value.Date
+                : DateTime.UtcNow.Date.AddDays(-30);
+
+            DateTime UtcEnd = end != null ? end.Value.Date.AddDays(1).AddTicks(-1)
+                : DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
+
+            var IncidentReports = await repository.GetIncidentReportByEntityIdAsync(companyId, entityId, UtcFrom, UtcEnd);
+
+            return IncidentReports;
+        }
+    }
+}

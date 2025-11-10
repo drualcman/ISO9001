@@ -1,9 +1,4 @@
-﻿using ISO9001.CustomerFeedback.Core.Controllers.GenerateCustomerFeedbackReport;
-using ISO9001.CustomerFeedback.Core.Handlers.GenerateCustomerFeedbackReport;
-using ISO9001.CustomerFeedback.Core.Internals.GenerateCustomerFeedbackReport;
-using ISO9001.CustomerFeedback.Core.Presenters.GenerateCustomerFeedbackReport;
-
-namespace ISO9001.CustomerFeedback.Core;
+﻿namespace ISO9001.CustomerFeedback.Core;
 
 public static class DependencyContainer
 {

@@ -1,6 +1,4 @@
-﻿using DigitalDoor.Reporting.Entities.ViewModels;
-
-namespace ISO9001.CustomerFeedback.Core.Internals.GenerateCustomerFeedbackReport
+﻿namespace ISO9001.CustomerFeedback.Core.Internals.GenerateCustomerFeedbackReport
 {
     public interface IGenerateCustomerFeedbackController
     {

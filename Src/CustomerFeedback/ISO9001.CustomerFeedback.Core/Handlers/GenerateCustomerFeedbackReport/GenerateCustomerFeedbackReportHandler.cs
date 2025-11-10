@@ -1,6 +1,4 @@
-﻿using ISO9001.CustomerFeedback.Core.Internals.GenerateCustomerFeedbackReport;
-
-namespace ISO9001.CustomerFeedback.Core.Handlers.GenerateCustomerFeedbackReport
+﻿namespace ISO9001.CustomerFeedback.Core.Handlers.GenerateCustomerFeedbackReport
 {
     internal class GenerateCustomerFeedbackReportHandler(
         IGetCustomerFeedbackByEntityIdInputPort inputPort,

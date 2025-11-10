@@ -1,13 +1,13 @@
-﻿namespace ISO9001.AuditLog.Core.Presenters.GenerateAuditLogReport
+﻿namespace ISO9001.IncidentReport.Core.Presenters.GenerateIncidentReportReport
 {
-    internal class GenerateAuditLogReportPresenter(
+    internal class GenerateIncidentReportReportPresenter(
         IReportsOutputPort outputPortReport,
         IReportsPresenter reportsPresenter,
-        IReportAsBytes reportBytes) : IGenerateAuditLogReportOutputPort
+        IReportAsBytes reportBytes) : IGenerateIncidentReportReportOutputPort
     {
         public ReportViewModel ReportViewModel { get; private set; }
 
-        public async Task Handle(IEnumerable<AuditLogResponse> auditLogResponses, string companyId)
+        public async Task Handle(IEnumerable<IncidentReportResponse> incidentReportResponses, string companyId)
         {
             Setup reportSetUp = new()
             {
@@ -39,7 +39,7 @@
                     Borders = new Border(new Shade(), new Shade(), new Shade(0.5, "Gray", 0.5f), new Shade()),
 
                 },
-                DataColumn = new Item("CalibrationLogTitle")
+                DataColumn = new Item("Title")
             });
 
             reportSetUp.Header.AddColumn(new ColumnSetup
@@ -51,7 +51,7 @@
                     TextAlignment = TextAlignment.Right,
 
                 },
-                DataColumn = new Item("CalibrationLogSubTitle")
+                DataColumn = new Item("SubTitle")
             });
 
             #region AuditLogs
@@ -66,7 +66,7 @@
                     Padding = new(0, 0, 0, 20)
 
                 },
-                DataColumn = new Item("NoAuditLogRecords"),
+                DataColumn = new Item("NoIncidentReportRecords"),
             });
 
 
@@ -82,12 +82,12 @@
                     Padding = new(3, 0, 0, 0),
 
                 },
-                DataColumn = new Item("AuditLogEntityIdTitle"),
+                DataColumn = new Item("IncidentReportEntityIdTitle"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.15), 10)
+                Format = new Format((int)(257 * 0.125), 10)
                 {
                     Position = new(0, 58.55m),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
@@ -97,14 +97,29 @@
                     Padding = new(3, 0, 0, 0),
 
                 },
-                DataColumn = new Item("AuditLogActionTitle"),
+                DataColumn = new Item("IncidentReportedAtTitle"),
+            });
+
+            reportSetUp.Body.AddColumn(new ColumnSetup
+            {
+                Format = new Format((int)(257 * 0.125), 10)
+                {
+                    Position = new(0, 90.675m),
+                    Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
+                    FontDetails = new Font("Arial", new Shade(14, "Black"), new FontStyle(700)),
+                    Background = "#DCDCDC",
+                    TextAlignment = TextAlignment.Center,
+                    Padding = new(3, 0, 0, 0),
+
+                },
+                DataColumn = new Item("IncidentReportUserIdTitle"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
                 Format = new Format((int)(257 * 0.15), 10)
                 {
-                    Position = new(0, 97.10m),
+                    Position = new(0, 122.8m),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(14, "Black"), new FontStyle(700)),
                     Background = "#DCDCDC",
@@ -112,14 +127,14 @@
                     Padding = new(3, 0, 0, 0),
 
                 },
-                DataColumn = new Item("AuditLogPerformedByTitle"),
+                DataColumn = new Item("IncidentReportDescriptionTitle"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.15), 10)
+                Format = new Format((int)(257 * 0.125), 10)
                 {
-                    Position = new(0, 135.65m),
+                    Position = new(0, 161.35m),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(14, "Black"), new FontStyle(700)),
                     Background = "#DCDCDC",
@@ -127,14 +142,14 @@
                     Padding = new(3, 0, 0, 0),
 
                 },
-                DataColumn = new Item("AuditLogTimeStampTitle"),
+                DataColumn = new Item("IncidentReportAffectedProcessTitle"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.15), 10)
+                Format = new Format((int)(257 * 0.125), 10)
                 {
-                    Position = new(0, 174.20m),
+                    Position = new(0, 193.475m),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(14, "Black"), new FontStyle(700)),
                     Background = "#DCDCDC",
@@ -142,14 +157,14 @@
                     Padding = new(3, 0, 0, 0),
 
                 },
-                DataColumn = new Item("AuditLogCreatedAtTitle"),
+                DataColumn = new Item("IncidentReportSeverityTitle"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.25), 10)
+                Format = new Format((int)(257 * 0.20), 10)
                 {
-                    Position = new(0, 212.75m),
+                    Position = new(0, 225.6m),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(14, "Black"), new FontStyle(700)),
                     Background = "#DCDCDC",
@@ -157,9 +172,8 @@
                     Padding = new(3, 0, 0, 0),
 
                 },
-                DataColumn = new Item("AuditLogDetailsTitle"),
+                DataColumn = new Item("IncidentReportDataTitle"),
             });
-
 
 
             reportSetUp.Body.AddColumn(new ColumnSetup
@@ -176,12 +190,12 @@
 
 
                 },
-                DataColumn = new Item("AuditLogEntityIdColumn"),
+                DataColumn = new Item("IncidentReportEntityIdColumn"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.15), 10)
+                Format = new Format((int)(257 * 0.125), 10)
                 {
                     Position = new(0, 58.55m),
                     Margin = new(0, 0, 0, 20),
@@ -193,14 +207,29 @@
 
 
                 },
-                DataColumn = new Item("AuditLogActionColumn"),
+                DataColumn = new Item("IncidentReportedAtColumn"),
+            });
+
+            reportSetUp.Body.AddColumn(new ColumnSetup
+            {
+                Format = new Format((int)(257 * 0.125), 10)
+                {
+                    Position = new(0, 90.675m),
+                    Margin = new(0, 0, 0, 20),
+                    Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
+                    FontDetails = new Font("Arial", new Shade(12)),
+                    Background = "white",
+                    TextAlignment = TextAlignment.Center,
+                    Padding = new(4, 0, 0, 0),
+                },
+                DataColumn = new Item("IncidentReportUserIdColumn"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
                 Format = new Format((int)(257 * 0.15), 10)
                 {
-                    Position = new(0, 97.10m),
+                    Position = new(0, 122.8m),
                     Margin = new(0, 0, 0, 20),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(12)),
@@ -208,14 +237,14 @@
                     TextAlignment = TextAlignment.Center,
                     Padding = new(4, 0, 0, 0),
                 },
-                DataColumn = new Item("AuditLogPerformedByColumn"),
+                DataColumn = new Item("IncidentReportDescriptionColumn"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.15), 10)
+                Format = new Format((int)(257 * 0.125), 10)
                 {
-                    Position = new(0, 135.65m),
+                    Position = new(0, 161.35m),
                     Margin = new(0, 0, 0, 20),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(12)),
@@ -223,14 +252,14 @@
                     TextAlignment = TextAlignment.Center,
                     Padding = new(4, 0, 0, 0),
                 },
-                DataColumn = new Item("AuditLogTimeStampColumn"),
+                DataColumn = new Item("IncidentReportAffectedProcessColumn"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.15), 10)
+                Format = new Format((int)(257 * 0.125), 10)
                 {
-                    Position = new(0, 174.20m),
+                    Position = new(0, 193.475m),
                     Margin = new(0, 0, 0, 20),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(12)),
@@ -238,14 +267,14 @@
                     TextAlignment = TextAlignment.Center,
                     Padding = new(4, 0, 0, 0),
                 },
-                DataColumn = new Item("AuditLogCreatedAtColumn"),
+                DataColumn = new Item("IncidentReportSeverityColumn"),
             });
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
-                Format = new Format((int)(257 * 0.25), 10)
+                Format = new Format((int)(257 * 0.20), 10)
                 {
-                    Position = new(0, 212.75m),
+                    Position = new(0, 225.6m),
                     Margin = new(0, 0, 0, 20),
                     Borders = new Border(new Shade(1, "Black"), BorderStyle.solid),
                     FontDetails = new Font("Arial", new Shade(12)),
@@ -253,7 +282,7 @@
                     TextAlignment = TextAlignment.Center,
                     Padding = new(4, 0, 0, 0),
                 },
-                DataColumn = new Item("AuditLogDetailsColumn"),
+                DataColumn = new Item("IncidentReportDataColumn"),
             });
             #endregion
 
@@ -264,17 +293,17 @@
             var data = new List<ColumnData>
             {
                 new ColumnData { Section = SectionType.Header, Column = new Item("CompanyTitle"), Value = $"Compañía: {CultureInfo.CurrentCulture.TextInfo.ToTitleCase(companyId)}" },
-                new ColumnData { Section = SectionType.Header, Column = new Item("CalibrationLogTitle"), Value = "Calibration Log" },
-                new ColumnData { Section = SectionType.Header, Column = new Item("CalibrationLogSubTitle"), Value = "ISO 9001:2015" },
+                new ColumnData { Section = SectionType.Header, Column = new Item("Title"), Value = "Incident Report Log" },
+                new ColumnData { Section = SectionType.Header, Column = new Item("SubTitle"), Value = "ISO 9001:2015" },
             }
             ;
 
-            if (auditLogResponses == null || !auditLogResponses.Any())
+            if (incidentReportResponses == null || !incidentReportResponses.Any())
             {
                 data.Add(new ColumnData
                 {
                     Section = SectionType.Body,
-                    Column = new Item("NoAuditLogRecords"),
+                    Column = new Item("NoIncidentReportRecords"),
                     Value = "No hay registros en estas fechas",
                     Row = rowIndex++
                 });
@@ -283,24 +312,29 @@
             {
                 data.AddRange(new[]
                 {
-                    new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogEntityIdTitle"), Value = "EntityId" , Row = rowIndex},
-                    new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogActionTitle"), Value = "Action" , Row = rowIndex},
-                    new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogPerformedByTitle"), Value = "PerformedBy" , Row = rowIndex},
-                    new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogTimeStampTitle"), Value = "TimeStamp" , Row = rowIndex},
-                    new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogCreatedAtTitle"), Value = "CreatedAt" , Row = rowIndex},
-                    new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogDetailsTitle"), Value = "Details" , Row = rowIndex}
+                    new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportEntityIdTitle"), Value = "EntityId" , Row = rowIndex},
+                    new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportedAtTitle"), Value = "ReportedAt" , Row = rowIndex},
+                    new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportUserIdTitle"), Value = "UserId" , Row = rowIndex},
+                    new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportDescriptionTitle"), Value = "Description" , Row = rowIndex},
+                    new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportAffectedProcessTitle"), Value = "AffectedProcess" , Row = rowIndex},
+                    new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportSeverityTitle"), Value = "Severity" , Row = rowIndex},
+                    new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportDataTitle"), Value = "Data" , Row = rowIndex}
+
 
 
                 });
                 rowIndex++;
-                foreach (var auditlog in auditLogResponses)
+                foreach (var incidentReport in incidentReportResponses)
                 {
-                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogEntityIdColumn"), Value = auditlog.EntityId ?? "", Row = rowIndex });
-                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogActionColumn"), Value = auditlog.Action ?? "", Row = rowIndex });
-                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogPerformedByColumn"), Value = auditlog.PerformedBy ?? "", Row = rowIndex });
-                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogTimeStampColumn"), Value = auditlog.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss") ?? "", Row = rowIndex });
-                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogCreatedAtColumn"), Value = auditlog.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss") ?? "", Row = rowIndex });
-                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("AuditLogDetailsColumn"), Value = auditlog.Details ?? "", Row = rowIndex });
+                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportEntityIdColumn"), Value = incidentReport.EntityId ?? "", Row = rowIndex });
+                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportedAtColumn"), Value = incidentReport.ReportedAt.ToString("yyyy-MM-dd HH:mm:ss") ?? "", Row = rowIndex });
+                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportUserIdColumn"), Value = incidentReport.UserId ?? "", Row = rowIndex });
+                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportDescriptionColumn"), Value = incidentReport.Description ?? "", Row = rowIndex });
+                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportAffectedProcessColumn"), Value = incidentReport.AffectedProcess ?? "", Row = rowIndex });
+                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportSeverityColumn"), Value = incidentReport.Severity ?? "", Row = rowIndex });
+                    data.Add(new ColumnData { Section = SectionType.Body, Column = new Item("IncidentReportDataColumn"), Value = incidentReport.Data ?? "", Row = rowIndex });
+
+
                     rowIndex++;
                 }
             }
@@ -310,10 +344,9 @@
             ReportViewModel reportModel = new ReportViewModel(reportSetUp, data);
             byte[] pdfBytes = await reportBytes.GenerateReport(reportModel);
             string folderPath = @"C:\Reports";
-            string filePath = Path.Combine(folderPath, "Reporte.pdf");
+            string filePath = Path.Combine(folderPath, "ReporteIncidentReport.pdf");
             await File.WriteAllBytesAsync(filePath, pdfBytes);
+
         }
-
-
     }
 }

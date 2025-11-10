@@ -1,13 +1,4 @@
-﻿using DigitalDoor.Reporting.Entities.Helpers;
-using DigitalDoor.Reporting.Entities.Interfaces;
-using DigitalDoor.Reporting.Entities.Models;
-using DigitalDoor.Reporting.Entities.ValueObjects;
-using DigitalDoor.Reporting.Entities.ViewModels;
-using ISO9001.CustomerFeedback.Core.Internals.GenerateCustomerFeedbackReport;
-using ISO9001.Entities.Responses;
-using System.Globalization;
-
-namespace ISO9001.CustomerFeedback.Core.Presenters.GenerateCustomerFeedbackReport
+﻿namespace ISO9001.CustomerFeedback.Core.Presenters.GenerateCustomerFeedbackReport
 {
     internal class GenerateCustomerFeedbackReportPresenter(
         IReportsOutputPort outputPortReport,

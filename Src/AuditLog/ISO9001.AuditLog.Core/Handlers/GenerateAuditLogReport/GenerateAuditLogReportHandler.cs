@@ -1,6 +1,4 @@
-﻿using ISO9001.AuditLog.Core.Internals.GenerateAuditLogReport;
-
-namespace ISO9001.AuditLog.Core.Handlers.GenerateAuditLogReport
+﻿namespace ISO9001.AuditLog.Core.Handlers.GenerateAuditLogReport
 {
     internal class GenerateAuditLogReportHandler(
         IGetAuditLogsByEntityIdInputPort inputPort,

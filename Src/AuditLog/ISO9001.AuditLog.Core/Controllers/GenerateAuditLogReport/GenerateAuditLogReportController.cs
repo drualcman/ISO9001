@@ -1,7 +1,4 @@
-﻿using DigitalDoor.Reporting.Entities.ViewModels;
-using ISO9001.AuditLog.Core.Internals.GenerateAuditLogReport;
-
-namespace ISO9001.AuditLog.Core.Controllers.GenerateAuditLogReport
+﻿namespace ISO9001.AuditLog.Core.Controllers.GenerateAuditLogReport
 {
     internal class GenerateAuditLogReportController(
             IGenerateAuditLogReportInputPort inputPort,

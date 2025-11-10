@@ -1,9 +1,4 @@
-﻿using ISO9001.AuditLog.Core.Controllers.GenerateAuditLogReport;
-using ISO9001.AuditLog.Core.Handlers.GenerateAuditLogReport;
-using ISO9001.AuditLog.Core.Internals.GenerateAuditLogReport;
-using ISO9001.AuditLog.Core.Presenters.GenerateAuditLogReport;
-
-namespace ISO9001.AuditLog.Core;
+﻿namespace ISO9001.AuditLog.Core;
 
 public static class DependencyContainer
 {

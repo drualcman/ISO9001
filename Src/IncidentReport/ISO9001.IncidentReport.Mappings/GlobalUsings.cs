@@ -8,3 +8,5 @@ global using ISO9001.IncidentReport.Core.Internals.GetIncidentReportById;
 global using ISO9001.Entities.Dtos;
 global using ISO9001.Entities.Requests;
 global using ISO9001.IncidentReport.Core.Internals.RegisterIncidentReport;
+global using ISO9001.IncidentReport.Core.Internals.GenerateIncidentReportReport;
+global using ISO9001.IncidentReport.Core.Internals.GetIncidentReportByEntityId;
