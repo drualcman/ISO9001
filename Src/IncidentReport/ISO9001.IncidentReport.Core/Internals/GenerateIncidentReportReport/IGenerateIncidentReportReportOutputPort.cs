@@ -1,6 +1,4 @@
-﻿using DigitalDoor.Reporting.Entities.ViewModels;
-
-namespace ISO9001.IncidentReport.Core.Internals.GenerateIncidentReportReport
+﻿namespace ISO9001.IncidentReport.Core.Internals.GenerateIncidentReportReport
 {
     public interface IGenerateIncidentReportReportOutputPort
     {

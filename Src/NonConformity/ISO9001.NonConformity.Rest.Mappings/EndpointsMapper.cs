@@ -83,6 +83,18 @@
                     return TypedResults.Created();
                 });
 
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("NonConformityEndpoints"), async (
+            string companyId,
+            string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGenerateNonConformityMasterReportController controller) =>
+            {
+                var result = await controller.HandleAsync(companyId, entityId, from, end);
+                return TypedResults.Ok(result);
+
+            });
+
 
             return builder;
         }

@@ -10,6 +10,10 @@
             services.AddScoped<IGetNonConformityByStatusInputPort, GetNonConformityByStatusHandler>();
             services.AddScoped<IRegisterNonConformityInputPort, RegisterNonConformityHandler>();
             services.AddScoped<IRegisterNonConformityDetailInputPort, RegisterNonConformityDetailHandler>();
+
+            services.AddScoped<IGenerateNonConformityMasterReportController, GenerateNonConformityMasterReportController>();
+            services.AddScoped<IGenerateNonConformityMasterReportInputPort, GenerateNonConformityMasterReportHandler>();
+            services.AddScoped<IGenerateNonConformityMasterReportOutputPort, GenerateNonConformityMasterReportPresenter>();
             return services;
         }
     }

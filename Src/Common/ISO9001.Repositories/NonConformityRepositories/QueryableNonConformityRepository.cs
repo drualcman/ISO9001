@@ -27,6 +27,30 @@ namespace ISO9001.Repositories.NonConformityRepositories
                         NonConformityDetail.NonConformityId == NonConformity.Id)));
         }
 
+        public async Task<IEnumerable<NonConformityMaterResponse>> GetNonCormityMasterByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
+        {
+            var Query = dataContext.NonConformities
+                .Where(NonConformity =>
+                    NonConformity.CompanyId == id &&
+                    NonConformity.EntityId == entityId &&
+                    NonConformity.ReportedAt >= from &&
+                    NonConformity.ReportedAt <= end)
+                .OrderBy(NonConformity => NonConformity.ReportedAt);
+
+            var NonConformities = await dataContext.ToListAsync(Query);
+
+            return NonConformities.Select(
+                NonConformity => new NonConformityMaterResponse(
+                    NonConformity.Id,
+                    NonConformity.EntityId,
+                    NonConformity.ReportedAt,
+                    NonConformity.AffectedProcess,
+                    NonConformity.Cause,
+                    NonConformity.Status,
+                    dataContext.NonConformityDetails.Count(NonConformityDetail =>
+                        NonConformityDetail.NonConformityId == NonConformity.Id)));
+        }
+
         public async Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByAffectedProcesssAsync(string id, string affectedProcess,
             DateTime? from, DateTime? end)
         {
