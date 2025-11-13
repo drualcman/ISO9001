@@ -24,3 +24,4 @@ global using System.Globalization;
 global using ISO9001.NonConformity.Core.Controllers.GenerateNonConformityMasterReport;
 global using ISO9001.NonConformity.Core.Handlers.GenerateNonConformityMasterReport;
 global using ISO9001.NonConformity.Core.Presenters.GenerateNonConformityMasterReport;
+global using ISO9001.NonConformity.Core.Internals.GenerateNonConformityDetailsReport;

@@ -2,6 +2,6 @@
 {
     public interface IGenerateNonConformityDetailsReportController
     {
-        Task<ReportViewModel> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end);
+        Task<ReportViewModel> HandleAsync(string companyId, string nonConformityId, DateTime? from, DateTime? end);
     }
 }

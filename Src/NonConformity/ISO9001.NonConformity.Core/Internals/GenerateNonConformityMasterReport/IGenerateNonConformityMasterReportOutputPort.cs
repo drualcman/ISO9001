@@ -1,6 +1,6 @@
 ﻿namespace ISO9001.NonConformity.Core.Internals.GenerateNonConformityMasterReport
 {
-    public interface IGenerateNonConformityMasterReportOutputPort
+    internal interface IGenerateNonConformityMasterReportOutputPort
     {
         public ReportViewModel ReportViewModel { get; }
         Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityResponses, string companyId);

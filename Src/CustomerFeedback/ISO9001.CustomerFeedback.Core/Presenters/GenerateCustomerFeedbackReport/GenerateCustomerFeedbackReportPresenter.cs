@@ -2,8 +2,7 @@
 {
     internal class GenerateCustomerFeedbackReportPresenter(
         IReportsOutputPort outputPortReport,
-        IReportsPresenter reportsPresenter,
-        IReportAsBytes reportBytes) : IGenerateCustomerFeedbackOutputPort
+        IReportsPresenter reportsPresenter) : IGenerateCustomerFeedbackOutputPort
     {
         public ReportViewModel ReportViewModel { get; private set; }
         public async Task Handle(IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses, string companyId)
@@ -65,7 +64,7 @@
                     Padding = new(0, 0, 0, 20)
 
                 },
-                DataColumn = new Item("NoCustomerFeedbackRecords"),
+                DataColumn = new Item("NoRecords"),
             });
 
 
@@ -211,7 +210,7 @@
                 data.Add(new ColumnData
                 {
                     Section = SectionType.Body,
-                    Column = new Item("NoCustomerFeedbackRecords"),
+                    Column = new Item("NoRecords"),
                     Value = "No hay registros en estas fechas",
                     Row = rowIndex++
                 });
@@ -240,12 +239,6 @@
             }
             await outputPortReport.Handle(reportSetUp, data);
             ReportViewModel = reportsPresenter.Content;
-
-            ReportViewModel reportModel = new ReportViewModel(reportSetUp, data);
-            byte[] pdfBytes = await reportBytes.GenerateReport(reportModel);
-            string folderPath = @"C:\Reports";
-            string filePath = Path.Combine(folderPath, "ReportCustomerFeedback.pdf");
-            await File.WriteAllBytesAsync(filePath, pdfBytes);
         }
     }
 }

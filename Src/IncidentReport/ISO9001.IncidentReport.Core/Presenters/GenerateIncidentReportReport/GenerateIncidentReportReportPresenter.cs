@@ -2,8 +2,7 @@
 {
     internal class GenerateIncidentReportReportPresenter(
         IReportsOutputPort outputPortReport,
-        IReportsPresenter reportsPresenter,
-        IReportAsBytes reportBytes) : IGenerateIncidentReportReportOutputPort
+        IReportsPresenter reportsPresenter) : IGenerateIncidentReportReportOutputPort
     {
         public ReportViewModel ReportViewModel { get; private set; }
 
@@ -54,7 +53,7 @@
                 DataColumn = new Item("SubTitle")
             });
 
-            #region AuditLogs
+            #region IncidentReport
 
             reportSetUp.Body.AddColumn(new ColumnSetup
             {
@@ -66,7 +65,7 @@
                     Padding = new(0, 0, 0, 20)
 
                 },
-                DataColumn = new Item("NoIncidentReportRecords"),
+                DataColumn = new Item("NoRecords"),
             });
 
 
@@ -303,7 +302,7 @@
                 data.Add(new ColumnData
                 {
                     Section = SectionType.Body,
-                    Column = new Item("NoIncidentReportRecords"),
+                    Column = new Item("NoRecords"),
                     Value = "No hay registros en estas fechas",
                     Row = rowIndex++
                 });
@@ -340,13 +339,6 @@
             }
             await outputPortReport.Handle(reportSetUp, data);
             ReportViewModel = reportsPresenter.Content;
-
-            ReportViewModel reportModel = new ReportViewModel(reportSetUp, data);
-            byte[] pdfBytes = await reportBytes.GenerateReport(reportModel);
-            string folderPath = @"C:\Reports";
-            string filePath = Path.Combine(folderPath, "ReporteIncidentReport.pdf");
-            await File.WriteAllBytesAsync(filePath, pdfBytes);
-
         }
     }
 }

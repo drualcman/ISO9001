@@ -2,8 +2,7 @@
 {
     internal class GenerateNonConformityMasterReportPresenter(
         IReportsOutputPort outputPortReport,
-        IReportsPresenter reportsPresenter,
-        IReportAsBytes reportBytes) : IGenerateNonConformityMasterReportOutputPort
+        IReportsPresenter reportsPresenter) : IGenerateNonConformityMasterReportOutputPort
     {
         public ReportViewModel ReportViewModel { get; private set; }
 
@@ -340,13 +339,6 @@
             }
             await outputPortReport.Handle(reportSetUp, data);
             ReportViewModel = reportsPresenter.Content;
-
-            ReportViewModel reportModel = new ReportViewModel(reportSetUp, data);
-            byte[] pdfBytes = await reportBytes.GenerateReport(reportModel);
-            string folderPath = @"C:\Reports";
-            string filePath = Path.Combine(folderPath, "ReporteNonConformityMaster.pdf");
-            await File.WriteAllBytesAsync(filePath, pdfBytes);
-
         }
     }
 }

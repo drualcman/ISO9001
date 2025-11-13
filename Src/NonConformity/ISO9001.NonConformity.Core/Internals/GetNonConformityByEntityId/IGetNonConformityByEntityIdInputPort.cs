@@ -2,6 +2,6 @@
 {
     public interface IGetNonConformityByEntityIdInputPort
     {
-        Task<IEnumerable<NonConformityResponse>> HandleAsync(string id, string entityId, DateTime? from, DateTime? end);
+        Task<NonConformityResponse> HandleAsync(string id, string entityId, DateTime? from, DateTime? end);
     }
 }
