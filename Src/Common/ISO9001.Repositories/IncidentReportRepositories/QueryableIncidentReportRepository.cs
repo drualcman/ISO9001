@@ -28,6 +28,30 @@ namespace ISO9001.Repositories.IncidentReportRepositories
                     ));
         }
 
+        public async Task<IEnumerable<IncidentReportResponse>> GetIncidentReportByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
+        {
+            var Query = dataContext.IncidentReports
+                .Where(IncidentReport =>
+                    IncidentReport.CompanyId == id &&
+                    IncidentReport.EntityId == entityId &&
+                    IncidentReport.ReportedAt >= from &&
+                    IncidentReport.ReportedAt <= end)
+                .OrderBy(IncidentReport => IncidentReport.ReportedAt);
+
+            var IncidentReports = await dataContext.ToListAsync(Query);
+
+            return IncidentReports.Select(
+                IncidentReport => new IncidentReportResponse(
+                    IncidentReport.EntityId,
+                    IncidentReport.ReportedAt,
+                    IncidentReport.UserId,
+                    IncidentReport.Description,
+                    IncidentReport.AffectedProcess,
+                    IncidentReport.Severity,
+                    IncidentReport.Data
+                    ));
+        }
+
         public Task<IncidentReportResponse> GetIncidentReportByIdAsync(string companyId, int id)
         {
             var IncidentReport = dataContext.IncidentReports

@@ -9,6 +9,10 @@ public static class DependencyContainer
         services.AddScoped<IGetAuditLogsByActionInputPort, GetAuditLogsByActionHandler>();
         services.AddScoped<IGetAuditLogByIdInputPort, GetAuditLogByIdHandler>();
         services.AddScoped<IGetAllAuditLogsInputPort, GetAllAuditLogsHandler>();
+
+        services.AddScoped<IGenerateAuditLogReportController, GenerateAuditLogReportController>();
+        services.AddScoped<IGenerateAuditLogReportOutputPort, GenerateAuditLogReportPresenter>();
+        services.AddScoped<IGenerateAuditLogReportInputPort, GenerateAuditLogReportHandler>();
         return services;
     }
 }

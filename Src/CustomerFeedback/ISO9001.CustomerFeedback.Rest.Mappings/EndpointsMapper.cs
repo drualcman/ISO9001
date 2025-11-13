@@ -43,9 +43,11 @@
             builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
             string companyId,
             string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
             IGetCustomerFeedbackByEntityIdInputPort inputPort) =>
                     {
-                        var result = await inputPort.HandleAsync(companyId, entityId);
+                        var result = await inputPort.HandleAsync(companyId, entityId, from, end);
                         return TypedResults.Ok(result);
 
                     });
@@ -72,6 +74,19 @@
                         return TypedResults.Ok(result);
 
                     });
+
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("CustomerFeedbackEndpoints"), async (
+            string companyId,
+            string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGenerateCustomerFeedbackController controller) =>
+            {
+                var result = await controller.HandleAsync(companyId, entityId, from, end);
+                return TypedResults.Ok(result);
+
+            });
+
 
             return builder;
         }

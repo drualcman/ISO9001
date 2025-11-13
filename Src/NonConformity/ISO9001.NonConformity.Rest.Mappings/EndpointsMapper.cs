@@ -1,4 +1,6 @@
-﻿namespace ISO9001.NonConformity.Rest.Mappings
+﻿using ISO9001.NonConformity.Core.Internals.GenerateNonConformityDetailsReport;
+
+namespace ISO9001.NonConformity.Rest.Mappings
 {
     public static class EndpointsMapper
     {
@@ -83,7 +85,29 @@
                     return TypedResults.Created();
                 });
 
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("NonConformityEndpoints"), async (
+            string companyId,
+            string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGenerateNonConformityMasterReportController controller) =>
+            {
+                var result = await controller.HandleAsync(companyId, entityId, from, end);
+                return TypedResults.Ok(result);
 
+            });
+
+            builder.MapGet(("{companyId}/" + "MasterId" + "/{masterId}/" + "Report/").CreateEndpoint("NonConformityEndpoints"), async (
+            string companyId,
+            string masterId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGenerateNonConformityDetailsReportController controller) =>
+            {
+                var result = await controller.HandleAsync(companyId, masterId, from, end);
+                return TypedResults.Ok(result);
+
+            });
             return builder;
         }
     }

@@ -7,7 +7,7 @@ public interface IQueryableCustomerFeedbackRepository
 
     Task<bool> CustomerFeedbackExists(string companyId, int id);
 
-    Task<IEnumerable<CustomerFeedbackResponse>> GetCustomerFeedbackByEntityId(string id, string entityId);
+    Task<IEnumerable<CustomerFeedbackResponse>> GetCustomerFeedbackByEntityId(string id, string entityId, DateTime? from, DateTime? end);
 
     Task<IEnumerable<CustomerFeedbackResponse>> GetCustomerFeedbackByCustomerIdAsync(string id, string customerId, DateTime? from, DateTime? end);
 

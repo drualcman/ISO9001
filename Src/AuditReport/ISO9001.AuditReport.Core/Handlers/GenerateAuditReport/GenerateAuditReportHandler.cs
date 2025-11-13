@@ -15,7 +15,7 @@
             var NonConformities = await repository.GeAllNonConformitiessOrderByReportedAt(companyId, entityId, UtcFrom, UtcEnd);
             var Incidents = await repository.GeAllIncidentReportsOrderByReportedAt(companyId, entityId, UtcFrom, UtcEnd);
             var Feedbacks = await repository.GetAllCustomerFeedbacksOrderByReportedAt(companyId, entityId, UtcFrom, UtcEnd);
-            await outputPort.Handle(NonConformities, Incidents, Feedbacks, entityId, UtcFrom, UtcEnd);
+            await outputPort.Handle(NonConformities, Incidents, Feedbacks, entityId);
 
         }
     }

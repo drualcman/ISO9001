@@ -64,6 +64,18 @@
 
             });
 
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("AuditLogEndpoints"), async (
+            string companyId,
+            string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGenerateAuditLogReportController controller) =>
+            {
+                var result = await controller.HandleAsync(companyId, entityId, from, end);
+                return TypedResults.Ok(result);
+
+            });
+
 
             return builder;
         }

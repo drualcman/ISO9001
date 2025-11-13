@@ -17,6 +17,20 @@
 
             });
 
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}").CreateEndpoint("IncidentReportEndpoints"), async (
+                string companyId,
+                string entityId,
+                [FromQuery] DateTime? from,
+                [FromQuery] DateTime? end,
+                IGetIncidentReportByEntityIdInputPort inputPort) =>
+            {
+                var Result = await inputPort.HandleAsync(companyId, entityId, from, end);
+                return TypedResults.Ok(Result);
+            }
+            );
+
+
+
             builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("IncidentReportEndpoints"), async (
                 string companyId,
                 int id,
@@ -42,6 +56,18 @@
                         );
                     return TypedResults.Created();
                 });
+
+            builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("IncidentReportEndpoints"), async (
+            string companyId,
+            string entityId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? end,
+            IGenerateIncidentReportReportController controller) =>
+            {
+                var result = await controller.HandleAsync(companyId, entityId, from, end);
+                return TypedResults.Ok(result);
+
+            });
 
             return builder;
         }

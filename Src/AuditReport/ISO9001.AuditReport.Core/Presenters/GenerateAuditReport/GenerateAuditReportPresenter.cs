@@ -1,14 +1,14 @@
 ﻿namespace ISO9001.AuditReport.Core.Presenters.GenerateAuditReport
 {
     internal class GenerateAuditReportPresenter(
-        IReportAsBytes reportBytes): IGenerateAuditReportOutputPort
+        IReportsOutputPort outputPortReport, IReportsPresenter reportsPresenter) : IGenerateAuditReportOutputPort
     {
-        public byte[] PdfBytes { get; private set; }
+        public ReportViewModel ReportViewModel { get; private set; }
 
-        public async Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses, 
-            IEnumerable<IncidentReportResponse> incidentReportResponses, 
-            IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses, 
-            string entityId, DateTime from, DateTime end)
+        public async Task Handle(IEnumerable<NonConformityMaterResponse> nonConformityMaterResponses,
+            IEnumerable<IncidentReportResponse> incidentReportResponses,
+            IEnumerable<CustomerFeedbackResponse> customerFeedbackResponses,
+            string entityId)
         {
             Setup reportSetUp = new()
             {
@@ -504,7 +504,7 @@
             #endregion
 
             var LatestNonConformity = nonConformityMaterResponses
-                .OrderByDescending(nc => nc.ReportedAt) 
+                .OrderByDescending(nc => nc.ReportedAt)
                 .FirstOrDefault();
 
             string LatestStatus = LatestNonConformity != null
@@ -618,9 +618,8 @@
                 }
             }
 
-            ReportViewModel reportModel = new ReportViewModel(reportSetUp, data);
-            byte[] pdfBytes = await reportBytes.GenerateReport(reportModel);
-            PdfBytes = pdfBytes;
+            await outputPortReport.Handle(reportSetUp, data);
+            ReportViewModel = reportsPresenter.Content;
 
         }
     }

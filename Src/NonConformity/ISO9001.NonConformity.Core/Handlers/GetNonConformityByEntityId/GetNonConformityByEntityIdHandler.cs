@@ -3,7 +3,7 @@
     internal class GetNonConformityByEntityIdHandler(
         IQueryableNonConformityRepository repository) : IGetNonConformityByEntityIdInputPort
     {
-        public async Task<IEnumerable<NonConformityResponse>> HandleAsync(string id, string entityId, DateTime? from, DateTime? end)
+        public async Task<NonConformityResponse> HandleAsync(string id, string entityId, DateTime? from, DateTime? end)
         {
             DateTime UtcFrom = from != null ? from.Value.Date
                 : DateTime.UtcNow.Date.AddDays(-30);

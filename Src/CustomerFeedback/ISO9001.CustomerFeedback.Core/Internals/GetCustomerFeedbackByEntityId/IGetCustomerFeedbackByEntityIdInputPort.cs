@@ -2,6 +2,6 @@
 {
     public interface IGetCustomerFeedbackByEntityIdInputPort
     {
-        Task<IEnumerable<CustomerFeedbackResponse>> HandleAsync(string id, string entityId);
+        Task<IEnumerable<CustomerFeedbackResponse>> HandleAsync(string id, string entityId, DateTime? from, DateTime? end);
     }
 }

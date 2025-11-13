@@ -40,11 +40,13 @@
 
         }
 
-        public async Task<IEnumerable<CustomerFeedbackResponse>> GetCustomerFeedbackByEntityId(string id, string entityId)
+        public async Task<IEnumerable<CustomerFeedbackResponse>> GetCustomerFeedbackByEntityId(string id, string entityId, DateTime? from, DateTime? end)
         {
             IQueryable<CustomerFeedbackReadModel> Query =
                 dataContext.CustomerFeedbacks.Where(CustomerFeedback => CustomerFeedback.CompanyId == id &&
-                CustomerFeedback.EntityId == entityId);
+                CustomerFeedback.EntityId == entityId &&
+                CustomerFeedback.ReportedAt >= from &&
+                CustomerFeedback.ReportedAt <= end);
 
             var CustomerFeedbacks = await dataContext.ToListAsync(Query);
 
