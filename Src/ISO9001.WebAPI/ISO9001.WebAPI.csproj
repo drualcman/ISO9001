@@ -12,15 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AuditEvent\ISO9001.AuditEvent.Rest.Mappings\ISO9001.AuditEvent.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\AuditLog\ISO9001.AuditLog.Rest.Mappings\ISO9001.AuditLog.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\AuditReport\ISO9001.AuditReport.Rest.Mappings\ISO9001.AuditReport.Rest.Mappings.csproj" />
     <ProjectReference Include="..\Common\ISO9001.Database.InMemory\ISO9001.Database.InMemory.csproj" />
-    <ProjectReference Include="..\Common\ISO9001.Repositories\ISO9001.Repositories.csproj" />
-    <ProjectReference Include="..\CustomerFeedback\ISO9001.CustomerFeedback.Rest.Mappings\ISO9001.CustomerFeedback.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\DashBoard\ISO9001.QualityDashBoard.Rest.Mappings\ISO9001.QualityDashBoard.Rest.Mappings.csproj" />
-    <ProjectReference Include="..\IncidentReport\ISO9001.IncidentReport.Mappings\ISO9001.IncidentReport.Mappings.csproj" />
-    <ProjectReference Include="..\NonConformity\ISO9001.NonConformity.Rest.Mappings\ISO9001.NonConformity.Rest.Mappings.csproj" />
   </ItemGroup>
 
 </Project>
