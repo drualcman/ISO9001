@@ -1,9 +1,8 @@
-global using ISO9001.Repositories.AuditLogRepositories.Entities;
-global using ISO9001.Repositories.AuditLogRepositories.Interfaces;
-global using ISO9001.Repositories.CustomerFeedbackRepositories.Entities;
-global using ISO9001.Repositories.CustomerFeedbackRepositories.Interfaces;
-global using ISO9001.Repositories.IncidentReportRepositories.Entities;
-global using ISO9001.Repositories.IncidentReportRepositories.Interfaces;
+global using ISO9001.Core.Entities;
+global using ISO9001.Core.Interfaces;
+global using ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts;
+global using ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext;
 global using ISO9001.Database.InMemory.DataContexts.Entities;
-global using ISO9001.Repositories.NonConformityRepositories.Entities;
-global using ISO9001.Repositories.NonConformityRepositories.Interfaces;
+global using ISO9001.Database.InMemory.DataContexts.IncidentReportDataContext;
+global using ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
+global using Microsoft.Extensions.DependencyInjection;

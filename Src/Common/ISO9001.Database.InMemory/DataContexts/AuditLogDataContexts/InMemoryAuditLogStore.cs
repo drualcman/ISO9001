@@ -1,8 +1,7 @@
-﻿namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts
+﻿namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts;
+
+internal class InMemoryAuditLogStore
 {
-    internal class InMemoryAuditLogStore
-    {
-        public List<Entities.AuditLog> AuditLogs { get; } = new();
-        public int CurrentId { get; set; }
-    }
+    public List<Entities.AuditLog> AuditLogs { get; } = new();
+    public int CurrentId { get; set; }
 }
