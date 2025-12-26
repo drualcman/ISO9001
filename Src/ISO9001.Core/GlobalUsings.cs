@@ -46,3 +46,4 @@ global using ISO9001.Core.Repositories.NonConformityRepositories;
 global using ISO9001.Core.Responses;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using System.Globalization;
+global using System.Linq.Expressions;

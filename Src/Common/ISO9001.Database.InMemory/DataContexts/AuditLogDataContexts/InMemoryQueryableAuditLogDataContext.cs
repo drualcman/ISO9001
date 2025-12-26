@@ -1,4 +1,6 @@
-﻿namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts;
+﻿using System.Linq.Expressions;
+
+namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts;
 
 internal class InMemoryQueryableAuditLogDataContext(
     InMemoryAuditLogStore dataContext) : IQueryableAuditLogDataContext
@@ -17,8 +19,27 @@ internal class InMemoryQueryableAuditLogDataContext(
                 Details = AuditLog.Details
             }).AsQueryable();
 
-    public async Task<IEnumerable<AuditLogReadModel>> ToListAsync(IQueryable<AuditLogReadModel> queryable)
-        => await Task.FromResult(queryable.ToList());
+    public async Task<IEnumerable<AuditLogReadModel>> ToListAsync(
+        Expression<Func<AuditLogReadModel, bool>> filter = null,
+        Func<IQueryable<AuditLogReadModel>, IOrderedQueryable<AuditLogReadModel>> orderBy = null)
+    {
+        // TODO: discutir esto
+
+        IQueryable<AuditLogReadModel> query = AuditLogs;
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+
+        var data = query.ToList();
+        return await Task.FromResult(data);
+    }
 
 }
 

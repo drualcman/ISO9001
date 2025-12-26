@@ -5,13 +5,13 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
     public async Task<IEnumerable<AuditLogResponse>> GetAuditLogsByEntityIdAsync(string id, string entityId,
     DateTime? from, DateTime? end)
     {
-        IQueryable<AuditLogReadModel> Query = dataContext.AuditLogs
-            .Where(AuditLog => AuditLog.CompanyId == id &&
-                        AuditLog.EntityId == entityId &&
-                        AuditLog.Timestamp >= from &&
-                        AuditLog.Timestamp <= end);
+        // TODO: discutir esto
 
-        var AuditLogs = await dataContext.ToListAsync(Query);
+        var AuditLogs = await dataContext.ToListAsync(
+            AuditLog => AuditLog.CompanyId == id &&
+                        AuditLog.EntityId == entityId &&
+                            AuditLog.Timestamp >= from &&
+                            AuditLog.Timestamp <= end);
 
         return AuditLogs.Select(AuditLog => new AuditLogResponse(
             AuditLog.LogId,
@@ -26,13 +26,11 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
     public async Task<IEnumerable<AuditLogResponse>> GetAuditLogsByActionAsync(string id, string action,
     DateTime? from, DateTime? end)
     {
-        IQueryable<AuditLogReadModel> Query = dataContext.AuditLogs
-            .Where(AuditLog => AuditLog.CompanyId == id &&
+        var AuditLogs = await dataContext.ToListAsync(
+            AuditLog => AuditLog.CompanyId == id &&
                             AuditLog.Action == action &&
                             AuditLog.Timestamp >= from &&
                             AuditLog.Timestamp <= end);
-
-        var AuditLogs = await dataContext.ToListAsync(Query);
 
         return AuditLogs.Select(AuditLog => new AuditLogResponse(
             AuditLog.LogId,
@@ -73,13 +71,11 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
     public async Task<IEnumerable<AuditLogResponse>> GetAllAuditLogsOrderedByIdAscendingAsync(
     string id, DateTime? from, DateTime? end)
     {
-        IQueryable<AuditLogReadModel> Query = dataContext.AuditLogs
-            .Where(AuditLog => AuditLog.CompanyId == id &&
+        var AuditLogs = await dataContext.ToListAsync(
+            AuditLog => AuditLog.CompanyId == id &&
                             AuditLog.Timestamp >= from &&
-                            AuditLog.Timestamp <= end)
-            .OrderBy(AuditLog => AuditLog.LogId);
-
-        var AuditLogs = await dataContext.ToListAsync(Query);
+                            AuditLog.Timestamp <= end,
+            o => o.OrderBy(a => a.LogId));
 
         return AuditLogs.Select(AuditLog => new AuditLogResponse(
             AuditLog.LogId,
