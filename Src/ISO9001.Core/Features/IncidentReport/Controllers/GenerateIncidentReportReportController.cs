@@ -2,7 +2,7 @@
 
 internal class GenerateIncidentReportReportController(
     IGenerateIncidentReportReportInputPort inputPort,
-    IGenerateIncidentReportReportOutputPort outputPort) : IGenerateIncidentReportReportController
+    IGenerateIncidentReportReportOutputPort outputPort) : IGenerateIncidentReportReport
 {
     public async Task<ReportViewModel> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end)
     {

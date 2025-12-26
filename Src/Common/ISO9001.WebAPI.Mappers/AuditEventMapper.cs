@@ -8,7 +8,7 @@ public static class AuditEventMapper
         builder.MapGet("{companyId}/".CreateEndpoint("AuditEventEndpoints"), async (
             string companyId,
             [FromQuery] string entityId,
-            IGetAuditEventInputPort inputPort) =>
+            IAuditEventQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(entityId, companyId);
             return TypedResults.Ok(result);

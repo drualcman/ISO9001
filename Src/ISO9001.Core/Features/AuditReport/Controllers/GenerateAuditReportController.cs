@@ -2,7 +2,7 @@
 
 internal class GenerateAuditReportController(
         IGenerateAuditReportInputPort inputPort,
-        IGenerateAuditReportOutputPort outputPort) : IGenerateAuditReportController
+        IGenerateAuditReportOutputPort outputPort) : IGenerateAuditReport
 {
     public async Task<ReportViewModel> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end)
     {

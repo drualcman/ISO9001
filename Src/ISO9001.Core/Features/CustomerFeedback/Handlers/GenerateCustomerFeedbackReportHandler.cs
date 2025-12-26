@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.CustomerFeedback.Handlers;
 
 internal class GenerateCustomerFeedbackReportHandler(
-    IGetCustomerFeedbackByEntityIdInputPort inputPort,
+    ICustomerFeedbackByEntityIdQuery inputPort,
     IGenerateCustomerFeedbackOutputPort outputPort) : IGenerateCustomerFeedbackInputPort
 {
     public async ValueTask GenerateCustomerFeedbackReportAsync(string companyId, string entityId, DateTime? from, DateTime? end)

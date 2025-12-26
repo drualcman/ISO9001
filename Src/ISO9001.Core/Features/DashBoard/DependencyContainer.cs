@@ -6,7 +6,7 @@ public static partial class DependencyContainer
     {
         services.TryAddScoped<IQueryableQualityDashboardRepository, QueryableQualityDashboardRepository>();
 
-        services.TryAddScoped<IGetQualityDashBoardInputPort, GetQualityDashBoardHandler>();
+        services.TryAddScoped<IQualityDashBoardQuery, GetQualityDashBoardHandler>();
 
         return services;
     }

@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.CustomerFeedback.Handlers;
 
 internal class RegisterCustomerFeedbackHandler(
-    ICommandCustomerFeedbackRepository repository) : IRegisterCustomerFeedbackInputPort
+    ICommandCustomerFeedbackRepository repository) : IRegisterCustomerFeedback
 {
     public async Task HandleAsync(CustomerFeedbackDto customerFeedbackDto)
     {

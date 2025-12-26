@@ -8,14 +8,14 @@ public static partial class DependencyContainer
         services.TryAddScoped<ICommandCustomerFeedbackRepository, CommandCustomerFeedbackRepository>();
         services.TryAddScoped<IQueryableCustomerFeedbackRepository, QueryableCustomerFeedbackRepository>();
 
-        services.TryAddScoped<IRegisterCustomerFeedbackInputPort, RegisterCustomerFeedbackHandler>();
-        services.TryAddScoped<IGetCustomerFeedbackByRatingInputPort, GetCustomerFeedbackByRatingHandler>();
-        services.TryAddScoped<IGetCustomerFeedbackByIdInputPort, GetCustomerFeedbackByIdHandler>();
-        services.TryAddScoped<IGetCustomerFeedbackByEntityIdInputPort, GetGustomerFeedbackByEntityIdHandler>();
-        services.TryAddScoped<IGetAllCustomerFeedbackInputPort, GetAllCustomerFeedbackHandler>();
-        services.TryAddScoped<IGetCustomerFeedbackByCustomerIdInputPort, GetCustomerFeedbackByCustomerIdHandler>();
+        services.TryAddScoped<IRegisterCustomerFeedback, RegisterCustomerFeedbackHandler>();
+        services.TryAddScoped<ICustomerFeedbackByRatingQuery, GetCustomerFeedbackByRatingHandler>();
+        services.TryAddScoped<ICustomerFeedbackByIdQuery, GetCustomerFeedbackByIdHandler>();
+        services.TryAddScoped<ICustomerFeedbackByEntityIdQuery, GetGustomerFeedbackByEntityIdHandler>();
+        services.TryAddScoped<IAllCustomerFeedbackQuery, GetAllCustomerFeedbackHandler>();
+        services.TryAddScoped<ICustomerFeedbackByCustomerIdQuery, GetCustomerFeedbackByCustomerIdHandler>();
 
-        services.TryAddScoped<IGenerateCustomerFeedbackController, GenerateCustomerFeedbackReportController>();
+        services.TryAddScoped<IGenerateCustomerFeedbackReport, GenerateCustomerFeedbackReportController>();
         services.TryAddScoped<IGenerateCustomerFeedbackInputPort, GenerateCustomerFeedbackReportHandler>();
         services.TryAddScoped<IGenerateCustomerFeedbackOutputPort, GenerateCustomerFeedbackReportPresenter>();
         return services;

@@ -1,6 +1,6 @@
 ﻿namespace ISO9001.Core.Interfaces.CustomerFeedbacks;
 
-public interface IRegisterCustomerFeedbackInputPort
+public interface IRegisterCustomerFeedback
 {
     Task HandleAsync(CustomerFeedbackDto customerFeedbackDto);
 }

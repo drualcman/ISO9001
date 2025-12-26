@@ -1,6 +1,6 @@
 ﻿namespace ISO9001.Core.Features.AuditLog.Handlers;
 
-internal class GetAuditLogsByActionHandler(IQueryableAuditLogRepository repository) : IGetAuditLogsByActionInputPort
+internal class GetAuditLogsByActionHandler(IQueryableAuditLogRepository repository) : IAuditLogsByActionQuery
 {
     public async Task<IEnumerable<AuditLogResponse>> HandleAsync(string id, string action, DateTime? from, DateTime? end)
     {

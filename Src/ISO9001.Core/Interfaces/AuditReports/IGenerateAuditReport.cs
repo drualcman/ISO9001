@@ -1,6 +1,6 @@
-﻿namespace ISO9001.Core.Interfaces.AuditLogs;
+﻿namespace ISO9001.Core.Interfaces.AuditReports;
 
-public interface IGenerateAuditLogReportController
+public interface IGenerateAuditReport
 {
     Task<ReportViewModel> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end);
 }

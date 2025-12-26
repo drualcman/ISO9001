@@ -13,7 +13,7 @@ public static class AuditReportMapper
             string entityId,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGenerateAuditReportController controller) =>
+            IGenerateAuditReport controller) =>
              {
                  return Results.Ok(await controller.HandleAsync(companyId, entityId, from, end));
              });

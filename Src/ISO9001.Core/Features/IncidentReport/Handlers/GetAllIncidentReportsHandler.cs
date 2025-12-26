@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.IncidentReport.Handlers;
 
 internal class GetAllIncidentReportsHandler(IQueryableIncidentReportRepository
-    repository) : IGetAllIncidentReportsInputPort
+    repository) : IAllIncidentReportsQuery
 {
     public async Task<IEnumerable<IncidentReportResponse>> HandleAsync(string id, DateTime? from, DateTime? end)
     {

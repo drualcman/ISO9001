@@ -5,7 +5,7 @@ public static partial class DependencyContainer
     public static IServiceCollection AddAuditReportCoreServices(this IServiceCollection services)
     {
         services.TryAddScoped<IQueryableAuditReportRepository, QueryableAuditReportRepository>();
-        services.TryAddScoped<IGenerateAuditReportController, GenerateAuditReportController>();
+        services.TryAddScoped<IGenerateAuditReport, GenerateAuditReportController>();
         services.TryAddScoped<IGenerateAuditReportInputPort, GenerateAuditReportHandler>();
         services.TryAddScoped<IGenerateAuditReportOutputPort, GenerateAuditReportPresenter>();
 

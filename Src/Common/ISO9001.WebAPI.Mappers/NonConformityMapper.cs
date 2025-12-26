@@ -9,7 +9,7 @@ public static class NonConformityMapper
             string companyId,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGetAllNonConformitiesInputPort inputPort) =>
+            IAllNonConformitiesQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, from, end);
             return TypedResults.Ok(result);
@@ -20,7 +20,7 @@ public static class NonConformityMapper
             string affectedProcess,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGetNonConformityByAffectedProcessInputPort inputPort) =>
+            INonConformityByAffectedProcessQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, affectedProcess, from, end);
             return TypedResults.Ok(result);
@@ -31,7 +31,7 @@ public static class NonConformityMapper
             string entityId,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGetNonConformityByEntityIdInputPort inputPort) =>
+            INonConformityByEntityIdQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(result);
@@ -43,7 +43,7 @@ public static class NonConformityMapper
             string status,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGetNonConformityByStatusInputPort inputPort) =>
+            INonConformityByStatusQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, status, from, end);
             return TypedResults.Ok(result);
@@ -51,7 +51,7 @@ public static class NonConformityMapper
         });
 
         builder.MapPost("".CreateEndpoint("NonConformityEndpoints"),
-        async (NonConformityRequest nonConformity, IRegisterNonConformityInputPort inputPort) =>
+        async (NonConformityRequest nonConformity, IRegisterNonConformity inputPort) =>
         {
 
             await inputPort.HandleAsync(new NonConformityDto(
@@ -70,7 +70,7 @@ public static class NonConformityMapper
         builder.MapPost(("{companyId}/" + "Detail").CreateEndpoint("NonConformityEndpoints"),
             async (
                 string companyId,
-                NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetailInputPort inputPort) =>
+                NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetail inputPort) =>
             {
                 NonConformityCreateDetailDto data = new NonConformityCreateDetailDto(
                     Guid.Parse(nonConformity.NonConformityId),
@@ -88,7 +88,7 @@ public static class NonConformityMapper
         string entityId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGenerateNonConformityMasterReportController controller) =>
+        IGenerateNonConformityMasterReport controller) =>
         {
             var result = await controller.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(result);
@@ -100,7 +100,7 @@ public static class NonConformityMapper
         string masterId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGenerateNonConformityDetailsReportController controller) =>
+        IGenerateNonConformityDetailsReport controller) =>
         {
             var result = await controller.HandleAsync(companyId, masterId, from, end);
             return TypedResults.Ok(result);

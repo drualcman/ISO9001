@@ -6,7 +6,7 @@ public static class AuditLogMapper
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost("".CreateEndpoint("AuditLogEndpoints"),
-            async (AuditLogRequest auditLog, IRegisterAuditLogInputPort inputPort) =>
+            async (AuditLogRequest auditLog, IRegisterAuditLog inputPort) =>
             {
                 await inputPort.HandleAsync(new AuditLogDto(
                     auditLog.EntityId,
@@ -25,7 +25,7 @@ public static class AuditLogMapper
         string entityId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGetAuditLogsByEntityIdInputPort inputPort) =>
+        IAuditLogsByEntityIdQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(result);
@@ -37,7 +37,7 @@ public static class AuditLogMapper
         string action,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGetAuditLogsByActionInputPort inputPort) =>
+        IAuditLogsByActionQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, action, from, end);
             return TypedResults.Ok(result);
@@ -47,7 +47,7 @@ public static class AuditLogMapper
         builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("AuditLogEndpoints"), async (
          string companyId,
          int id,
-         IGetAuditLogByIdInputPort inputport) =>
+         IAuditLogByIdQuery inputport) =>
         {
             var Result = await inputport.HandleAsync(companyId, id);
             return TypedResults.Ok(Result);
@@ -57,7 +57,7 @@ public static class AuditLogMapper
         string companyId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGetAllAuditLogsInputPort inputPort) =>
+        IAllAuditLogsQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, from, end);
             return TypedResults.Ok(result);
@@ -69,7 +69,7 @@ public static class AuditLogMapper
         string entityId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGenerateAuditLogReportController controller) =>
+        IGenerateAuditLogReport controller) =>
         {
             var result = await controller.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(result);

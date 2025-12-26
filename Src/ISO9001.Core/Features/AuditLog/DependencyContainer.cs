@@ -7,13 +7,13 @@ public static partial class DependencyContainer
         services.TryAddScoped<ICommandAuditLogRepository, CommandAuditLogRepository>();
         services.TryAddScoped<IQueryableAuditLogRepository, QueryableAuditLogRepository>();
 
-        services.TryAddScoped<IRegisterAuditLogInputPort, RegisterAuditLogHandler>();
-        services.TryAddScoped<IGetAuditLogsByEntityIdInputPort, GetAuditLogsByEntityIdHandler>();
-        services.TryAddScoped<IGetAuditLogsByActionInputPort, GetAuditLogsByActionHandler>();
-        services.TryAddScoped<IGetAuditLogByIdInputPort, GetAuditLogByIdHandler>();
-        services.TryAddScoped<IGetAllAuditLogsInputPort, GetAllAuditLogsHandler>();
+        services.TryAddScoped<IRegisterAuditLog, RegisterAuditLogHandler>();
+        services.TryAddScoped<IAuditLogsByEntityIdQuery, GetAuditLogsByEntityIdHandler>();
+        services.TryAddScoped<IAuditLogsByActionQuery, GetAuditLogsByActionHandler>();
+        services.TryAddScoped<IAuditLogByIdQuery, GetAuditLogByIdHandler>();
+        services.TryAddScoped<IAllAuditLogsQuery, GetAllAuditLogsHandler>();
 
-        services.TryAddScoped<IGenerateAuditLogReportController, GenerateAuditLogReportController>();
+        services.TryAddScoped<IGenerateAuditLogReport, GenerateAuditLogReportController>();
         services.TryAddScoped<IGenerateAuditLogReportOutputPort, GenerateAuditLogReportPresenter>();
         services.TryAddScoped<IGenerateAuditLogReportInputPort, GenerateAuditLogReportHandler>();
         return services;

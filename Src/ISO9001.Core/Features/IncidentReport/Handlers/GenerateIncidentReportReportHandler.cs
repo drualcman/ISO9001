@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.IncidentReport.Handlers;
 
 internal class GenerateIncidentReportReportHandler(
-    IGetIncidentReportByEntityIdInputPort inputPort,
+    IIncidentReportByEntityIdQuery inputPort,
     IGenerateIncidentReportReportOutputPort outputPort) : IGenerateIncidentReportReportInputPort
 {
     public async ValueTask GenerateCustomerFeedbackReportAsync(string companyId, string entityId, DateTime? from, DateTime? end)

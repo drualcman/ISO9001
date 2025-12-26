@@ -3,7 +3,7 @@
 internal class GenerateCustomerFeedbackReportController(
     IGenerateCustomerFeedbackInputPort inputPort,
     IGenerateCustomerFeedbackOutputPort outputPort)
-    : IGenerateCustomerFeedbackController
+    : IGenerateCustomerFeedbackReport
 {
     public async Task<ReportViewModel> HandleAsync(string companyId, string entityId, DateTime? from, DateTime? end)
     {

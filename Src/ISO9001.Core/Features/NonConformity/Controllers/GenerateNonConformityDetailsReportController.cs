@@ -2,7 +2,7 @@
 
 internal class GenerateNonConformityDetailsReportController(
     IGenerateNonConformityDetailsReportInputPort inputPort,
-    IGenerateNonConformityDetailsReportOutputPort outputPort) : IGenerateNonConformityDetailsReportController
+    IGenerateNonConformityDetailsReportOutputPort outputPort) : IGenerateNonConformityDetailsReport
 {
     public async Task<ReportViewModel> HandleAsync(string companyId, string nonConformityId, DateTime? from, DateTime? end)
     {

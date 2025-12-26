@@ -11,7 +11,7 @@ public static partial class DependencyContainer
         services.TryAddScoped<IAuditEventProvider, IncidentReportEventProvider>();
         services.TryAddScoped<IAuditEventProvider, NonConformityEventProvider>();
 
-        services.TryAddScoped<IGetAuditEventInputPort, GetAuditEventsHandler>();
+        services.TryAddScoped<IAuditEventQuery, GetAuditEventsHandler>();
         return services;
     }
 }

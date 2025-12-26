@@ -6,7 +6,7 @@ public static class CustomerFeedbackMapper
         this IEndpointRouteBuilder builder)
     {
         builder.MapPost("".CreateEndpoint("CustomerFeedbackEndpoints"),
-            async (CustomerFeedbackRequest customerFeedback, IRegisterCustomerFeedbackInputPort inputport) =>
+            async (CustomerFeedbackRequest customerFeedback, IRegisterCustomerFeedback inputport) =>
             {
                 await inputport.HandleAsync(new CustomerFeedbackDto(
                     customerFeedback.EntityId,
@@ -24,7 +24,7 @@ public static class CustomerFeedbackMapper
         int rating,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGetCustomerFeedbackByRatingInputPort inputPort) =>
+        ICustomerFeedbackByRatingQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, rating, from, end);
             return TypedResults.Ok(result);
@@ -34,7 +34,7 @@ public static class CustomerFeedbackMapper
         builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
         int id,
-        IGetCustomerFeedbackByIdInputPort inputport) =>
+        ICustomerFeedbackByIdQuery inputport) =>
         {
             var Result = await inputport.HandleAsync(companyId, id);
             return TypedResults.Ok(Result);
@@ -45,7 +45,7 @@ public static class CustomerFeedbackMapper
         string entityId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGetCustomerFeedbackByEntityIdInputPort inputPort) =>
+        ICustomerFeedbackByEntityIdQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(result);
@@ -57,7 +57,7 @@ public static class CustomerFeedbackMapper
         string customerId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        [FromServices] IGetCustomerFeedbackByCustomerIdInputPort inputPort) =>
+        [FromServices] ICustomerFeedbackByCustomerIdQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, customerId, from, end);
             return TypedResults.Ok(result);
@@ -68,7 +68,7 @@ public static class CustomerFeedbackMapper
         string companyId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGetAllCustomerFeedbackInputPort inputPort) =>
+        IAllCustomerFeedbackQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, from, end);
             return TypedResults.Ok(result);
@@ -80,7 +80,7 @@ public static class CustomerFeedbackMapper
         string entityId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGenerateCustomerFeedbackController controller) =>
+        IGenerateCustomerFeedbackReport controller) =>
         {
             var result = await controller.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(result);

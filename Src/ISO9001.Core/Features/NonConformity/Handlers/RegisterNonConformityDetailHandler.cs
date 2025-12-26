@@ -3,7 +3,7 @@
 internal class RegisterNonConformityDetailHandler(
     ICommandNonConformityDetailRepository commandDetailRepository,
     ICommandNonConformityRepository commandMasterRepository,
-    IQueryableNonConformityRepository queryRepository) : IRegisterNonConformityDetailInputPort
+    IQueryableNonConformityRepository queryRepository) : IRegisterNonConformityDetail
 {
     public async Task HandleAsync(NonConformityCreateDetailDto nonConformityDetail)
     {

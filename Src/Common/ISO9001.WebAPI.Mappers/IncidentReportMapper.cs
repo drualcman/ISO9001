@@ -10,7 +10,7 @@ public static class IncidentReportMapper
             string companyId,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGetAllIncidentReportsInputPort inputPort) =>
+            IAllIncidentReportsQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, from, end);
             return TypedResults.Ok(result);
@@ -22,7 +22,7 @@ public static class IncidentReportMapper
             string entityId,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGetIncidentReportByEntityIdInputPort inputPort) =>
+            IIncidentReportByEntityIdQuery inputPort) =>
         {
             var Result = await inputPort.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(Result);
@@ -42,7 +42,7 @@ public static class IncidentReportMapper
         );
 
         builder.MapPost("".CreateEndpoint("IncidentReportEndpoints"),
-            async (IncidentReportRequest incidentReport, IRegisterIncidentReportInputPort inputport) =>
+            async (IncidentReportRequest incidentReport, IRegisterIncidentReport inputport) =>
             {
                 await inputport.HandleAsync(new IncidentReportDto(
                     incidentReport.CompanyId,
@@ -62,7 +62,7 @@ public static class IncidentReportMapper
         string entityId,
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? end,
-        IGenerateIncidentReportReportController controller) =>
+        IGenerateIncidentReportReport controller) =>
         {
             var result = await controller.HandleAsync(companyId, entityId, from, end);
             return TypedResults.Ok(result);

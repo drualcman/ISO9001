@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.NonConformity.Handlers;
 
 internal class GetNonConformityByStatusHandler(
-    IQueryableNonConformityRepository repository) : IGetNonConformityByStatusInputPort
+    IQueryableNonConformityRepository repository) : INonConformityByStatusQuery
 {
     public async Task<IEnumerable<NonConformityMaterResponse>> HandleAsync(string id, string status, DateTime? from, DateTime? end)
     {

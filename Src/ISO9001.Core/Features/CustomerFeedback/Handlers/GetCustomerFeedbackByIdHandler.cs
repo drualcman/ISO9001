@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.CustomerFeedback.Handlers;
 
 internal class GetCustomerFeedbackByIdHandler
-    (IQueryableCustomerFeedbackRepository repository) : IGetCustomerFeedbackByIdInputPort
+    (IQueryableCustomerFeedbackRepository repository) : ICustomerFeedbackByIdQuery
 {
     public async Task<CustomerFeedbackResponse> HandleAsync(string companyId, int id)
     {

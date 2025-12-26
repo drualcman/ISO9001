@@ -9,7 +9,7 @@ public static class DashBoardMapper
             string companyId,
             [FromQuery] DateTime? from,
             [FromQuery] DateTime? end,
-            IGetQualityDashBoardInputPort inputPort) =>
+            IQualityDashBoardQuery inputPort) =>
         {
             var result = await inputPort.HandleAsync(companyId, from, end);
             return TypedResults.Ok(result);

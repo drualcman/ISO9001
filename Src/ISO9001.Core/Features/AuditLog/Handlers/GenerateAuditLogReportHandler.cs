@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.AuditLog.Handlers;
 
 internal class GenerateAuditLogReportHandler(
-    IGetAuditLogsByEntityIdInputPort inputPort,
+    IAuditLogsByEntityIdQuery inputPort,
     IGenerateAuditLogReportOutputPort outputPort) : IGenerateAuditLogReportInputPort
 {
     public async ValueTask GenerateAuditLogReportAsync(string companyId,

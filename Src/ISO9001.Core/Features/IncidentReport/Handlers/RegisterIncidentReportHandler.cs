@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.IncidentReport.Handlers;
 
 internal class RegisterIncidentReportHandler(ICommandIncidentReportRepository
-    repository) : IRegisterIncidentReportInputPort
+    repository) : IRegisterIncidentReport
 {
     public async Task HandleAsync(IncidentReportDto incidentReportDto)
     {

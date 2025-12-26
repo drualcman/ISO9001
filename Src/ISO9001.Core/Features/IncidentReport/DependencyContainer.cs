@@ -7,12 +7,12 @@ public static partial class DependencyContainer
         services.TryAddScoped<ICommandIncidentReportRepository, CommandIncidentReportRepository>();
         services.TryAddScoped<IQueryableIncidentReportRepository, QueryableIncidentReportRepository>();
 
-        services.TryAddScoped<IGetAllIncidentReportsInputPort, GetAllIncidentReportsHandler>();
+        services.TryAddScoped<IAllIncidentReportsQuery, GetAllIncidentReportsHandler>();
         services.TryAddScoped<IGetIncidentReportByIdInputPort, GetIncidentReportByIdHandler>();
-        services.TryAddScoped<IGetIncidentReportByEntityIdInputPort, GetIncidentReportByEntityIdHandler>();
-        services.TryAddScoped<IRegisterIncidentReportInputPort, RegisterIncidentReportHandler>();
+        services.TryAddScoped<IIncidentReportByEntityIdQuery, GetIncidentReportByEntityIdHandler>();
+        services.TryAddScoped<IRegisterIncidentReport, RegisterIncidentReportHandler>();
 
-        services.TryAddScoped<IGenerateIncidentReportReportController, GenerateIncidentReportReportController>();
+        services.TryAddScoped<IGenerateIncidentReportReport, GenerateIncidentReportReportController>();
         services.TryAddScoped<IGenerateIncidentReportReportInputPort, GenerateIncidentReportReportHandler>();
         services.TryAddScoped<IGenerateIncidentReportReportOutputPort, GenerateIncidentReportReportPresenter>();
         return services;

@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.DashBoard.Handlers;
 
 internal class GetQualityDashBoardHandler(
-    IQueryableQualityDashboardRepository repository) : IGetQualityDashBoardInputPort
+    IQueryableQualityDashboardRepository repository) : IQualityDashBoardQuery
 {
     private const string NonConformityStatusClosed = "closed";
 

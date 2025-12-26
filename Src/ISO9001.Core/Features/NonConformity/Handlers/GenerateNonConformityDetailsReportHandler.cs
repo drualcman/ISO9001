@@ -1,7 +1,7 @@
 ﻿namespace ISO9001.Core.Features.NonConformity.Handlers;
 
 internal class GenerateNonConformityDetailsReportHandler(
-    IGetNonConformityByEntityIdInputPort inputPort,
+    INonConformityByEntityIdQuery inputPort,
     IQueryableNonConformityRepository queryRepository,
     IGenerateNonConformityDetailsReportOutputPort outputPort) : IGenerateNonConformityDetailsReportInputPort
 {

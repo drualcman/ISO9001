@@ -1,6 +1,6 @@
 ﻿namespace ISO9001.Core.Interfaces.IncidentReports;
 
-public interface IRegisterIncidentReportInputPort
+public interface IRegisterIncidentReport
 {
     Task HandleAsync(IncidentReportDto incidentReportDto);
 }
