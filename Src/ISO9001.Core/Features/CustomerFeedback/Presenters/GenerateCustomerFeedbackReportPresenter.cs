@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.CustomerFeedback.Presenters;
+﻿namespace ISO9001.Core.Features.CustomerFeedback.Presenters;
 
 internal class GenerateCustomerFeedbackReportPresenter(
     IReportsOutputPort outputPortReport,

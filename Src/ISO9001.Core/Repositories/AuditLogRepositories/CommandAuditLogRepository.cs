@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Interfaces;
-
-namespace ISO9001.Core.Repositories.AuditLogRepositories;
+﻿namespace ISO9001.Core.Repositories.AuditLogRepositories;
 
 internal class CommandAuditLogRepository(
     IWritableAuditLogDataContext dataContext) : ICommandAuditLogRepository

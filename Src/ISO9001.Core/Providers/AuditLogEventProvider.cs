@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Interfaces;
-
-namespace ISO9001.Core.Providers;
+﻿namespace ISO9001.Core.Providers;
 
 internal class AuditLogEventProvider(IQueryableAuditLogDataContext context) : IAuditEventProvider
 {

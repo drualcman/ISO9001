@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Interfaces;
-
-namespace ISO9001.Core.Repositories.NonConformityRepositories;
+﻿namespace ISO9001.Core.Repositories.NonConformityRepositories;
 
 internal class QueryableNonConformityRepository(
     IQueryableNonConformityDataContext dataContext) : IQueryableNonConformityRepository

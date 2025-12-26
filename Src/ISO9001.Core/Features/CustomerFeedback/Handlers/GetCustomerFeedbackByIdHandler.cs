@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.CustomerFeedback.Handlers;
+﻿namespace ISO9001.Core.Features.CustomerFeedback.Handlers;
 
 internal class GetCustomerFeedbackByIdHandler
     (IQueryableCustomerFeedbackRepository repository) : IGetCustomerFeedbackByIdInputPort

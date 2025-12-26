@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.NonConformity.Presenters;
+﻿namespace ISO9001.Core.Features.NonConformity.Presenters;
 
 internal class GenerateNonConformityMasterReportPresenter(
     IReportsOutputPort outputPortReport,

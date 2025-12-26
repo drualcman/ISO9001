@@ -1,5 +1,8 @@
 global using ISO9001.Core.Entities;
-global using ISO9001.Core.Interfaces;
+global using ISO9001.Core.Interfaces.AuditLogs;
+global using ISO9001.Core.Interfaces.CustomerFeedbacks;
+global using ISO9001.Core.Interfaces.IncidentReports;
+global using ISO9001.Core.Interfaces.NonConformitys;
 global using ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts;
 global using ISO9001.Database.InMemory.DataContexts.CustomerFeedbackDataContext;
 global using ISO9001.Database.InMemory.DataContexts.Entities;

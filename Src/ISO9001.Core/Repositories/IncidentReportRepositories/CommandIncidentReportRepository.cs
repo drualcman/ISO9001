@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Interfaces;
-
-namespace ISO9001.Core.Repositories.IncidentReportRepositories;
+﻿namespace ISO9001.Core.Repositories.IncidentReportRepositories;
 
 internal class CommandIncidentReportRepository(IWritableIncidentReportDataContext
     dataContext) : ICommandIncidentReportRepository

@@ -4,15 +4,18 @@ public static partial class DependencyContainer
 {
     public static IServiceCollection AddAuditLogCoreServices(this IServiceCollection services)
     {
-        services.AddScoped<IRegisterAuditLogInputPort, RegisterAuditLogHandler>();
-        services.AddScoped<IGetAuditLogsByEntityIdInputPort, GetAuditLogsByEntityIdHandler>();
-        services.AddScoped<IGetAuditLogsByActionInputPort, GetAuditLogsByActionHandler>();
-        services.AddScoped<IGetAuditLogByIdInputPort, GetAuditLogByIdHandler>();
-        services.AddScoped<IGetAllAuditLogsInputPort, GetAllAuditLogsHandler>();
+        services.TryAddScoped<ICommandAuditLogRepository, CommandAuditLogRepository>();
+        services.TryAddScoped<IQueryableAuditLogRepository, QueryableAuditLogRepository>();
 
-        services.AddScoped<IGenerateAuditLogReportController, GenerateAuditLogReportController>();
-        services.AddScoped<IGenerateAuditLogReportOutputPort, GenerateAuditLogReportPresenter>();
-        services.AddScoped<IGenerateAuditLogReportInputPort, GenerateAuditLogReportHandler>();
+        services.TryAddScoped<IRegisterAuditLogInputPort, RegisterAuditLogHandler>();
+        services.TryAddScoped<IGetAuditLogsByEntityIdInputPort, GetAuditLogsByEntityIdHandler>();
+        services.TryAddScoped<IGetAuditLogsByActionInputPort, GetAuditLogsByActionHandler>();
+        services.TryAddScoped<IGetAuditLogByIdInputPort, GetAuditLogByIdHandler>();
+        services.TryAddScoped<IGetAllAuditLogsInputPort, GetAllAuditLogsHandler>();
+
+        services.TryAddScoped<IGenerateAuditLogReportController, GenerateAuditLogReportController>();
+        services.TryAddScoped<IGenerateAuditLogReportOutputPort, GenerateAuditLogReportPresenter>();
+        services.TryAddScoped<IGenerateAuditLogReportInputPort, GenerateAuditLogReportHandler>();
         return services;
     }
 }

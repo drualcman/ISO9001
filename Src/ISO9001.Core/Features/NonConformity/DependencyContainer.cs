@@ -4,20 +4,24 @@ public static partial class DependencyContainer
 {
     public static IServiceCollection AddNonConformityCoreServices(this IServiceCollection services)
     {
-        services.AddScoped<IGetAllNonConformitiesInputPort, GetAllNonConformitiesHandler>();
-        services.AddScoped<IGetNonConformityByAffectedProcessInputPort, GetNonConformityByAffectedProcessHandler>();
-        services.AddScoped<IGetNonConformityByEntityIdInputPort, GetNonConformityByEntityIdHandler>();
-        services.AddScoped<IGetNonConformityByStatusInputPort, GetNonConformityByStatusHandler>();
-        services.AddScoped<IRegisterNonConformityInputPort, RegisterNonConformityHandler>();
-        services.AddScoped<IRegisterNonConformityDetailInputPort, RegisterNonConformityDetailHandler>();
+        services.TryAddScoped<ICommandNonConformityRepository, CommandNonConformityRepository>();
+        services.TryAddScoped<ICommandNonConformityDetailRepository, CommandNonConformityDetailRepository>();
+        services.TryAddScoped<IQueryableNonConformityRepository, QueryableNonConformityRepository>();
 
-        services.AddScoped<IGenerateNonConformityMasterReportController, GenerateNonConformityMasterReportController>();
-        services.AddScoped<IGenerateNonConformityMasterReportInputPort, GenerateNonConformityMasterReportHandler>();
-        services.AddScoped<IGenerateNonConformityMasterReportOutputPort, GenerateNonConformityMasterReportPresenter>();
+        services.TryAddScoped<IGetAllNonConformitiesInputPort, GetAllNonConformitiesHandler>();
+        services.TryAddScoped<IGetNonConformityByAffectedProcessInputPort, GetNonConformityByAffectedProcessHandler>();
+        services.TryAddScoped<IGetNonConformityByEntityIdInputPort, GetNonConformityByEntityIdHandler>();
+        services.TryAddScoped<IGetNonConformityByStatusInputPort, GetNonConformityByStatusHandler>();
+        services.TryAddScoped<IRegisterNonConformityInputPort, RegisterNonConformityHandler>();
+        services.TryAddScoped<IRegisterNonConformityDetailInputPort, RegisterNonConformityDetailHandler>();
 
-        services.AddScoped<IGenerateNonConformityDetailsReportController, GenerateNonConformityDetailsReportController>();
-        services.AddScoped<IGenerateNonConformityDetailsReportInputPort, GenerateNonConformityDetailsReportHandler>();
-        services.AddScoped<IGenerateNonConformityDetailsReportOutputPort, GenerateNonConformityDetailsReportPresenter>();
+        services.TryAddScoped<IGenerateNonConformityMasterReportController, GenerateNonConformityMasterReportController>();
+        services.TryAddScoped<IGenerateNonConformityMasterReportInputPort, GenerateNonConformityMasterReportHandler>();
+        services.TryAddScoped<IGenerateNonConformityMasterReportOutputPort, GenerateNonConformityMasterReportPresenter>();
+
+        services.TryAddScoped<IGenerateNonConformityDetailsReportController, GenerateNonConformityDetailsReportController>();
+        services.TryAddScoped<IGenerateNonConformityDetailsReportInputPort, GenerateNonConformityDetailsReportHandler>();
+        services.TryAddScoped<IGenerateNonConformityDetailsReportOutputPort, GenerateNonConformityDetailsReportPresenter>();
         return services;
     }
 }

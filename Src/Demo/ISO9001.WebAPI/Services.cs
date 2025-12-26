@@ -12,8 +12,7 @@ public static class Services
         builder.Services.AddAuditEventCoreServices();
         builder.Services.AddAuditReportCoreServices();
 
-        builder.Services.AddReportingPresenterPdfServices();
-        builder.Services.AddISO9001Repositories();
+        builder.Services.AddISO9001Services();
         builder.Services.AddDatabaseInMemory();
         return builder;
     }

@@ -4,9 +4,10 @@ public static partial class DependencyContainer
 {
     public static IServiceCollection AddAuditReportCoreServices(this IServiceCollection services)
     {
-        services.AddScoped<IGenerateAuditReportController, GenerateAuditReportController>();
-        services.AddScoped<IGenerateAuditReportInputPort, GenerateAuditReportHandler>();
-        services.AddScoped<IGenerateAuditReportOutputPort, GenerateAuditReportPresenter>();
+        services.TryAddScoped<IQueryableAuditReportRepository, QueryableAuditReportRepository>();
+        services.TryAddScoped<IGenerateAuditReportController, GenerateAuditReportController>();
+        services.TryAddScoped<IGenerateAuditReportInputPort, GenerateAuditReportHandler>();
+        services.TryAddScoped<IGenerateAuditReportOutputPort, GenerateAuditReportPresenter>();
 
         return services;
     }

@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.DashBoard.Handlers;
+﻿namespace ISO9001.Core.Features.DashBoard.Handlers;
 
 internal class GetQualityDashBoardHandler(
     IQueryableQualityDashboardRepository repository) : IGetQualityDashBoardInputPort

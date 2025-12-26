@@ -4,14 +4,17 @@ public static partial class DependencyContainer
 {
     public static IServiceCollection AddIncidentReportCoreServices(this IServiceCollection services)
     {
-        services.AddScoped<IGetAllIncidentReportsInputPort, GetAllIncidentReportsHandler>();
-        services.AddScoped<IGetIncidentReportByIdInputPort, GetIncidentReportByIdHandler>();
-        services.AddScoped<IGetIncidentReportByEntityIdInputPort, GetIncidentReportByEntityIdHandler>();
-        services.AddScoped<IRegisterIncidentReportInputPort, RegisterIncidentReportHandler>();
+        services.TryAddScoped<ICommandIncidentReportRepository, CommandIncidentReportRepository>();
+        services.TryAddScoped<IQueryableIncidentReportRepository, QueryableIncidentReportRepository>();
 
-        services.AddScoped<IGenerateIncidentReportReportController, GenerateIncidentReportReportController>();
-        services.AddScoped<IGenerateIncidentReportReportInputPort, GenerateIncidentReportReportHandler>();
-        services.AddScoped<IGenerateIncidentReportReportOutputPort, GenerateIncidentReportReportPresenter>();
+        services.TryAddScoped<IGetAllIncidentReportsInputPort, GetAllIncidentReportsHandler>();
+        services.TryAddScoped<IGetIncidentReportByIdInputPort, GetIncidentReportByIdHandler>();
+        services.TryAddScoped<IGetIncidentReportByEntityIdInputPort, GetIncidentReportByEntityIdHandler>();
+        services.TryAddScoped<IRegisterIncidentReportInputPort, RegisterIncidentReportHandler>();
+
+        services.TryAddScoped<IGenerateIncidentReportReportController, GenerateIncidentReportReportController>();
+        services.TryAddScoped<IGenerateIncidentReportReportInputPort, GenerateIncidentReportReportHandler>();
+        services.TryAddScoped<IGenerateIncidentReportReportOutputPort, GenerateIncidentReportReportPresenter>();
         return services;
     }
 }

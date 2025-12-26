@@ -5,16 +5,19 @@ public static partial class DependencyContainer
     public static IServiceCollection AddCustomerFeedbackCoreServices(
           this IServiceCollection services)
     {
-        services.AddScoped<IRegisterCustomerFeedbackInputPort, RegisterCustomerFeedbackHandler>();
-        services.AddScoped<IGetCustomerFeedbackByRatingInputPort, GetCustomerFeedbackByRatingHandler>();
-        services.AddScoped<IGetCustomerFeedbackByIdInputPort, GetCustomerFeedbackByIdHandler>();
-        services.AddScoped<IGetCustomerFeedbackByEntityIdInputPort, GetGustomerFeedbackByEntityIdHandler>();
-        services.AddScoped<IGetAllCustomerFeedbackInputPort, GetAllCustomerFeedbackHandler>();
-        services.AddScoped<IGetCustomerFeedbackByCustomerIdInputPort, GetCustomerFeedbackByCustomerIdHandler>();
+        services.TryAddScoped<ICommandCustomerFeedbackRepository, CommandCustomerFeedbackRepository>();
+        services.TryAddScoped<IQueryableCustomerFeedbackRepository, QueryableCustomerFeedbackRepository>();
 
-        services.AddScoped<IGenerateCustomerFeedbackController, GenerateCustomerFeedbackReportController>();
-        services.AddScoped<IGenerateCustomerFeedbackInputPort, GenerateCustomerFeedbackReportHandler>();
-        services.AddScoped<IGenerateCustomerFeedbackOutputPort, GenerateCustomerFeedbackReportPresenter>();
+        services.TryAddScoped<IRegisterCustomerFeedbackInputPort, RegisterCustomerFeedbackHandler>();
+        services.TryAddScoped<IGetCustomerFeedbackByRatingInputPort, GetCustomerFeedbackByRatingHandler>();
+        services.TryAddScoped<IGetCustomerFeedbackByIdInputPort, GetCustomerFeedbackByIdHandler>();
+        services.TryAddScoped<IGetCustomerFeedbackByEntityIdInputPort, GetGustomerFeedbackByEntityIdHandler>();
+        services.TryAddScoped<IGetAllCustomerFeedbackInputPort, GetAllCustomerFeedbackHandler>();
+        services.TryAddScoped<IGetCustomerFeedbackByCustomerIdInputPort, GetCustomerFeedbackByCustomerIdHandler>();
+
+        services.TryAddScoped<IGenerateCustomerFeedbackController, GenerateCustomerFeedbackReportController>();
+        services.TryAddScoped<IGenerateCustomerFeedbackInputPort, GenerateCustomerFeedbackReportHandler>();
+        services.TryAddScoped<IGenerateCustomerFeedbackOutputPort, GenerateCustomerFeedbackReportPresenter>();
         return services;
     }
 

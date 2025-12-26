@@ -10,7 +10,6 @@ public static class EndpointsMapper
         builder.MapIncidentReportEndpoints();
         builder.MapNonConformityEndpoints();
 
-
         builder.MapAuditEventEndpoints();
         builder.MapQualityDashboardEndpoints();
         builder.MapAuditReportEndpoints();

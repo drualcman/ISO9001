@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Interfaces;
-
-namespace ISO9001.Core.Repositories.CustomerFeedbackRepositories;
+﻿namespace ISO9001.Core.Repositories.CustomerFeedbackRepositories;
 
 internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDataContext dataContext) : IQueryableCustomerFeedbackRepository
 {

@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.AuditLog.Handlers;
+﻿namespace ISO9001.Core.Features.AuditLog.Handlers;
 
 internal class GetAllAuditLogsHandler(IQueryableAuditLogRepository repository) : IGetAllAuditLogsInputPort
 {

@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Interfaces;
-
-namespace ISO9001.Core.Repositories.AuditEvent;
+﻿namespace ISO9001.Core.Repositories.AuditEvent;
 
 internal class QueryableAuditEventRepository(IEnumerable<IAuditEventProvider> providers) : IQueryableAuditEventRepository
 {

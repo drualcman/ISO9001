@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.NonConformity.Handlers;
+﻿namespace ISO9001.Core.Features.NonConformity.Handlers;
 
 internal class GetAllNonConformitiesHandler(
     IQueryableNonConformityRepository repository) : IGetAllNonConformitiesInputPort

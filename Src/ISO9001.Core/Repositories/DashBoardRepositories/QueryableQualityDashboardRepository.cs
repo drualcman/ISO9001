@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Interfaces;
-
-namespace ISO9001.Core.Repositories.DashBoardRepositories
+﻿namespace ISO9001.Core.Repositories.DashBoardRepositories
 {
     internal class QueryableQualityDashboardRepository(
         IQueryableCustomerFeedbackRepository getAllCustomerFeedbackRepository,

@@ -1,6 +1,6 @@
 ﻿namespace ISO9001.Core.Features.IncidentReport.Handlers;
 
-public class GenerateIncidentReportReportHandler(
+internal class GenerateIncidentReportReportHandler(
     IGetIncidentReportByEntityIdInputPort inputPort,
     IGenerateIncidentReportReportOutputPort outputPort) : IGenerateIncidentReportReportInputPort
 {

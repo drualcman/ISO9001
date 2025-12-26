@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.AuditLog.Presenters;
+﻿namespace ISO9001.Core.Features.AuditLog.Presenters;
 
 internal class GenerateAuditLogReportPresenter(
     IReportsOutputPort outputPortReport,

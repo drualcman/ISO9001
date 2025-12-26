@@ -1,8 +1,6 @@
-﻿using ISO9001.Core.Responses;
+﻿namespace ISO9001.Core.Features.AuditEvent.Handlers;
 
-namespace ISO9001.Core.Features.AuditEvent.Handlers;
-
-internal class GetAuditEventsHandler(IQueryableAuditEventRepository repository) : IGetAuditEventsInputPort
+internal class GetAuditEventsHandler(IQueryableAuditEventRepository repository) : IGetAuditEventInputPort
 {
     public async Task<IEnumerable<AuditEventResponse>> HandleAsync(string entityId, string companyId)
     {

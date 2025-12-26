@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Dtos;
-
-namespace ISO9001.Core.Features.CustomerFeedback.Handlers;
+﻿namespace ISO9001.Core.Features.CustomerFeedback.Handlers;
 
 internal class RegisterCustomerFeedbackHandler(
     ICommandCustomerFeedbackRepository repository) : IRegisterCustomerFeedbackInputPort

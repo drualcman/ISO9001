@@ -1,24 +1,26 @@
-﻿namespace ISO9001.Database.InMemory;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+
+namespace ISO9001.Database.InMemory;
 
 public static class DependencyContainer
 {
     public static IServiceCollection AddDatabaseInMemory(this IServiceCollection services)
     {
-        services.AddSingleton<InMemoryAuditLogStore>();
-        services.AddScoped<IWritableAuditLogDataContext, InMemoryWritableAuditLogDataContext>();
-        services.AddScoped<IQueryableAuditLogDataContext, InMemoryQueryableAuditLogDataContext>();
+        services.TryAddSingleton<InMemoryAuditLogStore>();
+        services.TryAddScoped<IWritableAuditLogDataContext, InMemoryWritableAuditLogDataContext>();
+        services.TryAddScoped<IQueryableAuditLogDataContext, InMemoryQueryableAuditLogDataContext>();
 
-        services.AddSingleton<InMemoryCustomerFeedbackStore>();
-        services.AddScoped<IWritableCustomerFeedbackDataContext, InMemoryWritableCustomerFeedbackDataContext>();
-        services.AddScoped<IQueryableCustomerFeedbackDataContext, InMemoryQueryableCustomerFeedbackDataContext>();
+        services.TryAddSingleton<InMemoryCustomerFeedbackStore>();
+        services.TryAddScoped<IWritableCustomerFeedbackDataContext, InMemoryWritableCustomerFeedbackDataContext>();
+        services.TryAddScoped<IQueryableCustomerFeedbackDataContext, InMemoryQueryableCustomerFeedbackDataContext>();
 
-        services.AddSingleton<InMemoryIncidentReportStore>();
-        services.AddScoped<IWritableIncidentReportDataContext, InMemoryWritableIncidentReportDataContext>();
-        services.AddScoped<IQueryableIncidentReportDataContext, InMemoryQueryableIncidentReportDataContext>();
+        services.TryAddSingleton<InMemoryIncidentReportStore>();
+        services.TryAddScoped<IWritableIncidentReportDataContext, InMemoryWritableIncidentReportDataContext>();
+        services.TryAddScoped<IQueryableIncidentReportDataContext, InMemoryQueryableIncidentReportDataContext>();
 
-        services.AddSingleton<InMemoryNonConformityStore>();
-        services.AddScoped<IWritableNonConformityDataContext, InMemoryWritableNonConformityDataContext>();
-        services.AddScoped<IQueryableNonConformityDataContext, InMemoryQueryableNonConformityDataContext>();
+        services.TryAddSingleton<InMemoryNonConformityStore>();
+        services.TryAddScoped<IWritableNonConformityDataContext, InMemoryWritableNonConformityDataContext>();
+        services.TryAddScoped<IQueryableNonConformityDataContext, InMemoryQueryableNonConformityDataContext>();
 
         return services;
     }

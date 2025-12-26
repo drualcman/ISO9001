@@ -1,6 +1,4 @@
-﻿using ISO9001.Core.Responses;
-
-namespace ISO9001.Core.Features.IncidentReport.Handlers;
+﻿namespace ISO9001.Core.Features.IncidentReport.Handlers;
 
 internal class GetAllIncidentReportsHandler(IQueryableIncidentReportRepository
     repository) : IGetAllIncidentReportsInputPort
