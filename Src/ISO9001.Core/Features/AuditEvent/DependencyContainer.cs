@@ -6,10 +6,10 @@ public static partial class DependencyContainer
     {
         services.TryAddScoped<IQueryableAuditEventRepository, QueryableAuditEventRepository>();
 
-        services.TryAddScoped<IAuditEventProvider, AuditLogEventProvider>();
-        services.TryAddScoped<IAuditEventProvider, CustomerFeedbackEventProvider>();
-        services.TryAddScoped<IAuditEventProvider, IncidentReportEventProvider>();
-        services.TryAddScoped<IAuditEventProvider, NonConformityEventProvider>();
+        services.AddScoped<IAuditEventProvider, AuditLogEventProvider>();
+        services.AddScoped<IAuditEventProvider, CustomerFeedbackEventProvider>();
+        services.AddScoped<IAuditEventProvider, IncidentReportEventProvider>();
+        services.AddScoped<IAuditEventProvider, NonConformityEventProvider>();
 
         services.TryAddScoped<IAuditEventQuery, GetAuditEventsHandler>();
         return services;

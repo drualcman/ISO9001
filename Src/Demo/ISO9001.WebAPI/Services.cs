@@ -9,7 +9,6 @@ public static class Services
         builder.Services.AddIncidentReportCoreServices();
         builder.Services.AddNonConformityCoreServices();
         builder.Services.AddQualityDashboardCoreServices();
-        builder.Services.AddAuditEventCoreServices();
         builder.Services.AddAuditReportCoreServices();
 
         builder.Services.AddISO9001Services();
