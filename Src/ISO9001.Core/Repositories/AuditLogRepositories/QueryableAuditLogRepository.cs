@@ -45,7 +45,7 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
         var AuditLog = await dataContext.ToListAsync(AuditLog => AuditLog.CompanyId == companyId &&
                 AuditLog.LogId == id);
 
-        return AuditLog != null;
+        return AuditLog.Any();
     }
 
     public async Task<AuditLogResponse> GetAuditLogByIdAsync(string companyId, int id)
