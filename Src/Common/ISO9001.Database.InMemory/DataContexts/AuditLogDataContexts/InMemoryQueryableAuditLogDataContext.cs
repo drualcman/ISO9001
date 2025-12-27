@@ -23,8 +23,6 @@ internal class InMemoryQueryableAuditLogDataContext(
         Expression<Func<AuditLogReadModel, bool>> filter = null,
         Func<IQueryable<AuditLogReadModel>, IOrderedQueryable<AuditLogReadModel>> orderBy = null)
     {
-        // TODO: discutir esto
-
         IQueryable<AuditLogReadModel> query = AuditLogs;
 
         if (filter != null)

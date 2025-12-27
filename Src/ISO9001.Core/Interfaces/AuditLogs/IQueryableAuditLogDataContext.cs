@@ -2,7 +2,7 @@
 
 public interface IQueryableAuditLogDataContext
 {
-    Task<IEnumerable<AuditLogReadModel>> ToListAsync(         // TODO: discutir esto
+    Task<IEnumerable<AuditLogReadModel>> ToListAsync(
         Expression<Func<AuditLogReadModel, bool>> filter = null,
         Func<IQueryable<AuditLogReadModel>, IOrderedQueryable<AuditLogReadModel>> orderBy = null);
 }

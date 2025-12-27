@@ -5,8 +5,6 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
     public async Task<IEnumerable<AuditLogResponse>> GetAuditLogsByEntityIdAsync(string id, string entityId,
     DateTime? from, DateTime? end)
     {
-        // TODO: discutir esto
-
         var AuditLogs = await dataContext.ToListAsync(
             AuditLog => AuditLog.CompanyId == id &&
                         AuditLog.EntityId == entityId &&
