@@ -1,4 +1,6 @@
-﻿namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
+﻿using System.Linq.Expressions;
+
+namespace ISO9001.Database.InMemory.DataContexts.NonConformityDataContext;
 
 internal class InMemoryQueryableNonConformityDataContext(
     InMemoryNonConformityStore dataContext) : IQueryableNonConformityDataContext
@@ -30,9 +32,43 @@ internal class InMemoryQueryableNonConformityDataContext(
         NonConformityId = NonConformityDetail.NonConformityId
     }).AsQueryable();
 
-    public async Task<IEnumerable<NonConformityReadModel>> ToListAsync(IQueryable<NonConformityReadModel> queryable)
-        => await Task.FromResult(queryable.ToList());
+    public async Task<IEnumerable<NonConformityReadModel>> ToListAsync(
+    Expression<Func<NonConformityReadModel, bool>> filter = null,
+    Func<IQueryable<NonConformityReadModel>, IOrderedQueryable<NonConformityReadModel>> orderBy = null)
+    {
+        IQueryable<NonConformityReadModel> query = NonConformities;
 
-    public async Task<IEnumerable<NonConformityDetailReadModel>> ToListAsync(IQueryable<NonConformityDetailReadModel> queryable)
-        => await Task.FromResult(queryable.ToList());
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+
+        var data = query.ToList();
+        return await Task.FromResult(data);
+    }
+
+    public async Task<IEnumerable<NonConformityDetailReadModel>> ToListAsync(
+    Expression<Func<NonConformityDetailReadModel, bool>> filter = null,
+    Func<IQueryable<NonConformityDetailReadModel>, IOrderedQueryable<NonConformityDetailReadModel>> orderBy = null)
+    {
+        IQueryable<NonConformityDetailReadModel> query = NonConformityDetails;
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+
+        var data = query.ToList();
+        return await Task.FromResult(data);
+    }
 }

@@ -32,17 +32,25 @@ internal class QueryableAuditReportRepository(
         string entityId, DateTime? from, DateTime? end)
     {
         var NonConformities = await nonConformityDataContext.ToListAsync(
-            nonConformityDataContext.NonConformities
-                .Where(NonConformity => NonConformity.CompanyId == companyId &&
-                       NonConformity.EntityId == entityId)
-                .OrderBy(NonConformity => NonConformity.ReportedAt));
+            NonConformity =>
+                NonConformity.CompanyId == companyId &&
+                NonConformity.EntityId == entityId &&
+                NonConformity.ReportedAt >= from &&
+                NonConformity.ReportedAt <= end,
+            NonConformity => NonConformity.OrderBy(nc => nc.ReportedAt)
+        );
 
         var MasterIds = NonConformities
-            .Select(NonConformity => NonConformity.Id);
+            .Select(NC => NC.Id)
+            .ToList();
 
         var Details = await nonConformityDataContext.ToListAsync(
-            nonConformityDataContext.NonConformityDetails
-                .Where(Detail => MasterIds.Contains(Detail.NonConformityId)).OrderBy(Detail => Detail.ReportedAt));
+            Detail => MasterIds.Contains(Detail.NonConformityId),
+            Detail => Detail.OrderBy(d => d.ReportedAt));
+
+        var DetailsCount = Details
+            .GroupBy(d => d.NonConformityId)
+            .ToDictionary(g => g.Key, g => g.Count());
 
         return NonConformities.Select(NC => new NonConformityMaterResponse
         (
@@ -52,7 +60,7 @@ internal class QueryableAuditReportRepository(
             NC.AffectedProcess,
             NC.Cause,
             NC.Status,
-            Details.Count()
+            DetailsCount.TryGetValue(NC.Id, out var count) ? count : 0
             ));
     }
 

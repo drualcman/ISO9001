@@ -6,29 +6,44 @@ internal class NonConformityEventProvider(IQueryableNonConformityDataContext con
 
     public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        var Query = context.NonConformities
-            .Where(NonConformity => NonConformity.EntityId == entityId && NonConformity.CompanyId == companyId)
-            .OrderBy(NonConformity => NonConformity.ReportedAt);
+        var NonConformities = await context.ToListAsync(
+            NonConformity =>
+                NonConformity.EntityId == entityId &&
+                NonConformity.CompanyId == companyId,
+            NonConformity => NonConformity.OrderBy(nc => nc.ReportedAt)
+        );
 
-        var NonConformities = await context.ToListAsync(Query);
+        var NonConformityIds = NonConformities
+            .Select(NC => NC.Id)
+            .ToList();
 
-        var Result = NonConformities.Select(NonConformity =>
+        var Details = await context.ToListAsync(
+            Detail => NonConformityIds.Contains(Detail.NonConformityId),
+            Detail => Detail.OrderByDescending(d => d.CreatedAt)
+        );
+
+        var LastDetails = Details
+            .GroupBy(d => d.NonConformityId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.First()
+            );
+
+
+        var Result = NonConformities.Select(NC =>
         {
-            var LastDetail = context.NonConformityDetails
-            .Where(Detail => Detail.NonConformityId == NonConformity.Id)
-            .OrderByDescending(Detail => Detail.CreatedAt)
-            .FirstOrDefault();
+            LastDetails.TryGetValue(NC.Id, out var LastDetail);
 
             return new AuditEventResponse(
-                NonConformity.Id.ToString(),
-                NonConformity.EntityId,
-                NonConformity.ReportedAt,
+                NC.Id.ToString(),
+                NC.EntityId,
+                NC.ReportedAt,
                 EventType,
-                LastDetail.Description,
-                LastDetail.ReportedBy
-                );
+                LastDetail?.Description,
+                LastDetail?.ReportedBy
+            );
         });
 
-        return await Task.FromResult(Result);
+        return Result;
     }
 }

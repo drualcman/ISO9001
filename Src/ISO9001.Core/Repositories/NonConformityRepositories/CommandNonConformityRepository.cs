@@ -33,14 +33,18 @@ internal class CommandNonConformityRepository(
 
     public async Task SaveChangesAsync() => await commandDataContext.SaveChangesAsync();
 
-    public Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status)
+    public async Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status)
     {
-        NonConformityReadModel NonConformityMaster = queryDataContext.NonConformities
-            .FirstOrDefault(nonConformity =>
-                nonConformity.Id == entityId);
+        var NonConformities = await queryDataContext.ToListAsync(
+            nonConformity => nonConformity.Id == entityId
+        );
+
+        var NonConformityMaster = NonConformities.FirstOrDefault();
+
+        if (NonConformityMaster == null)
+            return;
 
         NonConformityMaster.Status = status.ToLower();
-        commandDataContext.UpdateNonConformityAsync(NonConformityMaster);
-        return Task.CompletedTask;
+        await commandDataContext.UpdateNonConformityAsync(NonConformityMaster);
     }
 }

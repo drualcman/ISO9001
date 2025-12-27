@@ -14,15 +14,18 @@
                 .Select(NonConformity => NonConformity.Id)
                 .ToList();
 
-            var NonConformityDetails = nonConformityDataContext.NonConformityDetails
-                .Where(Detail => NonConformityIds.Contains(Detail.NonConformityId) &&
-                    Detail.ReportedAt >= from && Detail.ReportedAt <= end)
-                .GroupBy(Detail => Detail.NonConformityId)
-                .ToList();
+            var NonConformityDetails =
+                await nonConformityDataContext.ToListAsync(Detail =>
+                    NonConformityIds.Contains(Detail.NonConformityId) &&
+                    Detail.ReportedAt >= from &&
+                    Detail.ReportedAt <= end);
+
+            var GroupedDetails = NonConformityDetails
+                .GroupBy(detail => detail.NonConformityId);
 
             var AverageDates = new List<TimeSpan>();
 
-            foreach (var group in NonConformityDetails)
+            foreach (var group in GroupedDetails)
             {
                 if (group.Count() > 1)
                 {
@@ -51,26 +54,31 @@
             return TimeSpan.FromTicks(Convert.ToInt64(AllAverageTicks));
         }
 
-        public Task<int> GetNonConformitiesCountByStatus(string companyId, string status,
-            DateTime? from, DateTime? end) =>
-            Task.FromResult(nonConformityDataContext.NonConformities
-                .Where(NonConformity =>
-                NonConformity.CompanyId == companyId &&
-                NonConformity.Status.ToLower() == status.ToLower() &&
-                NonConformity.ReportedAt >= from &&
-                NonConformity.ReportedAt <= end)
-                .Count());
+        public async Task<int> GetNonConformitiesCountByStatus(string companyId, string status,
+            DateTime? from, DateTime? end)
+        {
+            var NonConformities = await nonConformityDataContext.ToListAsync(
+                NC =>
+                NC.CompanyId == companyId &&
+                NC.ReportedAt >= from &&
+                NC.ReportedAt <= end);
 
+            return NonConformities.Count(NC =>
+                string.Equals(NC.Status, status, StringComparison.OrdinalIgnoreCase));
+        }
 
-        public Task<int> GetOpenNonConformitiesCount(string companyId, string closedStatus,
-            DateTime? from, DateTime? end) =>
-            Task.FromResult(nonConformityDataContext.NonConformities
-                .Where(NonConformity =>
-                NonConformity.CompanyId == companyId &&
-                NonConformity.Status.ToLower() != closedStatus.ToLower() &&
-                NonConformity.ReportedAt >= from &&
-                NonConformity.ReportedAt <= end)
-                .Count());
+        public async Task<int> GetOpenNonConformitiesCount(string companyId, string closedStatus,
+            DateTime? from, DateTime? end)
+        {
+            var NonConformities = await nonConformityDataContext.ToListAsync(
+                NC =>
+                    NC.CompanyId == companyId &&
+                    NC.ReportedAt >= from &&
+                    NC.ReportedAt <= end);
+
+            return NonConformities.Count(nc =>
+                !string.Equals(nc.Status, closedStatus, StringComparison.OrdinalIgnoreCase));
+        }
 
         public async Task<int> GetTotalCustomerFeedbacks(string companyId, DateTime? from, DateTime? end) =>
             (await getAllCustomerFeedbackRepository.GetAllCustomerFeedbacksAsync(companyId, from, end)).Count();
