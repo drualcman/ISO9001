@@ -8,15 +8,13 @@ internal class QueryableAuditReportRepository(
     public async Task<IEnumerable<IncidentReportResponse>> GeAllIncidentReportsOrderByReportedAt(string companyId,
         string entityId, DateTime? from, DateTime? end)
     {
-        var Query = incidentReportDataContext
-            .IncidentReports.Where(
-            IncidentReport => IncidentReport.CompanyId == companyId &&
+        var IncidentReports = await incidentReportDataContext.ToListAsync(IncidentReport =>
+            IncidentReport.CompanyId == companyId &&
             IncidentReport.EntityId == entityId &&
             IncidentReport.ReportedAt >= from &&
-            IncidentReport.ReportedAt <= end)
-            .OrderBy(IncidentReport => IncidentReport.ReportedAt);
-
-        IEnumerable<IncidentReportReadModel> IncidentReports = await incidentReportDataContext.ToListAsync(Query);
+            IncidentReport.ReportedAt <= end,
+            IncidentReport => IncidentReport.OrderBy(IncidentReport => 
+            IncidentReport.ReportedAt));
 
         return IncidentReports.Select(IncidentReport => new IncidentReportResponse
         (

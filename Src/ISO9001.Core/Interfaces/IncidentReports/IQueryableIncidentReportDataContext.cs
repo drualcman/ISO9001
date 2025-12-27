@@ -2,9 +2,9 @@
 {
     public interface IQueryableIncidentReportDataContext
     {
-        IQueryable<IncidentReportReadModel> IncidentReports { get; }
         Task<IEnumerable<IncidentReportReadModel>> ToListAsync(
-            IQueryable<IncidentReportReadModel> queryable);
+            Expression<Func<IncidentReportReadModel, bool>> filter = null,
+            Func<IQueryable<IncidentReportReadModel>, IOrderedQueryable<IncidentReportReadModel>> orderBy = null);
     }
 }
 

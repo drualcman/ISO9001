@@ -6,19 +6,16 @@ internal class IncidentReportEventProvider(IQueryableIncidentReportDataContext c
 
     public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        var IncidentReports = context.IncidentReports.Where
-            (IncidentReport => IncidentReport.EntityId == entityId &&
-                IncidentReport.CompanyId == companyId)
-            .OrderBy(IncidentReport => IncidentReport.Id)
-            .Select(IncidentReport => new AuditEventResponse(
+        var data = await context.ToListAsync(IncidentReport => IncidentReport.EntityId == entityId &&
+                IncidentReport.CompanyId == companyId,
+                IncidentReport => IncidentReport.OrderBy(IncidentReport => IncidentReport.Id));
+
+        return data.Select(IncidentReport => new AuditEventResponse(
                 IncidentReport.Id.ToString(),
                 IncidentReport.EntityId,
                 IncidentReport.ReportedAt,
                 EventType,
                 IncidentReport.Description,
-                IncidentReport.UserId
-                ));
-
-        return await Task.FromResult(IncidentReports);
+                IncidentReport.UserId));
     }
 }

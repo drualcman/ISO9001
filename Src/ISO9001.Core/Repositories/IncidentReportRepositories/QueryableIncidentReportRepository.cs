@@ -5,14 +5,12 @@ internal class QueryableIncidentReportRepository
 {
     public async Task<IEnumerable<IncidentReportResponse>> GetAllIncidentReportsAsync(string id, DateTime? from, DateTime? end)
     {
-        var Query = dataContext.IncidentReports
-            .Where(IncidentReport =>
-                IncidentReport.CompanyId == id &&
+        var IncidentReports = await dataContext.ToListAsync(
+            IncidentReport => IncidentReport.CompanyId == id &&
                 IncidentReport.ReportedAt >= from &&
-                IncidentReport.ReportedAt <= end)
-            .OrderBy(IncidentReport => IncidentReport.ReportedAt);
-
-        var IncidentReports = await dataContext.ToListAsync(Query);
+                IncidentReport.ReportedAt <= end,
+            IncidentReport => IncidentReport.OrderBy(IncidentReport =>
+                IncidentReport.ReportedAt));
 
         return IncidentReports.Select(
             IncidentReport => new IncidentReportResponse(
@@ -28,15 +26,13 @@ internal class QueryableIncidentReportRepository
 
     public async Task<IEnumerable<IncidentReportResponse>> GetIncidentReportByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
     {
-        var Query = dataContext.IncidentReports
-            .Where(IncidentReport =>
-                IncidentReport.CompanyId == id &&
+        var IncidentReports = await dataContext.ToListAsync(
+            IncidentReport => IncidentReport.CompanyId == id &&
                 IncidentReport.EntityId == entityId &&
                 IncidentReport.ReportedAt >= from &&
-                IncidentReport.ReportedAt <= end)
-            .OrderBy(IncidentReport => IncidentReport.ReportedAt);
-
-        var IncidentReports = await dataContext.ToListAsync(Query);
+                IncidentReport.ReportedAt <= end,
+            IncidentReport => IncidentReport.OrderBy(IncidentReport => 
+                IncidentReport.ReportedAt));
 
         return IncidentReports.Select(
             IncidentReport => new IncidentReportResponse(
@@ -50,28 +46,33 @@ internal class QueryableIncidentReportRepository
                 ));
     }
 
-    public Task<IncidentReportResponse> GetIncidentReportByIdAsync(string companyId, int id)
+    public async Task<IncidentReportResponse> GetIncidentReportByIdAsync(string companyId, int id)
     {
-        var IncidentReport = dataContext.IncidentReports
-            .FirstOrDefault(IncidentReport => IncidentReport.CompanyId == companyId &&
+        var Data = await dataContext.ToListAsync(
+            IncidentReport => IncidentReport.CompanyId == companyId &&
             IncidentReport.Id == id);
 
-        return Task.FromResult(new IncidentReportResponse(
+        var IncidentReport = Data.FirstOrDefault();
+
+        if (IncidentReport == null)
+            return null;
+
+        return new IncidentReportResponse(
             IncidentReport.EntityId,
             IncidentReport.ReportedAt,
             IncidentReport.UserId,
             IncidentReport.Description,
             IncidentReport.AffectedProcess,
             IncidentReport.Severity,
-            IncidentReport.Data));
+            IncidentReport.Data);
     }
 
-    public Task<bool> IncidentReportExists(string companyId, int id)
+    public async Task<bool> IncidentReportExists(string companyId, int id)
     {
-        var IncidentReport = dataContext.IncidentReports
-            .FirstOrDefault(IncidentReport => IncidentReport.CompanyId == companyId &&
-            IncidentReport.Id == id);
+        var IncidentReport = await dataContext.ToListAsync(
+            IncidentReport => IncidentReport.CompanyId == companyId &&
+                IncidentReport.Id == id);
 
-        return Task.FromResult(IncidentReport != null);
+        return IncidentReport.Any();
     }
 }
