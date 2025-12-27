@@ -5,7 +5,7 @@ namespace ISO9001.Database.InMemory.DataContexts.AuditLogDataContexts;
 internal class InMemoryQueryableAuditLogDataContext(
     InMemoryAuditLogStore dataContext) : IQueryableAuditLogDataContext
 {
-    public IQueryable<AuditLogReadModel> AuditLogs =>
+    private IQueryable<AuditLogReadModel> AuditLogs =>
         dataContext.AuditLogs
             .Select(AuditLog => new AuditLogReadModel
             {

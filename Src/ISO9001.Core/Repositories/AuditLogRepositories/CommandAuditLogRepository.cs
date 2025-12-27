@@ -6,7 +6,7 @@ internal class CommandAuditLogRepository(
     public async Task RegisterAuditLogAsync(AuditLogDto auditLogDto)
     {
 
-        var NewAuditiLog = new Entities.AuditLog
+        var NewAuditiLog = new AuditLog
         {
             EntityId = auditLogDto.EntityId,
             CompanyId = auditLogDto.CompanyId,

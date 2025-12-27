@@ -42,30 +42,30 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
             AuditLog.Details));
     }
 
-    public Task<bool> AuditLogExitsByIdAsync(string companyId, int id)
+    public async Task<bool> AuditLogExitsByIdAsync(string companyId, int id)
     {
-        var AuditLog = dataContext.AuditLogs.FirstOrDefault
-            (AuditLog => AuditLog.CompanyId == companyId &&
+        var AuditLog = await dataContext.ToListAsync(AuditLog => AuditLog.CompanyId == companyId &&
                 AuditLog.LogId == id);
 
-        return Task.FromResult(AuditLog != null);
+        return AuditLog != null;
     }
 
-    public Task<AuditLogResponse> GetAuditLogByIdAsync(string companyId, int id)
+    public async Task<AuditLogResponse> GetAuditLogByIdAsync(string companyId, int id)
     {
-        var AuditLog = dataContext
-            .AuditLogs.FirstOrDefault(
+        var data = await dataContext.
+            ToListAsync(
             AuditLog => AuditLog.CompanyId == companyId &&
                 AuditLog.LogId == id);
+        var AuditLog = data.FirstOrDefault();
 
-        return Task.FromResult(new AuditLogResponse(
+        return new AuditLogResponse(
             AuditLog.LogId,
             AuditLog.EntityId,
             AuditLog.Action,
             AuditLog.PerformedBy,
             AuditLog.Timestamp,
             AuditLog.CreatedAt,
-            AuditLog.Details));
+            AuditLog.Details);
     }
 
     public async Task<IEnumerable<AuditLogResponse>> GetAllAuditLogsOrderedByIdAscendingAsync(

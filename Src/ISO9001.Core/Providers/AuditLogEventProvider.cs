@@ -6,18 +6,15 @@ internal class AuditLogEventProvider(IQueryableAuditLogDataContext context) : IA
 
     public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        var AuditLogs = context.AuditLogs.Where
-            (AuditLog => AuditLog.EntityId == entityId &&
-            AuditLog.CompanyId == companyId)
-            .OrderBy(AuditLog => AuditLog.LogId)
-            .Select(AuditLog => new AuditEventResponse(
+        var data = await context.ToListAsync(AuditLog => AuditLog.EntityId == entityId &&
+            AuditLog.CompanyId == companyId,
+            AuditLog => AuditLog.OrderBy(AuditLog => AuditLog.LogId));
+        return data.Select(AuditLog => new AuditEventResponse(
                 AuditLog.LogId.ToString(),
                 AuditLog.EntityId,
                 AuditLog.Timestamp,
                 EventType,
                 AuditLog.Details,
                 AuditLog.PerformedBy));
-
-        return await Task.FromResult(AuditLogs);
     }
 }
