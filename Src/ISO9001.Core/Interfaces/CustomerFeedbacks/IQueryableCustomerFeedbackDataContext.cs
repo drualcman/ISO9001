@@ -2,7 +2,7 @@
 
 public interface IQueryableCustomerFeedbackDataContext
 {
-    IQueryable<CustomerFeedbackReadModel> CustomerFeedbacks { get; }
     Task<IEnumerable<CustomerFeedbackReadModel>> ToListAsync(
-        IQueryable<CustomerFeedbackReadModel> queryable);
+        Expression<Func<CustomerFeedbackReadModel, bool>> filter = null,
+        Func<IQueryable<CustomerFeedbackReadModel>, IOrderedQueryable<CustomerFeedbackReadModel>> orderBy = null);
 }

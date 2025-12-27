@@ -6,18 +6,18 @@ internal class CustomerFeedbackEventProvider(IQueryableCustomerFeedbackDataConte
 
     public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        var CustomerFeedbacks = context.CustomerFeedbacks.Where
-            (CustomerFeedback => CustomerFeedback.EntityId == entityId &&
-            CustomerFeedback.CompanyId == companyId)
-            .OrderBy(CustomerFeedback => CustomerFeedback.Id)
-            .Select(CustomerFeedback => new AuditEventResponse(
+        var data = await context.ToListAsync(CustomerFeedback => 
+            CustomerFeedback.EntityId == entityId &&
+            CustomerFeedback.CompanyId == companyId,
+            CustomerFeedback => CustomerFeedback.OrderBy(CustomerFeedback => 
+            CustomerFeedback.Id));
+
+        return data.Select(CustomerFeedback => new AuditEventResponse(
                 CustomerFeedback.Id.ToString(),
                 CustomerFeedback.EntityId,
                 CustomerFeedback.ReportedAt,
                 EventType,
                 CustomerFeedback.Comments,
                 CustomerFeedback.CustomerId));
-
-        return await Task.FromResult(CustomerFeedbacks);
     }
 }

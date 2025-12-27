@@ -62,14 +62,14 @@ internal class QueryableAuditReportRepository(
     public async Task<IEnumerable<CustomerFeedbackResponse>> GetAllCustomerFeedbacksOrderByReportedAt(string companyId, string entityId,
         DateTime? from, DateTime? end)
     {
-        var Query = customerFeedbackDataContext.CustomerFeedbacks
-            .Where(CustomerFeedback => CustomerFeedback.CompanyId == companyId &&
+
+        var CustomerFeedbacks = await customerFeedbackDataContext.ToListAsync(CustomerFeedback => 
+            CustomerFeedback.CompanyId == companyId &&
                 CustomerFeedback.EntityId == entityId &&
                 CustomerFeedback.ReportedAt >= from &&
-                CustomerFeedback.ReportedAt <= end)
-            .OrderBy(CustomerFeedback => CustomerFeedback.ReportedAt);
-
-        var CustomerFeedbacks = await customerFeedbackDataContext.ToListAsync(Query);
+                CustomerFeedback.ReportedAt <= end,
+                CustomerFeedback => CustomerFeedback.OrderBy(CustomerFeedback => 
+                CustomerFeedback.ReportedAt));
 
         return CustomerFeedbacks.Select(CustomerFeedback => new CustomerFeedbackResponse
         (
