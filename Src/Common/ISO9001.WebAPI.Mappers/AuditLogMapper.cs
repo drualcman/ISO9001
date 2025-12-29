@@ -20,7 +20,7 @@ public static class AuditLogMapper
                 return TypedResults.Created();
             });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}").CreateEndpoint("AuditLogEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}".CreateEndpoint("AuditLogEndpoints"), async (
         string companyId,
         string entityId,
         [FromQuery] DateTime? from,
@@ -32,7 +32,7 @@ public static class AuditLogMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Action" + "/{action}").CreateEndpoint("AuditLogEndpoints"), async (
+        builder.MapGet("{companyId}/Action/{action}".CreateEndpoint("AuditLogEndpoints"), async (
         string companyId,
         string action,
         [FromQuery] DateTime? from,
@@ -44,7 +44,7 @@ public static class AuditLogMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("AuditLogEndpoints"), async (
+        builder.MapGet("{companyId}/Id/{id}".CreateEndpoint("AuditLogEndpoints"), async (
          string companyId,
          string id,
          IAuditLogByIdQuery inputport) =>
@@ -64,7 +64,7 @@ public static class AuditLogMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("AuditLogEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}/Report/".CreateEndpoint("AuditLogEndpoints"), async (
         string companyId,
         string entityId,
         [FromQuery] DateTime? from,

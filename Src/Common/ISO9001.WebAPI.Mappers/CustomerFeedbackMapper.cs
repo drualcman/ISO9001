@@ -19,7 +19,7 @@ public static class CustomerFeedbackMapper
                 return TypedResults.Created();
             });
 
-        builder.MapGet(("{companyId}/" + "Rating" + "/{rating}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
+        builder.MapGet("{companyId}/Rating/{rating}".CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
         int rating,
         [FromQuery] DateTime? from,
@@ -31,7 +31,7 @@ public static class CustomerFeedbackMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
+        builder.MapGet("{companyId}/Id/{id}".CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
         string id,
         ICustomerFeedbackByIdQuery inputport) =>
@@ -40,7 +40,7 @@ public static class CustomerFeedbackMapper
             return TypedResults.Ok(Result);
         });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}".CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
         string entityId,
         [FromQuery] DateTime? from,
@@ -52,7 +52,7 @@ public static class CustomerFeedbackMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Customer" + "/{customerId}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
+        builder.MapGet("{companyId}/Customer/{customerId}".CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
         string customerId,
         [FromQuery] DateTime? from,
@@ -75,7 +75,7 @@ public static class CustomerFeedbackMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("CustomerFeedbackEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}/Report/".CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
         string entityId,
         [FromQuery] DateTime? from,

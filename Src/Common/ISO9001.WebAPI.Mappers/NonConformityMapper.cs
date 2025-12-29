@@ -15,7 +15,7 @@ public static class NonConformityMapper
             return TypedResults.Ok(result);
         });
 
-        builder.MapGet(("{companyId}/" + "AffectedProcess" + "/{affectedProcess}").CreateEndpoint("NonConformityEndpoints"), async (
+        builder.MapGet("{companyId}/AffectedProcess/{affectedProcess}".CreateEndpoint("NonConformityEndpoints"), async (
             string companyId,
             string affectedProcess,
             [FromQuery] DateTime? from,
@@ -26,7 +26,7 @@ public static class NonConformityMapper
             return TypedResults.Ok(result);
         });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}").CreateEndpoint("NonConformityEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}".CreateEndpoint("NonConformityEndpoints"), async (
             string companyId,
             string entityId,
             [FromQuery] DateTime? from,
@@ -38,7 +38,7 @@ public static class NonConformityMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Status" + "/{status}").CreateEndpoint("NonConformityEndpoints"), async (
+        builder.MapGet("{companyId}/Status/{status}".CreateEndpoint("NonConformityEndpoints"), async (
             string companyId,
             string status,
             [FromQuery] DateTime? from,
@@ -67,7 +67,7 @@ public static class NonConformityMapper
             return TypedResults.Created();
         });
 
-        builder.MapPost(("{companyId}/" + "Detail").CreateEndpoint("NonConformityEndpoints"),
+        builder.MapPost("{companyId}/Detail".CreateEndpoint("NonConformityEndpoints"),
             async (
                 string companyId,
                 NonConformityCreateDetailRequest nonConformity, IRegisterNonConformityDetail inputPort) =>
@@ -83,7 +83,7 @@ public static class NonConformityMapper
                 return TypedResults.Created();
             });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("NonConformityEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}/Report/".CreateEndpoint("NonConformityEndpoints"), async (
         string companyId,
         string entityId,
         [FromQuery] DateTime? from,
@@ -95,7 +95,7 @@ public static class NonConformityMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "MasterId" + "/{masterId}/" + "Report/").CreateEndpoint("NonConformityEndpoints"), async (
+        builder.MapGet("{companyId}/MasterId/{masterId}/Report/".CreateEndpoint("NonConformityEndpoints"), async (
         string companyId,
         string masterId,
         [FromQuery] DateTime? from,

@@ -17,7 +17,7 @@ public static class IncidentReportMapper
 
         });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}").CreateEndpoint("IncidentReportEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}".CreateEndpoint("IncidentReportEndpoints"), async (
             string companyId,
             string entityId,
             [FromQuery] DateTime? from,
@@ -31,7 +31,7 @@ public static class IncidentReportMapper
 
 
 
-        builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("IncidentReportEndpoints"), async (
+        builder.MapGet("{companyId}/Id/{id}".CreateEndpoint("IncidentReportEndpoints"), async (
             string companyId,
             string id,
             IGetIncidentReportByIdInputPort inputPort) =>
@@ -57,7 +57,7 @@ public static class IncidentReportMapper
                 return TypedResults.Created();
             });
 
-        builder.MapGet(("{companyId}/" + "Entity" + "/{entityId}/" + "Report/").CreateEndpoint("IncidentReportEndpoints"), async (
+        builder.MapGet("{companyId}/Entity/{entityId}/Report/".CreateEndpoint("IncidentReportEndpoints"), async (
         string companyId,
         string entityId,
         [FromQuery] DateTime? from,
