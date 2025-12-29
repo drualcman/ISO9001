@@ -4,9 +4,9 @@ internal interface IQueryableAuditLogRepository
 {
     Task<IEnumerable<AuditLogResponse>> GetAllAuditLogsOrderedByIdAscendingAsync(string id, DateTime? from, DateTime? end);
 
-    Task<AuditLogResponse> GetAuditLogByIdAsync(string companyId, int id);
+    Task<AuditLogResponse> GetAuditLogByIdAsync(string companyId, string id);
 
-    Task<bool> AuditLogExitsByIdAsync(string companyId, int id);
+    Task<bool> AuditLogExitsByIdAsync(string companyId, string id);
 
     Task<IEnumerable<AuditLogResponse>> GetAuditLogsByActionAsync(string id, string action, DateTime? from, DateTime? end);
 

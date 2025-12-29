@@ -2,5 +2,5 @@
 
 public interface IAuditLogByIdQuery
 {
-    Task<AuditLogResponse> HandleAsync(string companyId, int id);
+    Task<AuditLogResponse> HandleAsync(string companyId, string id);
 }

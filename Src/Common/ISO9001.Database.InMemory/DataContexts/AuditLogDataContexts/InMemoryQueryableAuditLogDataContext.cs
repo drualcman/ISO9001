@@ -9,7 +9,7 @@ internal class InMemoryQueryableAuditLogDataContext(
         dataContext.AuditLogs
             .Select(AuditLog => new AuditLogReadModel
             {
-                LogId = AuditLog.Id,
+                LogId = AuditLog.Id.ToString(),
                 EntityId = AuditLog.EntityId,
                 CompanyId = AuditLog.CompanyId,
                 Action = AuditLog.Action,

@@ -46,7 +46,7 @@ public static class AuditLogMapper
 
         builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("AuditLogEndpoints"), async (
          string companyId,
-         int id,
+         string id,
          IAuditLogByIdQuery inputport) =>
         {
             var Result = await inputport.HandleAsync(companyId, id);

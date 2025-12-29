@@ -2,7 +2,7 @@
 
 public class AuditLogReadModel
 {
-    public int LogId { get; set; }          // TODO: ver si cambiar a string, porque como entero no es funcional
+    public string LogId { get; set; }
     public string EntityId { get; set; }
     public string CompanyId { get; set; }
     public string Action { get; set; }

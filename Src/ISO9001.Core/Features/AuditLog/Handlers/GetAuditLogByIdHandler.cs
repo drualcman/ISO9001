@@ -2,7 +2,7 @@
 
 internal class GetAuditLogByIdHandler(IQueryableAuditLogRepository repository) : IAuditLogByIdQuery
 {
-    public async Task<AuditLogResponse> HandleAsync(string companyId, int id)
+    public async Task<AuditLogResponse> HandleAsync(string companyId, string id)
     {
         var AuditLogExists = await repository.AuditLogExitsByIdAsync(companyId, id);
 

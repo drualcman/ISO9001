@@ -40,7 +40,7 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
             AuditLog.Details));
     }
 
-    public async Task<bool> AuditLogExitsByIdAsync(string companyId, int id)
+    public async Task<bool> AuditLogExitsByIdAsync(string companyId, string id)
     {
         var AuditLog = await dataContext.ToListAsync(AuditLog => AuditLog.CompanyId == companyId &&
                 AuditLog.LogId == id);
@@ -48,7 +48,7 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
         return AuditLog.Any();
     }
 
-    public async Task<AuditLogResponse> GetAuditLogByIdAsync(string companyId, int id)
+    public async Task<AuditLogResponse> GetAuditLogByIdAsync(string companyId, string id)
     {
         var data = await dataContext.
             ToListAsync(
