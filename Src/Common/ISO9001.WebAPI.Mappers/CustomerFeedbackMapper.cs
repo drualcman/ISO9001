@@ -33,7 +33,7 @@ public static class CustomerFeedbackMapper
 
         builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
-        int id,
+        string id,
         ICustomerFeedbackByIdQuery inputport) =>
         {
             var Result = await inputport.HandleAsync(companyId, id);

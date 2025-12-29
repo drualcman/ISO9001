@@ -52,7 +52,7 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
             CustomerFeedback.ReportedAt));
     }
 
-    public async Task<bool> CustomerFeedbackExists(string companyId, int id)
+    public async Task<bool> CustomerFeedbackExists(string companyId, string id)
     {
         var CustomerFeedback = await dataContext.ToListAsync(
             CustomerFeedback => CustomerFeedback.CompanyId == companyId &&
@@ -61,7 +61,7 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
         return CustomerFeedback.Any();
     }
 
-    public async Task<CustomerFeedbackResponse> GetCustomerFeedbackByIdAsync(string companyId, int id)
+    public async Task<CustomerFeedbackResponse> GetCustomerFeedbackByIdAsync(string companyId, string id)
     {
         var Data = await dataContext.ToListAsync(
             CustomerFeedback => CustomerFeedback.CompanyId == companyId &&

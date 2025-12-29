@@ -3,7 +3,7 @@
 internal class GetCustomerFeedbackByIdHandler
     (IQueryableCustomerFeedbackRepository repository) : ICustomerFeedbackByIdQuery
 {
-    public async Task<CustomerFeedbackResponse> HandleAsync(string companyId, int id)
+    public async Task<CustomerFeedbackResponse> HandleAsync(string companyId, string id)
     {
         var CustomerFeedbackExists = await repository.CustomerFeedbackExists(companyId, id);
 

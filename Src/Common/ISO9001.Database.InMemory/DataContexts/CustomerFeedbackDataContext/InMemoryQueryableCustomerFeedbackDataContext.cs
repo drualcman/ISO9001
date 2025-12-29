@@ -9,7 +9,7 @@ internal class InMemoryQueryableCustomerFeedbackDataContext(
         dataContext.CustomerFeedbacks
         .Select(CustomerFeedback => new CustomerFeedbackReadModel
         {
-            Id = CustomerFeedback.Id,
+            Id = CustomerFeedback.Id.ToString(),
             EntityId = CustomerFeedback.EntityId,
             CompanyId = CustomerFeedback.CompanyId,
             CustomerId = CustomerFeedback.CustomerId,

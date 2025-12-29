@@ -2,5 +2,5 @@
 
 public interface ICustomerFeedbackByIdQuery
 {
-    Task<CustomerFeedbackResponse> HandleAsync(string companyId, int id);
+    Task<CustomerFeedbackResponse> HandleAsync(string companyId, string id);
 }
