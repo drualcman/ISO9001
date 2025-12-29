@@ -8,7 +8,8 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
         var CustomerFeedbacks = await dataContext.ToListAsync(
             CustomerFeedback => CustomerFeedback.CompanyId == id &&
                 CustomerFeedback.ReportedAt >= from &&
-                CustomerFeedback.ReportedAt <= end);
+                CustomerFeedback.ReportedAt <= end,
+            o => o.OrderBy(a => a.ReportedAt));
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(
@@ -25,7 +26,8 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
             CustomerFeedback => CustomerFeedback.CompanyId == id &&
             CustomerFeedback.CustomerId == customerId &&
             CustomerFeedback.ReportedAt >= from &&
-            CustomerFeedback.ReportedAt <= end);
+            CustomerFeedback.ReportedAt <= end,
+            o => o.OrderBy(a => a.ReportedAt));
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(
@@ -42,7 +44,8 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
             CustomerFeedback => CustomerFeedback.CompanyId == id &&
             CustomerFeedback.EntityId == entityId &&
             CustomerFeedback.ReportedAt >= from &&
-            CustomerFeedback.ReportedAt <= end);
+            CustomerFeedback.ReportedAt <= end,
+            o => o.OrderBy(a => a.ReportedAt));
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(
@@ -56,7 +59,8 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
     {
         var CustomerFeedback = await dataContext.ToListAsync(
             CustomerFeedback => CustomerFeedback.CompanyId == companyId &&
-            CustomerFeedback.Id == id);
+            CustomerFeedback.Id == id,
+            o => o.OrderBy(a => a.ReportedAt));
 
         return CustomerFeedback.Any();
     }
@@ -65,7 +69,8 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
     {
         var Data = await dataContext.ToListAsync(
             CustomerFeedback => CustomerFeedback.CompanyId == companyId &&
-            CustomerFeedback.Id == id);
+            CustomerFeedback.Id == id,
+            o => o.OrderBy(a => a.ReportedAt));
         var CustomerFeedback = Data.FirstOrDefault();
 
         if (CustomerFeedback == null)
@@ -84,7 +89,8 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
             CustomerFeedback => CustomerFeedback.CompanyId == id &&
             CustomerFeedback.Rating == rating &&
             CustomerFeedback.ReportedAt >= from &&
-            CustomerFeedback.ReportedAt <= end);
+            CustomerFeedback.ReportedAt <= end,
+            o => o.OrderBy(a => a.ReportedAt));
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(

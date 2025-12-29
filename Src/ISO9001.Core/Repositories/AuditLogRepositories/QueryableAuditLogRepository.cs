@@ -9,7 +9,8 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
             AuditLog => AuditLog.CompanyId == id &&
                         AuditLog.EntityId == entityId &&
                             AuditLog.Timestamp >= from &&
-                            AuditLog.Timestamp <= end);
+                            AuditLog.Timestamp <= end,
+            o => o.OrderBy(a => a.Timestamp));
 
         return AuditLogs.Select(AuditLog => new AuditLogResponse(
             AuditLog.LogId,
@@ -28,7 +29,8 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
             AuditLog => AuditLog.CompanyId == id &&
                             AuditLog.Action == action &&
                             AuditLog.Timestamp >= from &&
-                            AuditLog.Timestamp <= end);
+                            AuditLog.Timestamp <= end,
+            o => o.OrderBy(a => a.Timestamp));
 
         return AuditLogs.Select(AuditLog => new AuditLogResponse(
             AuditLog.LogId,
@@ -43,7 +45,8 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
     public async Task<bool> AuditLogExitsByIdAsync(string companyId, string id)
     {
         var AuditLog = await dataContext.ToListAsync(AuditLog => AuditLog.CompanyId == companyId &&
-                AuditLog.LogId == id);
+                AuditLog.LogId == id,
+            o => o.OrderBy(a => a.Timestamp));
 
         return AuditLog.Any();
     }
@@ -53,7 +56,8 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
         var data = await dataContext.
             ToListAsync(
             AuditLog => AuditLog.CompanyId == companyId &&
-                AuditLog.LogId == id);
+                AuditLog.LogId == id,
+            o => o.OrderBy(a => a.Timestamp));
         var AuditLog = data.FirstOrDefault();
 
         return new AuditLogResponse(
@@ -73,7 +77,7 @@ internal class QueryableAuditLogRepository(IQueryableAuditLogDataContext dataCon
             AuditLog => AuditLog.CompanyId == id &&
                             AuditLog.Timestamp >= from &&
                             AuditLog.Timestamp <= end,
-            o => o.OrderBy(a => a.LogId));
+            o => o.OrderBy(a => a.Timestamp));
 
         return AuditLogs.Select(AuditLog => new AuditLogResponse(
             AuditLog.LogId,

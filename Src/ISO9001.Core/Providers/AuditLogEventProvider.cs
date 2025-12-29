@@ -8,7 +8,7 @@ internal class AuditLogEventProvider(IQueryableAuditLogDataContext context) : IA
     {
         var data = await context.ToListAsync(AuditLog => AuditLog.EntityId == entityId &&
             AuditLog.CompanyId == companyId,
-            AuditLog => AuditLog.OrderBy(AuditLog => AuditLog.LogId));
+            AuditLog => AuditLog.OrderBy(AuditLog => AuditLog.Timestamp));
         return data.Select(AuditLog => new AuditEventResponse(
                 AuditLog.LogId.ToString(),
                 AuditLog.EntityId,

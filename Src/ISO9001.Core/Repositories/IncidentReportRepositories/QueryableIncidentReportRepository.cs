@@ -31,7 +31,7 @@ internal class QueryableIncidentReportRepository
                 IncidentReport.EntityId == entityId &&
                 IncidentReport.ReportedAt >= from &&
                 IncidentReport.ReportedAt <= end,
-            IncidentReport => IncidentReport.OrderBy(IncidentReport => 
+            IncidentReport => IncidentReport.OrderBy(IncidentReport =>
                 IncidentReport.ReportedAt));
 
         return IncidentReports.Select(
@@ -50,7 +50,8 @@ internal class QueryableIncidentReportRepository
     {
         var Data = await dataContext.ToListAsync(
             IncidentReport => IncidentReport.CompanyId == companyId &&
-            IncidentReport.Id == id);
+            IncidentReport.Id == id,
+            o => o.OrderBy(a => a.ReportedAt));
 
         var IncidentReport = Data.FirstOrDefault();
 

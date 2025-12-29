@@ -6,11 +6,11 @@ internal class CustomerFeedbackEventProvider(IQueryableCustomerFeedbackDataConte
 
     public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        var data = await context.ToListAsync(CustomerFeedback => 
+        var data = await context.ToListAsync(CustomerFeedback =>
             CustomerFeedback.EntityId == entityId &&
             CustomerFeedback.CompanyId == companyId,
-            CustomerFeedback => CustomerFeedback.OrderBy(CustomerFeedback => 
-            CustomerFeedback.Id));
+            CustomerFeedback => CustomerFeedback.OrderBy(CustomerFeedback =>
+            CustomerFeedback.ReportedAt));
 
         return data.Select(CustomerFeedback => new AuditEventResponse(
                 CustomerFeedback.Id.ToString(),

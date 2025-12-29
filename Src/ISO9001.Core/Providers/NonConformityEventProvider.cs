@@ -19,7 +19,7 @@ internal class NonConformityEventProvider(IQueryableNonConformityDataContext con
 
         var Details = await context.ToNonConformityDetailListAsync(
             Detail => NonConformityIds.Contains(Detail.NonConformityId),
-            Detail => Detail.OrderByDescending(d => d.CreatedAt)
+            Detail => Detail.OrderBy(d => d.ReportedAt)
         );
 
         var LastDetails = Details

@@ -17,8 +17,9 @@
             var NonConformityDetails =
                 await nonConformityDataContext.ToNonConformityDetailListAsync(Detail =>
                     NonConformityIds.Contains(Detail.NonConformityId) &&
-                    Detail.ReportedAt >= from &&
-                    Detail.ReportedAt <= end);
+                        Detail.ReportedAt >= from &&
+                        Detail.ReportedAt <= end,
+                    o => o.OrderBy(a => a.ReportedAt));
 
             var GroupedDetails = NonConformityDetails
                 .GroupBy(detail => detail.NonConformityId);
@@ -74,7 +75,8 @@
                 NC =>
                     NC.CompanyId == companyId &&
                     NC.ReportedAt >= from &&
-                    NC.ReportedAt <= end);
+                    NC.ReportedAt <= end,
+                o => o.OrderBy(a => a.ReportedAt));
 
             return NonConformities.Count(nc =>
                 !string.Equals(nc.Status, closedStatus, StringComparison.OrdinalIgnoreCase));

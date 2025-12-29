@@ -18,7 +18,8 @@ internal class QueryableNonConformityRepository(
             .ToList();
 
         var Details = await dataContext.ToNonConformityDetailListAsync(details =>
-        NonConformityIds.Contains(details.NonConformityId));
+            NonConformityIds.Contains(details.NonConformityId),
+            o => o.OrderBy(a => a.ReportedAt));
 
         var DetailsCount = Details
             .GroupBy(d => d.NonConformityId)
@@ -52,7 +53,8 @@ internal class QueryableNonConformityRepository(
             .ToList();
 
         var Details = await dataContext.ToNonConformityDetailListAsync(
-            detail => NonConformityIds.Contains(detail.NonConformityId)
+            detail => NonConformityIds.Contains(detail.NonConformityId),
+            o => o.OrderBy(a => a.ReportedAt)
         );
 
         var DetailsCount = Details
@@ -88,7 +90,8 @@ internal class QueryableNonConformityRepository(
             .ToList();
 
         var Details = await dataContext.ToNonConformityDetailListAsync(
-            detail => NonConformityIds.Contains(detail.NonConformityId)
+            detail => NonConformityIds.Contains(detail.NonConformityId),
+            o => o.OrderBy(a => a.ReportedAt)
         );
 
         var DetailsCount = Details
@@ -114,7 +117,8 @@ internal class QueryableNonConformityRepository(
                 nc.CompanyId == id &&
                 nc.Id.ToString() == entityId &&
                 nc.ReportedAt >= from &&
-                nc.ReportedAt <= end
+                nc.ReportedAt <= end,
+            o => o.OrderBy(a => a.ReportedAt)
         )).FirstOrDefault();
 
         if (NonConformity == null)
@@ -158,7 +162,8 @@ internal class QueryableNonConformityRepository(
             .ToList();
 
         var Details = await dataContext.ToNonConformityDetailListAsync(
-            detail => NonConformityIds.Contains(detail.NonConformityId)
+            detail => NonConformityIds.Contains(detail.NonConformityId),
+            o => o.OrderBy(a => a.ReportedAt)
         );
 
         var DetailsCount = Details

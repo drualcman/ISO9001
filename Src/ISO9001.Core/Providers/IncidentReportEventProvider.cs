@@ -8,7 +8,7 @@ internal class IncidentReportEventProvider(IQueryableIncidentReportDataContext c
     {
         var data = await context.ToListAsync(IncidentReport => IncidentReport.EntityId == entityId &&
                 IncidentReport.CompanyId == companyId,
-                IncidentReport => IncidentReport.OrderBy(IncidentReport => IncidentReport.Id));
+                IncidentReport => IncidentReport.OrderBy(IncidentReport => IncidentReport.ReportedAt));
 
         return data.Select(IncidentReport => new AuditEventResponse(
                 IncidentReport.Id.ToString(),
