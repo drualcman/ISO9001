@@ -177,7 +177,7 @@ internal class QueryableNonConformityRepository(
             ));
     }
 
-    public async Task<bool> NonConformityExistsByGuidAsync(Guid entityId)
+    public async Task<bool> NonConformityExistsByGuidAsync(string entityId)
     {
         var NonConformity = await dataContext.ToNonConformityListAsync(
             NC => NC.Id == entityId

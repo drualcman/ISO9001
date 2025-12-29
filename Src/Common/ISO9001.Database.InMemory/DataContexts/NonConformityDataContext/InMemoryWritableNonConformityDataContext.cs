@@ -44,7 +44,7 @@ internal class InMemoryWritableNonConformityDataContext(
     public Task UpdateNonConformityAsync(NonConformityReadModel nonConformityUpdated)
     {
         var NonConformitRecord = dataContext.NonConformities
-            .FirstOrDefault(NonConformity => NonConformity.Id == nonConformityUpdated.Id);
+            .FirstOrDefault(NonConformity => NonConformity.Id.ToString() == nonConformityUpdated.Id);
 
         NonConformitRecord.EntityId = nonConformityUpdated.EntityId;
         NonConformitRecord.CompanyId = nonConformityUpdated.CompanyId;

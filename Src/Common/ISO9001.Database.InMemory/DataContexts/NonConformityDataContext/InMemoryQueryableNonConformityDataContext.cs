@@ -9,7 +9,7 @@ internal class InMemoryQueryableNonConformityDataContext(
         dataContext.NonConformities
         .Select(NonConformity => new NonConformityReadModel
         {
-            Id = NonConformity.Id,
+            Id = NonConformity.Id.ToString(),
             ReportedAt = NonConformity.ReportedAt,
             EntityId = NonConformity.EntityId,
             CompanyId = NonConformity.CompanyId,
@@ -23,13 +23,13 @@ internal class InMemoryQueryableNonConformityDataContext(
     dataContext.NonConformityDetails
     .Select(NonConformityDetail => new NonConformityDetailReadModel
     {
-        Id = NonConformityDetail.Id,
+        Id = NonConformityDetail.Id.ToString(),
         ReportedAt = NonConformityDetail.ReportedAt,
         ReportedBy = NonConformityDetail.ReportedBy,
         Description = NonConformityDetail.Description,
         Status = NonConformityDetail.Status,
         CreatedAt = NonConformityDetail.CreatedAt,
-        NonConformityId = NonConformityDetail.NonConformityId
+        NonConformityId = NonConformityDetail.NonConformityId.ToString()
     }).AsQueryable();
 
     public async Task<IEnumerable<NonConformityReadModel>> ToNonConformityListAsync(

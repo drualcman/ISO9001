@@ -3,6 +3,6 @@
 internal interface ICommandNonConformityRepository
 {
     Task RegisterNonConformityAsync(NonConformityDto nonConformityDto);
-    Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status);
+    Task UpdateStatusNonConformityMasterAsync(string entityId, string status);
     Task SaveChangesAsync();
 }

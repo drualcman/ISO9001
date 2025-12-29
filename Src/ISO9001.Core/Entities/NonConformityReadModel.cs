@@ -2,7 +2,7 @@
 
 public class NonConformityReadModel
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     public DateTime ReportedAt { get; set; }
     public string EntityId { get; set; }
     public string CompanyId { get; set; }

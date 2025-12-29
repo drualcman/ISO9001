@@ -7,5 +7,5 @@ internal interface IQueryableNonConformityRepository
     Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByAffectedProcesssAsync(string id, string affectedProcess, DateTime? from, DateTime? end);
     Task<NonConformityResponse> GetNonConformityByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end);
     Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByStatusAsync(string id, string status, DateTime? from, DateTime? end);
-    Task<bool> NonConformityExistsByGuidAsync(Guid entityId);
+    Task<bool> NonConformityExistsByGuidAsync(string entityId);
 }
