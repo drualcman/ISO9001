@@ -9,7 +9,7 @@ internal class InMemoryQueryableIncidentReportDataContext(
         dataContext.IncidentReports
         .Select(IncidentReport => new IncidentReportReadModel
         {
-            Id = IncidentReport.Id,
+            Id = IncidentReport.Id.ToString(),
             CompanyId = IncidentReport.CompanyId,
             EntityId = IncidentReport.EntityId,
             ReportedAt = IncidentReport.ReportedAt,

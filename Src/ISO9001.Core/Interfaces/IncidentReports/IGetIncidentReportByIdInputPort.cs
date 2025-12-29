@@ -2,5 +2,5 @@
 
 public interface IGetIncidentReportByIdInputPort
 {
-    Task<IncidentReportResponse> HandleAsync(string companyId, int id);
+    Task<IncidentReportResponse> HandleAsync(string companyId, string id);
 }

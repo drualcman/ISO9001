@@ -2,7 +2,7 @@
 {
     public class IncidentReportReadModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string CompanyId { get; set; }
         public string EntityId { get; set; }
         public DateTime ReportedAt { get; set; }

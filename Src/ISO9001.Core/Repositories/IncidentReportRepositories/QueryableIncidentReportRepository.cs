@@ -46,7 +46,7 @@ internal class QueryableIncidentReportRepository
                 ));
     }
 
-    public async Task<IncidentReportResponse> GetIncidentReportByIdAsync(string companyId, int id)
+    public async Task<IncidentReportResponse> GetIncidentReportByIdAsync(string companyId, string id)
     {
         var Data = await dataContext.ToListAsync(
             IncidentReport => IncidentReport.CompanyId == companyId &&
@@ -67,7 +67,7 @@ internal class QueryableIncidentReportRepository
             IncidentReport.Data);
     }
 
-    public async Task<bool> IncidentReportExists(string companyId, int id)
+    public async Task<bool> IncidentReportExists(string companyId, string id)
     {
         var IncidentReport = await dataContext.ToListAsync(
             IncidentReport => IncidentReport.CompanyId == companyId &&

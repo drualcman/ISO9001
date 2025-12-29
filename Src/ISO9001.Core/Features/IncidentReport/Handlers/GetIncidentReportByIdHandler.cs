@@ -3,7 +3,7 @@
 internal class GetIncidentReportByIdHandler(
     IQueryableIncidentReportRepository repository) : IGetIncidentReportByIdInputPort
 {
-    public async Task<IncidentReportResponse> HandleAsync(string companyId, int id)
+    public async Task<IncidentReportResponse> HandleAsync(string companyId, string id)
     {
         var IncidentReportExists = await repository.IncidentReportExists(companyId, id);
 

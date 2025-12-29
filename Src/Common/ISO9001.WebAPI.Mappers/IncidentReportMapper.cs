@@ -33,7 +33,7 @@ public static class IncidentReportMapper
 
         builder.MapGet(("{companyId}/" + "Id" + "/{id}").CreateEndpoint("IncidentReportEndpoints"), async (
             string companyId,
-            int id,
+            string id,
             IGetIncidentReportByIdInputPort inputPort) =>
         {
             var Result = await inputPort.HandleAsync(companyId, id);
