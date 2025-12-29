@@ -31,7 +31,7 @@ internal class QueryableAuditReportRepository(
     public async Task<IEnumerable<NonConformityMaterResponse>> GeAllNonConformitiessOrderByReportedAt(string companyId,
         string entityId, DateTime? from, DateTime? end)
     {
-        var NonConformities = await nonConformityDataContext.ToListAsync(
+        var NonConformities = await nonConformityDataContext.ToNonConformityListAsync(
             NonConformity =>
                 NonConformity.CompanyId == companyId &&
                 NonConformity.EntityId == entityId &&
@@ -44,7 +44,7 @@ internal class QueryableAuditReportRepository(
             .Select(NC => NC.Id)
             .ToList();
 
-        var Details = await nonConformityDataContext.ToListAsync(
+        var Details = await nonConformityDataContext.ToNonConformityDetailListAsync(
             Detail => MasterIds.Contains(Detail.NonConformityId),
             Detail => Detail.OrderBy(d => d.ReportedAt));
 

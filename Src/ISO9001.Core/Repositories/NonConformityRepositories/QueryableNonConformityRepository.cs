@@ -5,7 +5,7 @@ internal class QueryableNonConformityRepository(
 {
     public async Task<IEnumerable<NonConformityMaterResponse>> GetAllNonConformitiesAsync(string id, DateTime? from, DateTime? end)
     {
-        var NonConformities = await dataContext.ToListAsync(
+        var NonConformities = await dataContext.ToNonConformityListAsync(
             NonConformity =>
                 NonConformity.CompanyId == id &&
                 NonConformity.ReportedAt >= from &&
@@ -17,7 +17,7 @@ internal class QueryableNonConformityRepository(
             .Select(NC => NC.Id)
             .ToList();
 
-        var Details = await dataContext.ToListAsync(details =>
+        var Details = await dataContext.ToNonConformityDetailListAsync(details =>
         NonConformityIds.Contains(details.NonConformityId));
 
         var DetailsCount = Details
@@ -38,7 +38,7 @@ internal class QueryableNonConformityRepository(
 
     public async Task<IEnumerable<NonConformityMaterResponse>> GetNonCormityMasterByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
     {
-        var NonConformities = await dataContext.ToListAsync(
+        var NonConformities = await dataContext.ToNonConformityListAsync(
             NonConformity =>
                 NonConformity.CompanyId == id &&
                 NonConformity.EntityId == entityId &&
@@ -51,7 +51,7 @@ internal class QueryableNonConformityRepository(
             .Select(NC => NC.Id)
             .ToList();
 
-        var Details = await dataContext.ToListAsync(
+        var Details = await dataContext.ToNonConformityDetailListAsync(
             detail => NonConformityIds.Contains(detail.NonConformityId)
         );
 
@@ -74,7 +74,7 @@ internal class QueryableNonConformityRepository(
     public async Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByAffectedProcesssAsync(string id, string affectedProcess,
         DateTime? from, DateTime? end)
     {
-        var NonConformities = await dataContext.ToListAsync(
+        var NonConformities = await dataContext.ToNonConformityListAsync(
             NonConformity =>
                 NonConformity.CompanyId == id &&
                 NonConformity.AffectedProcess == affectedProcess &&
@@ -87,7 +87,7 @@ internal class QueryableNonConformityRepository(
             .Select(NC => NC.Id)
             .ToList();
 
-        var Details = await dataContext.ToListAsync(
+        var Details = await dataContext.ToNonConformityDetailListAsync(
             detail => NonConformityIds.Contains(detail.NonConformityId)
         );
 
@@ -109,7 +109,7 @@ internal class QueryableNonConformityRepository(
 
     public async Task<NonConformityResponse> GetNonConformityByEntityIdAsync(string id, string entityId, DateTime? from, DateTime? end)
     {
-        var NonConformity = (await dataContext.ToListAsync(
+        var NonConformity = (await dataContext.ToNonConformityListAsync(
             nc =>
                 nc.CompanyId == id &&
                 nc.Id.ToString() == entityId &&
@@ -120,7 +120,7 @@ internal class QueryableNonConformityRepository(
         if (NonConformity == null)
             return null;
 
-        var Details = await dataContext.ToListAsync(
+        var Details = await dataContext.ToNonConformityDetailListAsync(
             d =>
                 d.NonConformityId.ToString() == entityId &&
                 d.ReportedAt >= from &&
@@ -144,7 +144,7 @@ internal class QueryableNonConformityRepository(
 
     public async Task<IEnumerable<NonConformityMaterResponse>> GetNonConformityByStatusAsync(string id, string status, DateTime? from, DateTime? end)
     {
-        var NonConformities = await dataContext.ToListAsync(
+        var NonConformities = await dataContext.ToNonConformityListAsync(
             NonConformity =>
                 NonConformity.CompanyId == id &&
                 NonConformity.Status == status &&
@@ -157,7 +157,7 @@ internal class QueryableNonConformityRepository(
             .Select(NC => NC.Id)
             .ToList();
 
-        var Details = await dataContext.ToListAsync(
+        var Details = await dataContext.ToNonConformityDetailListAsync(
             detail => NonConformityIds.Contains(detail.NonConformityId)
         );
 
@@ -179,7 +179,7 @@ internal class QueryableNonConformityRepository(
 
     public async Task<bool> NonConformityExistsByGuidAsync(Guid entityId)
     {
-        var NonConformity = await dataContext.ToListAsync(
+        var NonConformity = await dataContext.ToNonConformityListAsync(
             NC => NC.Id == entityId
         );
 

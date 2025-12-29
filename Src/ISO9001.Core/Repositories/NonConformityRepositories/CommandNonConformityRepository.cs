@@ -35,7 +35,7 @@ internal class CommandNonConformityRepository(
 
     public async Task UpdateStatusNonConformityMasterAsync(Guid entityId, string status)
     {
-        var NonConformities = await queryDataContext.ToListAsync(
+        var NonConformities = await queryDataContext.ToNonConformityListAsync(
             nonConformity => nonConformity.Id == entityId
         );
 

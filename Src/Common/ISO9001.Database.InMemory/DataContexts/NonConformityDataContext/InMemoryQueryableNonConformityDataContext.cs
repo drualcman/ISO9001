@@ -32,7 +32,7 @@ internal class InMemoryQueryableNonConformityDataContext(
         NonConformityId = NonConformityDetail.NonConformityId
     }).AsQueryable();
 
-    public async Task<IEnumerable<NonConformityReadModel>> ToListAsync(
+    public async Task<IEnumerable<NonConformityReadModel>> ToNonConformityListAsync(
     Expression<Func<NonConformityReadModel, bool>> filter = null,
     Func<IQueryable<NonConformityReadModel>, IOrderedQueryable<NonConformityReadModel>> orderBy = null)
     {
@@ -52,7 +52,7 @@ internal class InMemoryQueryableNonConformityDataContext(
         return await Task.FromResult(data);
     }
 
-    public async Task<IEnumerable<NonConformityDetailReadModel>> ToListAsync(
+    public async Task<IEnumerable<NonConformityDetailReadModel>> ToNonConformityDetailListAsync(
     Expression<Func<NonConformityDetailReadModel, bool>> filter = null,
     Func<IQueryable<NonConformityDetailReadModel>, IOrderedQueryable<NonConformityDetailReadModel>> orderBy = null)
     {

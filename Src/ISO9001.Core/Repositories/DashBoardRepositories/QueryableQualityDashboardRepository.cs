@@ -15,7 +15,7 @@
                 .ToList();
 
             var NonConformityDetails =
-                await nonConformityDataContext.ToListAsync(Detail =>
+                await nonConformityDataContext.ToNonConformityDetailListAsync(Detail =>
                     NonConformityIds.Contains(Detail.NonConformityId) &&
                     Detail.ReportedAt >= from &&
                     Detail.ReportedAt <= end);
@@ -57,7 +57,7 @@
         public async Task<int> GetNonConformitiesCountByStatus(string companyId, string status,
             DateTime? from, DateTime? end)
         {
-            var NonConformities = await nonConformityDataContext.ToListAsync(
+            var NonConformities = await nonConformityDataContext.ToNonConformityListAsync(
                 NC =>
                 NC.CompanyId == companyId &&
                 NC.ReportedAt >= from &&
@@ -70,7 +70,7 @@
         public async Task<int> GetOpenNonConformitiesCount(string companyId, string closedStatus,
             DateTime? from, DateTime? end)
         {
-            var NonConformities = await nonConformityDataContext.ToListAsync(
+            var NonConformities = await nonConformityDataContext.ToNonConformityListAsync(
                 NC =>
                     NC.CompanyId == companyId &&
                     NC.ReportedAt >= from &&

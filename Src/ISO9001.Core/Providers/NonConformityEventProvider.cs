@@ -6,7 +6,7 @@ internal class NonConformityEventProvider(IQueryableNonConformityDataContext con
 
     public async Task<IEnumerable<AuditEventResponse>> GetAuditEventsAsync(string entityId, string companyId)
     {
-        var NonConformities = await context.ToListAsync(
+        var NonConformities = await context.ToNonConformityListAsync(
             NonConformity =>
                 NonConformity.EntityId == entityId &&
                 NonConformity.CompanyId == companyId,
@@ -17,7 +17,7 @@ internal class NonConformityEventProvider(IQueryableNonConformityDataContext con
             .Select(NC => NC.Id)
             .ToList();
 
-        var Details = await context.ToListAsync(
+        var Details = await context.ToNonConformityDetailListAsync(
             Detail => NonConformityIds.Contains(Detail.NonConformityId),
             Detail => Detail.OrderByDescending(d => d.CreatedAt)
         );
