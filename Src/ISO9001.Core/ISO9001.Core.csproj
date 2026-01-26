@@ -14,10 +14,6 @@
 		<PackageReference Include="DigitalDoor.Reporting" Version="1.17.71" />
 		<PackageReference Include="DigitalDoor.Reporting.Presenters.PDF" Version="1.17.71" />
 	</ItemGroup>
-	
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\DevsTv\DevTv.Client\DevTv.Client.csproj" />
-	</ItemGroup>
 
 
 </Project>
