@@ -75,6 +75,18 @@ public static class CustomerFeedbackMapper
 
         });
 
+        builder.MapGet("{companyId}/Analyze/".CreateEndpoint("CustomerFeedbackEndpoints"), async (
+        string companyId,
+        [FromQuery] string entityId,
+        [FromQuery] DateTime? from,
+        [FromQuery] DateTime? end,
+        IAnalyzeCustomerFeedbackQuery inputPort) =>
+        {
+            var result = await inputPort.HandleAsync(companyId, entityId, from, end);
+            return TypedResults.Ok(result);
+
+        });
+
         builder.MapGet("{companyId}/Entity/{entityId}/Report/".CreateEndpoint("CustomerFeedbackEndpoints"), async (
         string companyId,
         string entityId,

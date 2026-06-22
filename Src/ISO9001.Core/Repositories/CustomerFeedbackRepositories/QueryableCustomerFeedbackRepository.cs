@@ -100,4 +100,17 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
             CustomerFeedback.ReportedAt));
 
     }
+
+    public async Task<IEnumerable<CustomerFeedbackReadModel>> GetCustomerFeedbacksForAnalysisAsync(
+        string id, string entityId, DateTime? from, DateTime? end)
+    {
+        var CustomerFeedbacks = await dataContext.ToListAsync(
+            CustomerFeedback => CustomerFeedback.CompanyId == id &&
+            (string.IsNullOrEmpty(entityId) || CustomerFeedback.EntityId == entityId) &&
+            CustomerFeedback.ReportedAt >= from &&
+            CustomerFeedback.ReportedAt <= end,
+            o => o.OrderBy(a => a.ReportedAt));
+
+        return CustomerFeedbacks;
+    }
 }

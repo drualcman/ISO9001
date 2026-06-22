@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>1.0.0</Version>
+		<Version>1.1.0</Version>
 		<Authors>Sergi Ortiz Gomez, Eduardo Rosas Mialma</Authors>
 		<Company>DrUalcman</Company>
 		<Description>
@@ -23,7 +23,7 @@
 			minimal-api;blazor;wasm;enterprise;saas;ecommerce;quality-assurance;reporting
 		</PackageTags>
 		<PackageReleaseNotes>
-			First release
+			Add AnalyzeCustomerFeedback query: average rating, total count, ratings distribution and recent comments.
 		</PackageReleaseNotes>
 		<RepositoryType>Git</RepositoryType>
 	</PropertyGroup>

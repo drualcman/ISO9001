@@ -13,4 +13,6 @@ internal interface IQueryableCustomerFeedbackRepository
     Task<IEnumerable<CustomerFeedbackResponse>> GetCustomerFeedbackByCustomerIdAsync(string id, string customerId, DateTime? from, DateTime? end);
 
     Task<IEnumerable<CustomerFeedbackResponse>> GetAllCustomerFeedbacksAsync(string id, DateTime? from, DateTime? end);
+
+    Task<IEnumerable<CustomerFeedbackReadModel>> GetCustomerFeedbacksForAnalysisAsync(string id, string entityId, DateTime? from, DateTime? end);
 }

@@ -6,6 +6,36 @@ Vamos ahora a implementar el módulo de análisis de feedback, usando MVVM en Bl
 - Últimos comentarios
 - Distribución por rating (1 a 5)
 
+> **Nota sobre la implementación en ISO9001.Core**
+>
+> En la librería el análisis se expone como una **query simple**, consistente con el resto de
+> consultas de CustomerFeedback (`IAllCustomerFeedbackQuery`, `ICustomerFeedbackByRatingQuery`, ...):
+>
+> ```csharp
+> public interface IAnalyzeCustomerFeedbackQuery
+> {
+>     Task<AnalyzeFeedbackResponse> HandleAsync(string id, string entityId, DateTime? from, DateTime? end);
+> }
+>
+> public class AnalyzeFeedbackResponse(
+>     double averageRating, int totalCount,
+>     Dictionary<int, int> ratingsByValue, List<string> recentComments)
+> {
+>     public double AverageRating => averageRating;
+>     public int TotalCount => totalCount;
+>     public Dictionary<int, int> RatingsByValue => ratingsByValue;
+>     public List<string> RecentComments => recentComments;
+> }
+> ```
+>
+> - `id` (companyId) es obligatorio; `entityId` es opcional (null/empty analiza toda la empresa);
+>   `from`/`end` opcionales con el mismo default de 30 días que el resto de queries.
+> - El handler lee los `CustomerFeedbackReadModel` (que sí incluyen `Comments`) y agrega en memoria.
+>   El campo de fecha real es **`ReportedAt`** (no `SubmittedAt`).
+>
+> El patrón MVVM (InputPort/OutputPort/Presenter/ViewModel) que se describe a continuación es la
+> guía de presentación para la UI Blazor que consume esa query.
+
 ## Caso de uso: AnalyzeCustomerFeedback
 ### Request y Response
 ```csharp
@@ -58,10 +88,10 @@ public class AnalyzeFeedbackInteractor : IAnalyzeFeedbackInputPort
             .ToDictionary(g => g.Key, g => g.Count());
 
         List<string> recent = all
-            .OrderByDescending(f => f.SubmittedAt)
-            .Take(5)
+            .OrderByDescending(f => f.ReportedAt)
+            .Where(f => !string.IsNullOrWhiteSpace(f.Comments))
             .Select(f => f.Comments)
-            .Where(c => !string.IsNullOrWhiteSpace(c))
+            .Take(5)
             .ToList();
 
         AnalyzeFeedbackResponse response = new AnalyzeFeedbackResponse

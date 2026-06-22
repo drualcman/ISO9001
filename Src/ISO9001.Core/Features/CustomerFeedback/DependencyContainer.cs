@@ -14,6 +14,7 @@ public static partial class DependencyContainer
         services.TryAddScoped<ICustomerFeedbackByEntityIdQuery, GetGustomerFeedbackByEntityIdHandler>();
         services.TryAddScoped<IAllCustomerFeedbackQuery, GetAllCustomerFeedbackHandler>();
         services.TryAddScoped<ICustomerFeedbackByCustomerIdQuery, GetCustomerFeedbackByCustomerIdHandler>();
+        services.TryAddScoped<IAnalyzeCustomerFeedbackQuery, AnalyzeCustomerFeedbackHandler>();
 
         services.TryAddScoped<IGenerateCustomerFeedbackReport, GenerateCustomerFeedbackReportController>();
         services.TryAddScoped<IGenerateCustomerFeedbackInputPort, GenerateCustomerFeedbackReportHandler>();
