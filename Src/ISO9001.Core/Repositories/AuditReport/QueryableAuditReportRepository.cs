@@ -18,6 +18,7 @@ internal class QueryableAuditReportRepository(
 
         return IncidentReports.Select(IncidentReport => new IncidentReportResponse
         (
+            IncidentReport.Id,
             IncidentReport.EntityId,
             IncidentReport.ReportedAt,
             IncidentReport.UserId,
@@ -79,6 +80,7 @@ internal class QueryableAuditReportRepository(
 
         return CustomerFeedbacks.Select(CustomerFeedback => new CustomerFeedbackResponse
         (
+            CustomerFeedback.Id,
             CustomerFeedback.EntityId,
             CustomerFeedback.CustomerId,
             CustomerFeedback.Rating,

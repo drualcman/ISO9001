@@ -13,6 +13,7 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(
+            CustomerFeedback.Id,
             CustomerFeedback.EntityId,
             CustomerFeedback.CustomerId,
             CustomerFeedback.Rating,
@@ -31,6 +32,7 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(
+            CustomerFeedback.Id,
             CustomerFeedback.EntityId,
             CustomerFeedback.CustomerId,
             CustomerFeedback.Rating,
@@ -49,6 +51,7 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(
+            CustomerFeedback.Id,
             CustomerFeedback.EntityId,
             CustomerFeedback.CustomerId,
             CustomerFeedback.Rating,
@@ -77,6 +80,7 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
             return null;
 
         return new CustomerFeedbackResponse(
+            CustomerFeedback.Id,
             CustomerFeedback.EntityId,
             CustomerFeedback.CustomerId,
             CustomerFeedback.Rating,
@@ -94,6 +98,7 @@ internal class QueryableCustomerFeedbackRepository(IQueryableCustomerFeedbackDat
 
         return CustomerFeedbacks.Select(CustomerFeedback =>
         new CustomerFeedbackResponse(
+            CustomerFeedback.Id,
             CustomerFeedback.EntityId,
             CustomerFeedback.CustomerId,
             CustomerFeedback.Rating,

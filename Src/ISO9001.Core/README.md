@@ -222,6 +222,9 @@ IncidentReportResponse incident = await _getIncidentReportByIdInputPort
     .HandleAsync(companyId, incidentId);
 ```
 
+> `IncidentReportResponse` exposes `Id`, so the identifiers returned by the list queries can be fed
+> straight into the by-id query.
+
 ---
 
 ### Non-Conformities
@@ -326,6 +329,9 @@ IEnumerable<CustomerFeedbackResponse> byOrder = await _customerFeedbackByEntityI
 IEnumerable<CustomerFeedbackResponse> lowRated = await _customerFeedbackByRatingQuery
     .HandleAsync(companyId, rating: 1, from: null, end: null);
 ```
+
+> `CustomerFeedbackResponse` exposes `Id`, so the identifiers returned by the list queries can be fed
+> straight into the by-id query.
 
 #### Analyze feedback
 
