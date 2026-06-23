@@ -25,6 +25,7 @@
 		<PackageReleaseNotes>
 			Add AnalyzeCustomerFeedback query: average rating, total count, ratings distribution and recent comments.
 			Expose Id in CustomerFeedbackResponse and IncidentReportResponse so the /id/{id} endpoints are usable.
+			Update dependencies.
 		</PackageReleaseNotes>
 		<RepositoryType>Git</RepositoryType>
 	</PropertyGroup>
